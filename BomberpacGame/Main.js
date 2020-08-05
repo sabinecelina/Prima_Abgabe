@@ -38,11 +38,11 @@ var Bomberpac;
                 console.log("easy");
                 break;
             case "MIDDLE":
-                initializeGame(Bomberpac.data.level[1]);
+                toggleData = Bomberpac.data.level[1];
                 console.log("middle");
                 break;
             case "HARD":
-                initializeGame(Bomberpac.data.level[2]);
+                toggleData = Bomberpac.data.level[2];
                 console.log("hard");
                 break;
         }

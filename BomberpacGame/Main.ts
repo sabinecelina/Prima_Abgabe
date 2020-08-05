@@ -60,11 +60,11 @@ namespace Bomberpac {
                 console.log("easy");
                 break;
             case "MIDDLE":
-                initializeGame(data.level[1]);
+                toggleData = data.level[1];
                 console.log("middle");
                 break;
             case "HARD":
-                initializeGame(data.level[2]);
+                toggleData = data.level[2];
                 console.log("hard");
                 break;
         }
