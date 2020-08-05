@@ -1,4 +1,4 @@
 # Prima_Abgabe
 Prototyping interaktiver Apps und Medien
 
-[* Bomberpac](https://sabinecelina.github.io/Prima_Abgabe/BomberpacGame/Main.html)
+Here is my link to [Bomberpac](https://sabinecelina.github.io/Prima_Abgabe/BomberpacGame/Main.html)
