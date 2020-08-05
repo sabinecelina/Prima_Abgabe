@@ -1888,7 +1888,7 @@ declare namespace FudgeCore {
          */
         get hasFocus(): boolean;
         /**
-         * Switch the viewports focus on or off. Only one viewport in one FUDGE instance can have the focus, thus receiving keyboard events.
+         * Switch the viewports focus on or offCore. Only one viewport in one FUDGE instance can have the focus, thus receiving keyboard events.
          * So a viewport currently having the focus will lose it, when another one receives it. The viewports fire [[Event]]s accordingly.
          * // TODO: examine, if this can be achieved by regular DOM-Focus and tabindex=0
          * @param _on
@@ -2476,7 +2476,7 @@ declare namespace FudgeCore {
         static MULTIPLICATION(_a: Matrix4x4, _b: Matrix4x4): Matrix4x4;
         /**
          * Computes and returns the inverse of a passed matrix.
-         * @param _matrix The matrix to compute the inverse of.
+         * @param _matrix The matrix to compute the inverse ofCore.
          */
         static INVERSION(_matrix: Matrix4x4): Matrix4x4;
         /**
@@ -3658,7 +3658,7 @@ declare namespace FudgeCore {
          * @param _handler The [[TimerHandler]] instance to call
          * @param _arguments Additional arguments to pass to _handler
          *
-         * TODO: for proper handling and deletion, use Time.setTimer instead of instantiating timers yourself.
+         * TODO: for proper handling and deletion, use Time.setTimer instead of instantiating timers yourselfCore.
          */
         constructor(_time: Time, _elapse: number, _count: number, _handler: TimerHandler, ..._arguments: Object[]);
         /**

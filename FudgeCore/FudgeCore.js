@@ -2180,11 +2180,11 @@ var FudgeCore;
                 this.keys[i].functionOut = f;
                 if (i == this.keys.length - 1) {
                     //TODO: check if this is even useful. Maybe update the runcondition to length - 1 instead. Might be redundant if functionIn is removed, see TODO in AnimationKey.
-                    f.setKeyOut = this.keys[0];
+                    fCore.setKeyOut = this.keys[0];
                     this.keys[0].functionIn = f;
                     break;
                 }
-                f.setKeyOut = this.keys[i + 1];
+                fCore.setKeyOut = this.keys[i + 1];
                 this.keys[i + 1].functionIn = f;
             }
         }
@@ -4452,7 +4452,7 @@ var FudgeCore;
             return (Viewport.focus == this);
         }
         /**
-         * Switch the viewports focus on or off. Only one viewport in one FUDGE instance can have the focus, thus receiving keyboard events.
+         * Switch the viewports focus on or offCore. Only one viewport in one FUDGE instance can have the focus, thus receiving keyboard events.
          * So a viewport currently having the focus will lose it, when another one receives it. The viewports fire [[Event]]s accordingly.
          * // TODO: examine, if this can be achieved by regular DOM-Focus and tabindex=0
          * @param _on
@@ -5459,7 +5459,7 @@ var FudgeCore;
         }
         /**
          * Computes and returns the inverse of a passed matrix.
-         * @param _matrix The matrix to compute the inverse of.
+         * @param _matrix The matrix to compute the inverse ofCore.
          */
         static INVERSION(_matrix) {
             let m = _matrix.data;
@@ -8632,7 +8632,7 @@ var FudgeCore;
          * @param _handler The [[TimerHandler]] instance to call
          * @param _arguments Additional arguments to pass to _handler
          *
-         * TODO: for proper handling and deletion, use Time.setTimer instead of instantiating timers yourself.
+         * TODO: for proper handling and deletion, use Time.setTimer instead of instantiating timers yourselfCore.
          */
         constructor(_time, _elapse, _count, _handler, ..._arguments) {
             this.time = _time;
