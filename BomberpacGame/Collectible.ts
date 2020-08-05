@@ -1,4 +1,5 @@
 namespace Bomberpac {
+
   import fAid = FudgeAid;
   export enum ACTION {
     IDLE = "Idle",

@@ -7,6 +7,7 @@ var Bomberpac;
     window.addEventListener("load", init);
     let floor;
     let game = new Bomberpac.fCore.Node("game");
+    let toggleData;
     function init(_event) {
         Bomberpac.showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
@@ -33,7 +34,7 @@ var Bomberpac;
         let value = document.getElementById('level').value;
         switch (value) {
             case "EASY":
-                initializeGame(Bomberpac.data.level[0]);
+                toggleData = Bomberpac.data.level[0];
                 console.log("easy");
                 break;
             case "MIDDLE":
@@ -45,6 +46,7 @@ var Bomberpac;
                 console.log("hard");
                 break;
         }
+        initializeGame(toggleData);
         const canvas = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
         let cmpCamera = new ƒ.ComponentCamera();

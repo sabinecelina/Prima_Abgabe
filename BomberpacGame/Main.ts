@@ -5,7 +5,9 @@ namespace Bomberpac {
             number: string,
             amountOfBombs: string,
             lives: string,
-            amountOfObstacles: string
+            amountOfObstacles: string,
+            amountOfFood: string,
+            amountOfItems: string
         }[];
     }
     export interface ToggleData {
@@ -13,10 +15,13 @@ namespace Bomberpac {
         number: string,
         amountOfBombs: string,
         lives: string,
-        amountOfObstacles: string
+        amountOfObstacles: string,
+        amountOfFood: string,
+        amountOfItems: string
     }
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
+    import fAid = FudgeAid;
     load("data.json");
     window.addEventListener("load", init);
     export let viewport: ƒ.Viewport;
@@ -24,6 +29,7 @@ namespace Bomberpac {
     let floor: Floor;
     let game: fCore.Node = new fCore.Node("game");
     export let data: Data;
+    let toggleData: ToggleData;
     function init(_event: Event): void {
         showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
@@ -50,7 +56,7 @@ namespace Bomberpac {
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
             case "EASY":
-                initializeGame(data.level[0]);
+                toggleData = data.level[0];
                 console.log("easy");
                 break;
             case "MIDDLE":
@@ -62,6 +68,7 @@ namespace Bomberpac {
                 console.log("hard");
                 break;
         }
+        initializeGame(toggleData);
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
@@ -76,6 +83,7 @@ namespace Bomberpac {
         ƒ.Debug.log(viewport);
 
         viewport.draw();
+
     }
     function initializeGame(data: ToggleData) {
         floor = new Floor("Floor", gameField, game, data);

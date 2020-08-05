@@ -1,9 +1,14 @@
 namespace Bomberpac {
+  import ƒAid = FudgeAid;
   export class Floor extends Gameobject {
+    private img: HTMLImageElement = document.querySelector("img");
+    private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", this.img);
     private static mesh: fCore.MeshCube = new fCore.MeshCube();
     private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("BLUE")));
     private obstacles: fCore.Node = new fCore.Node("Obstacles");
     private amountOfObstacles: number;
+    private amountOfFood: number;
+    private amountOfItems: number;
     private gameField: number[][];
     private game: fCore.Node;
     private data: ToggleData;
@@ -15,10 +20,14 @@ namespace Bomberpac {
       this.data = data;
       this.fetchData();
       this.createFloor(this.amountOfObstacles);
+      this.createFood(this.amountOfFood);
+      this.createItems(this.amountOfItems);
       console.log(this.data);
     }
     private fetchData(): void {
       this.amountOfObstacles = Number(this.data.amountOfObstacles);
+      this.amountOfFood = Number(this.data.amountOfFood);
+      this.amountOfItems = Number(this.data.amountOfItems);
     }
     private createFloor(_amountOfObstacles: number) {
       for (let i: number = 0; i < 31; i++) {
@@ -43,6 +52,56 @@ namespace Bomberpac {
         }
       }
       this.game.appendChild(this.obstacles);
+    }
+    private createFood(_amountofFood: number) {
+      let foodNode: fCore.Node = new fCore.Node("Food");
+      let food: Food;
+      Food.generateSprites(this.spritesheet);
+      for (let i: number = 0; i < _amountofFood; i++) {
+        let randomTranslateX: number = randomInteger(1, 28);
+        let randomTranslateY: number = randomInteger(1, 19);
+        if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+          food = new Food("food", randomTranslateX, randomTranslateY, this.gameField);
+          foodNode.appendChild(food);
+          this.game.appendChild(foodNode);
+        }
+      }
+    }
+    private createItems(_amountOfItems: number): void {
+      let id: number = 0;
+      let sprites: number[] = [0, 32.6, 65.2, 97.8, 130.3, 163, 195.6, 228.2];
+      let itemNode: fCore.Node = new fCore.Node("Items");
+      let pill: Pill;
+      let img: HTMLImageElement = document.querySelector("img");
+      let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Item", img);
+      for (let i: number = 0; i < _amountOfItems; i++) {
+        let randomNumber: number = randomInteger(0, 7);
+        switch (randomNumber) {
+          case 0: id = 0;
+            break;
+          case 1: id = 1;
+            break;
+          case 2: id = 2;
+            break;
+          case 3: id = 3;
+            break;
+          case 4: id = 4;
+            break;
+          case 5: id = 5;
+            break;
+          case 6: id = 6;
+            break;
+          case 7: id = 7;
+            break;
+        }
+        console.log(i);
+        let randomTranslateX: number = getRandomTranslateX();
+        let randomTranslateY: number = getRandomTranslateY();
+        Pill.generateSprites(spritesheet, sprites[randomNumber]);
+        pill = new Pill("Item", randomTranslateX, randomTranslateY, this.gameField, id);
+        itemNode.appendChild(pill);
+      }
+      this.game.appendChild(itemNode);
     }
   }
 }
