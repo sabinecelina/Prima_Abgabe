@@ -14,8 +14,10 @@ var Bomberpac;
                 this.cmpTransform.local.translate(distance);
                 this.eatFood();
                 this.collide();
+                this.eatItem();
             };
             this.nav = document.getElementById("scorePlayerOne");
+            this.navPlayerTwo = document.getElementById("scorePlayerTwo");
             this.game = game;
             this.gameField = gameField;
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
@@ -120,9 +122,75 @@ var Bomberpac;
                     let randomTranslateY = Bomberpac.getRandomTranslateY();
                     this.gameField[randomTranslateX][randomTranslateY] = 1;
                     food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-                    this.nav.innerText = "Score: " + this.score;
                     this.score++;
+                    console.log(this.score);
                     Bomberpac.Sound.play("pacman_eat");
+                }
+            }
+        }
+        eatItem() {
+            let pacmanTranslation = this.mtxLocal.translation;
+            let node = this.game.getChildrenByName("Items")[0].getChildren();
+            for (let item of node) {
+                let rect = item.getID();
+                if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
+                    console.log("eat");
+                    switch (rect) {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                        case 7:
+                            let thisScore = this.score;
+                            console.log(thisScore);
+                            for (let i = 0; i < 10; i++) {
+                                console.log(i);
+                                fCore.ga;
+                            }
+                        //if (this.score == 10) {
+                        //}
+                        /*case 2:
+                          console.log("two");
+                          break;
+                        case 3:
+                          console.log("three");
+                          break;
+                        case 4:
+                          console.log("four");
+                          break;
+                        case 5:
+                          console.log("five");
+                          break;
+                        case 6:
+                          console.log("six");
+                          break;
+                        case 7:
+                          console.log("seven");
+                          break;
+                        case 8:
+                          let canvas: HTMLCanvasElement = document.querySelector("canvas");
+                          let img: HTMLImageElement = document.querySelector("img");
+                          let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
+                          Pacman.generateSprites(spritesheet);
+                          for (let i: number = 0; i < 5; i++) {
+                            let randomTranslateX: number = Level.randomInteger(2, 27);
+                            let randomTranslateY: number = Level.randomInteger(2, 19);
+                            let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
+                            game.appendChild(hare);
+                          }
+                          let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
+                          matrix[_currentTranslation.x][_currentTranslation.y] = 0;
+                          let randomTranslateX: number = Level.randomInteger(1, 28);
+                          let randomTranslateY: number = Level.randomInteger(1, 19);
+                          matrix[randomTranslateX][randomTranslateY] = 1;
+                          item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+                          this.period++;
+                          console.log(game);
+                          break;
+                          break;*/
+                    }
                 }
             }
         }

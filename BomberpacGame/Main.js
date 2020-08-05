@@ -36,6 +36,8 @@ var Bomberpac;
     }
     function hndLoad(_event) {
         fillArray();
+        let gameTime = new Bomberpac.fCore.Time();
+        console.log(gameTime);
         document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
@@ -95,10 +97,12 @@ var Bomberpac;
         }*/
     }
     function processInput() {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
             pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+        }
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
             pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
+        }
         else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
             pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
         else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))

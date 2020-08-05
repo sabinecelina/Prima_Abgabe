@@ -29,6 +29,8 @@ namespace Bomberpac {
     export let gameField: number[][];
     export let musicMuted: boolean = true;
     export let soundMuted: boolean = true;
+    export let nav: HTMLElement;
+    export let navPlayerTwo: HTMLElement;
     let pacman: Pacman;
     let pacmanTwo: Pacman;
     let floor: Floor;
@@ -58,6 +60,8 @@ namespace Bomberpac {
     }
     function hndLoad(_event: Event): void {
         fillArray();
+        let gameTime: fCore.Time = new fCore.Time();
+        console.log(gameTime);
         document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
@@ -118,10 +122,12 @@ namespace Bomberpac {
         }*/
     }
     function processInput(): void {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
             pacman.act(ACTION.WALK, DIRECTION.LEFT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+        }
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
             pacman.act(ACTION.WALK, DIRECTION.RIGHT);
+        }
         else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
             pacman.act(ACTION.WALK, DIRECTION.UP);
         else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
