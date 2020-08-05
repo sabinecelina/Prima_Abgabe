@@ -40,7 +40,6 @@ namespace Bomberpac {
         document.getElementById("startButton").addEventListener("click", hndLoad);
         document.getElementById("musicButton").addEventListener("click", toggleMusic);
         document.getElementById("soundButton").addEventListener("click", toggleSounds);
-
     }
     async function load(_filename: string): Promise<void> {
         let response: Response = await fetch("data.json");
@@ -59,6 +58,7 @@ namespace Bomberpac {
     }
     function hndLoad(_event: Event): void {
         fillArray();
+        document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
         let img: HTMLImageElement = document.querySelector("img");
@@ -109,6 +109,13 @@ namespace Bomberpac {
     function initializeGame(data: ToggleData) {
         floor = new Floor("Floor", gameField, game, data);
         game.appendChild(floor);
+    }
+    function reloadMap() {
+        /*let node: fCore.Node[] = game.getChildren();
+        for (let obstacles of node) {
+            game.removeChild(obstacles);
+            initializeGame(toggleData);
+        }*/
     }
     function processInput(): void {
         if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))

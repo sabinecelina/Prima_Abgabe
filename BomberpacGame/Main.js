@@ -36,6 +36,7 @@ var Bomberpac;
     }
     function hndLoad(_event) {
         fillArray();
+        document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
         let img = document.querySelector("img");
@@ -85,6 +86,13 @@ var Bomberpac;
     function initializeGame(data) {
         floor = new Bomberpac.Floor("Floor", Bomberpac.gameField, game, data);
         game.appendChild(floor);
+    }
+    function reloadMap() {
+        /*let node: fCore.Node[] = game.getChildren();
+        for (let obstacles of node) {
+            game.removeChild(obstacles);
+            initializeGame(toggleData);
+        }*/
     }
     function processInput() {
         if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
