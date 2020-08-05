@@ -6,13 +6,6 @@ var Bomberpac;
     class Gameobject extends fCore.Node {
         constructor(_name, _matrix) {
             super(_name);
-            this._gameField = _matrix;
-        }
-        setGameField(x, y, id) {
-            this._gameField[x][y] = id;
-        }
-        checkGameField(x, y, id) {
-            return this._gameField[x][y] = id;
         }
     }
     Bomberpac.Gameobject = Gameobject;
@@ -20,12 +13,6 @@ var Bomberpac;
         constructor(_name, _matrix) {
             super(_name);
             this._gameField = _matrix;
-        }
-        setGameField(x, y, id) {
-            this._gameField[x][y] = id;
-        }
-        checkGameField(x, y, id) {
-            return this._gameField[x][y] = id;
         }
     }
     Bomberpac.GameobjectSprite = GameobjectSprite;
