@@ -1,15 +1,37 @@
 namespace Bomberpac {
+    export interface Data {
+        level: {
+            text: string,
+            number: string,
+            amountOfBombs: string,
+            lives: string,
+            amountOfObstacles: string
+        }[];
+    }
+    export interface ToggleData {
+        text: string,
+        number: string,
+        amountOfBombs: string,
+        lives: string,
+        amountOfObstacles: string
+    }
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
-
-    window.addEventListener("load", hndLoad);
+    load("data.json");
+    window.addEventListener("load", init);
     export let viewport: ƒ.Viewport;
     export let gameField: number[][];
     let floor: Floor;
     let game: fCore.Node = new fCore.Node("game");
+    export let data: Data;
     function init(_event: Event): void {
         showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
+    }
+    async function load(_filename: string): Promise<void> {
+        let response: Response = await fetch("data.json");
+        let text: string = await response.text();
+        data = JSON.parse(text);
     }
     function fillArray() {
         gameField = new Array<Array<number>>();
@@ -25,9 +47,23 @@ namespace Bomberpac {
         fillArray();
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
+        let value = (<HTMLSelectElement>document.getElementById('level')).value;
+        switch (value) {
+            case "EASY":
+                initializeGame(data.level[0]);
+                console.log("easy");
+                break;
+            case "MIDDLE":
+                initializeGame(data.level[1]);
+                console.log("middle");
+                break;
+            case "HARD":
+                initializeGame(data.level[2]);
+                console.log("hard");
+                break;
+        }
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
-        initializeGame();
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.backgroundColor = ƒ.Color.CSS("black");
         cmpCamera.pivot.translateZ(30.3);
@@ -41,8 +77,8 @@ namespace Bomberpac {
 
         viewport.draw();
     }
-    function initializeGame() {
-        floor = new Floor("Floor", gameField, game);
+    function initializeGame(data: ToggleData) {
+        floor = new Floor("Floor", gameField, game, data);
         game.appendChild(floor);
     }
 }

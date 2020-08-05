@@ -1,0 +1,21 @@
+{
+    "level": [{
+            "number": "1",
+            "amountOfBombs": "5",
+            "lives": "3",
+            "amountOfObstacles": "80"
+        },
+        {
+            "number": "2",
+            "amountOfBombs": "3",
+            "lives": "2",
+            "amountOfObstacles": "120"
+        },
+        {
+            "number": "3",
+            "amountOfBombs": "1",
+            "lives": "1",
+            "amountOfObstacles": "300"
+        }
+    ]
+}
