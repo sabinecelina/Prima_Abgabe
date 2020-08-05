@@ -26,6 +26,8 @@ namespace Bomberpac {
     window.addEventListener("load", init);
     export let viewport: ƒ.Viewport;
     export let gameField: number[][];
+    export let musicMuted: boolean = true;
+    export let soundMuted: boolean = true;
     let floor: Floor;
     let game: fCore.Node = new fCore.Node("game");
     export let data: Data;
@@ -33,6 +35,9 @@ namespace Bomberpac {
     function init(_event: Event): void {
         showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
+        document.getElementById("musicButton").addEventListener("click", toggleMusic);
+        document.getElementById("soundButton").addEventListener("click", toggleSounds);
+    
     }
     async function load(_filename: string): Promise<void> {
         let response: Response = await fetch("data.json");
@@ -77,11 +82,9 @@ namespace Bomberpac {
         cmpCamera.pivot.translateX(14.5);
         cmpCamera.pivot.translateY(10);
         cmpCamera.pivot.rotateY(180);
-
         viewport = new ƒ.Viewport();
         viewport.initialize("Viewport", game, cmpCamera, canvas);
         ƒ.Debug.log(viewport);
-
         viewport.draw();
 
     }

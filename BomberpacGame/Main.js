@@ -5,12 +5,16 @@ var Bomberpac;
     Bomberpac.fCore = FudgeCore;
     load("data.json");
     window.addEventListener("load", init);
+    Bomberpac.musicMuted = true;
+    Bomberpac.soundMuted = true;
     let floor;
     let game = new Bomberpac.fCore.Node("game");
     let toggleData;
     function init(_event) {
         Bomberpac.showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
+        document.getElementById("musicButton").addEventListener("click", Bomberpac.toggleMusic);
+        document.getElementById("soundButton").addEventListener("click", Bomberpac.toggleSounds);
     }
     async function load(_filename) {
         let response = await fetch("data.json");
