@@ -17,7 +17,7 @@ var Bomberpac;
             this.createFloor(this.amountOfObstacles);
             this.createFood(this.amountOfFood);
             this.createItems(this.amountOfItems);
-            console.log(this.data);
+            (this.data);
         }
         fetchData() {
             this.amountOfObstacles = Number(this.data.amountOfObstacles);
@@ -98,7 +98,7 @@ var Bomberpac;
                         id = 7;
                         break;
                 }
-                console.log(i);
+                (i);
                 let randomTranslateX = Bomberpac.getRandomTranslateX();
                 let randomTranslateY = Bomberpac.getRandomTranslateY();
                 Bomberpac.Pill.generateSprites(spritesheet, sprites[randomNumber]);

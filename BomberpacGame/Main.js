@@ -3,10 +3,12 @@ var Bomberpac;
 (function (Bomberpac) {
     var ƒ = FudgeCore;
     Bomberpac.fCore = FudgeCore;
+    Bomberpac.ƒAid = FudgeAid;
     load("data.json");
     window.addEventListener("load", init);
     Bomberpac.musicMuted = true;
     Bomberpac.soundMuted = true;
+    let pacman;
     let floor;
     let game = new Bomberpac.fCore.Node("game");
     let toggleData;
@@ -35,22 +37,28 @@ var Bomberpac;
         fillArray();
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
+        let img = document.querySelector("img");
+        let spritesheet = Bomberpac.ƒAid.createSpriteSheet("Spritesheet", img);
+        Bomberpac.Pacman.generateSprites(spritesheet);
         let value = document.getElementById('level').value;
         switch (value) {
             case "EASY":
                 toggleData = Bomberpac.data.level[0];
-                console.log("easy");
+                ("easy");
                 break;
             case "MIDDLE":
                 toggleData = Bomberpac.data.level[1];
-                console.log("middle");
+                ("middle");
                 break;
             case "HARD":
                 toggleData = Bomberpac.data.level[2];
-                console.log("hard");
+                ("hard");
                 break;
         }
         initializeGame(toggleData);
+        pacman = new Bomberpac.Pacman("PacmanOne", 2, 1, Bomberpac.gameField, game);
+        game.appendChild(pacman);
+        ("pacman added");
         const canvas = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
         let cmpCamera = new ƒ.ComponentCamera();
@@ -62,6 +70,11 @@ var Bomberpac;
         Bomberpac.viewport = new ƒ.Viewport();
         Bomberpac.viewport.initialize("Viewport", game, cmpCamera, canvas);
         ƒ.Debug.log(Bomberpac.viewport);
+        Bomberpac.viewport.draw();
+        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 60);
+    }
+    function update(_event) {
         Bomberpac.viewport.draw();
     }
     function initializeGame(data) {

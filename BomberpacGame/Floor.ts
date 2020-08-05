@@ -22,7 +22,7 @@ namespace Bomberpac {
       this.createFloor(this.amountOfObstacles);
       this.createFood(this.amountOfFood);
       this.createItems(this.amountOfItems);
-      console.log(this.data);
+      (this.data);
     }
     private fetchData(): void {
       this.amountOfObstacles = Number(this.data.amountOfObstacles);
@@ -94,7 +94,7 @@ namespace Bomberpac {
           case 7: id = 7;
             break;
         }
-        console.log(i);
+        (i);
         let randomTranslateX: number = getRandomTranslateX();
         let randomTranslateY: number = getRandomTranslateY();
         Pill.generateSprites(spritesheet, sprites[randomNumber]);

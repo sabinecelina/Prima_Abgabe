@@ -10,7 +10,7 @@ namespace Bomberpac {
   export enum DIRECTION {
     LEFT, RIGHT, UP, DOWN
   }
-  export class Collectible extends GameobjectSprite {
+  export class Sprite extends GameobjectSprite {
     public static animations: fAid.SpriteSheetAnimations;
     constructor(_name: string = "Collectible", translateX: number, translateY: number, matrix: number[][]) {
       super(_name, matrix);
@@ -19,7 +19,7 @@ namespace Bomberpac {
     }
     public show(_action: ACTION): void {
       // show only the animation defined for the action
-      this.setAnimation(<ƒAid.SpriteSheetAnimation>Collectible.animations[_action]);
+      this.setAnimation(<ƒAid.SpriteSheetAnimation>Sprite.animations[_action]);
     }
   }
 }

@@ -1,7 +1,7 @@
 namespace Bomberpac {
   import ƒAid = FudgeAid;
 
-  export class Food extends Collectible {
+  export class Food extends Sprite {
     constructor(_name: string = "Food", translateX: number, translateY: number, matrix: number[][]) {
       super(_name, translateX, translateY, matrix);
       matrix[translateX][translateY] = 1;
@@ -18,7 +18,7 @@ namespace Bomberpac {
       this.setAnimation(<ƒAid.SpriteSheetAnimation>Food.animations[_action]);
     }
   }
-  export class Pill extends Collectible {
+  export class Pill extends Sprite {
     private id: number;
     constructor(_name: string, translateX: number, translateY: number, matrix: number[][], id: number) {
       super(_name, translateX, translateY, matrix);

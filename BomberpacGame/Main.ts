@@ -22,12 +22,14 @@ namespace Bomberpac {
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
     import fAid = FudgeAid;
+    export import ƒAid = FudgeAid; 
     load("data.json");
     window.addEventListener("load", init);
     export let viewport: ƒ.Viewport;
     export let gameField: number[][];
     export let musicMuted: boolean = true;
     export let soundMuted: boolean = true;
+    let pacman: Pacman;
     let floor: Floor;
     let game: fCore.Node = new fCore.Node("game");
     export let data: Data;
@@ -37,7 +39,7 @@ namespace Bomberpac {
         document.getElementById("startButton").addEventListener("click", hndLoad);
         document.getElementById("musicButton").addEventListener("click", toggleMusic);
         document.getElementById("soundButton").addEventListener("click", toggleSounds);
-    
+
     }
     async function load(_filename: string): Promise<void> {
         let response: Response = await fetch("data.json");
@@ -58,22 +60,28 @@ namespace Bomberpac {
         fillArray();
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
+        let img: HTMLImageElement = document.querySelector("img");
+        let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", img);
+        Pacman.generateSprites(spritesheet);
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
             case "EASY":
                 toggleData = data.level[0];
-                console.log("easy");
+                ("easy");
                 break;
             case "MIDDLE":
                 toggleData = data.level[1];
-                console.log("middle");
+                ("middle");
                 break;
             case "HARD":
                 toggleData = data.level[2];
-                console.log("hard");
+                ("hard");
                 break;
         }
         initializeGame(toggleData);
+        pacman = new Pacman("PacmanOne", 2, 1, gameField, game);
+        game.appendChild(pacman);
+        ("pacman added");
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
@@ -86,8 +94,12 @@ namespace Bomberpac {
         viewport.initialize("Viewport", game, cmpCamera, canvas);
         ƒ.Debug.log(viewport);
         viewport.draw();
-
+        ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
+        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_GAME, 60);
     }
+    function update(_event: ƒ.Eventƒ): void {
+        viewport.draw();
+      }
     function initializeGame(data: ToggleData) {
         floor = new Floor("Floor", gameField, game, data);
         game.appendChild(floor);

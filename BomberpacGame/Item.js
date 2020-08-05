@@ -2,7 +2,7 @@
 var Bomberpac;
 (function (Bomberpac) {
     var ƒAid = FudgeAid;
-    class Food extends Bomberpac.Collectible {
+    class Food extends Bomberpac.Sprite {
         constructor(_name = "Food", translateX, translateY, matrix) {
             super(_name, translateX, translateY, matrix);
             matrix[translateX][translateY] = 1;
@@ -20,7 +20,7 @@ var Bomberpac;
         }
     }
     Bomberpac.Food = Food;
-    class Pill extends Bomberpac.Collectible {
+    class Pill extends Bomberpac.Sprite {
         constructor(_name, translateX, translateY, matrix, id) {
             super(_name, translateX, translateY, matrix);
             matrix[translateX][translateY] = 2;
