@@ -1,15 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>First Fudge App</title>
-    <script src="../FudgeCore/FudgeCore.js"></script>
-    <script src="Main.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BomberPac</title>
+  <script src="../FudgeCore/FudgeCore.js"></script>
+  <script src="../FudgeAid/FudgeAid.js"></script>
+  <script src="Main.js"></script>
+  <script src="Obstacles.js"></script>
+  <script src="Pacman.js"></script>
+  <script src="Level.js"></script>
+  <script src="Food.js"></script>
+  <script src="PacmanPlayer.js"></script>
+  <script src="Item.js"></script>
+  <script src="Sound.js"></script>
+  <script src="GameManager.js"></script>
+  <script src="Bomb.js"></script>
+  <style>
+    body {
+      background-color: beige;
+      overflow: hidden;
+    }
+
+    canvas {
+      background-color: magenta;
+      margin: auto;
+      display: block;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>First Fudge App</h1>
-    <canvas width="600" height="400"></canvas>
+  <div id="menue">
+    <h1>Bomberpac</h1>
+    <div id="menueButtons">
+      <button id="startButton">Start</button>
+      <button id="musicButton">Musik: aus</button>
+      <button id="soundButton">Sound: aus</button>
+    </div>
+  </div>
+  <div id="gameWrapper">
+    <h1>
+      Atomic BomberPac
+    </h1>
+    <nav>Score : 0</nav>
+    <canvas width="1000" height="700" style="background-color: aliceblue;"></canvas>
+  </div>
+  <img src="Hare.png" style="display: none;" />
+  <img src="Bomb.png" style="display: none;" id="bomb" />
+  <audio id="gameMusic" src="../Sounds/pacman_music.mp3" type="audio/mpeg"></audio>
+  <audio id="pacman_eat" src="../Sounds/pacman_eat.wav" type="audio/wav"></audio>
+  <audio id="pacman_eatfruit" src="../Sounds/pacman_eatfruit.wav" type="audio/wav"></audio>
 </body>
+
 </html>
