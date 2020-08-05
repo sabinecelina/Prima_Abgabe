@@ -29,20 +29,7 @@ namespace Bomberpac {
       Pacman.animations[ACTION.IDLE] = sprite;
       sprite.frames[2].timeScale = 10;
     }
-    private processInput(): void {
-      if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
-        this.act(ACTION.WALK, DIRECTION.LEFT);
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
-        this.act(ACTION.WALK, DIRECTION.RIGHT);
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-        this.act(ACTION.WALK, DIRECTION.UP);
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-        this.act(ACTION.WALK, DIRECTION.DOWN);
-      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
-        this.act(ACTION.EXPLODE);
-      else
-        this.act(ACTION.IDLE);
-    }
+
     public show(_action: ACTION): void {
       // show only the animation defined for the action
       this.setAnimation(<ƒAid.SpriteSheetAnimation>Pacman.animations[_action]);
@@ -51,8 +38,8 @@ namespace Bomberpac {
       let timeFrame: number = ƒ.Loop.timeFrameGame / 1000;
       let distance: ƒ.Vector3 = ƒ.Vector3.SCALE(this.speed, timeFrame);
       this.cmpTransform.local.translate(distance);
-      this.processInput();
       this.eatFood();
+      this.collide();
     }
     public act(_action: ACTION, _direction?: DIRECTION): void {
       let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
@@ -73,10 +60,10 @@ namespace Bomberpac {
             this.speed.x = this.speedMax.x;
             cmpTr = ƒ.Vector3.Z(90 * direction);
           }
-          /*if (this.collide()) {
+          if (this.collide()) {
             this.speed.x = -1;
             cmpTr = oldDirection;
-          }*/
+          }
           this.cmpTransform.local.rotation = cmpTr;
           break;
       }
@@ -85,6 +72,50 @@ namespace Bomberpac {
       this.action = _action;
       this.show(_action);
     }
+    private collide(): boolean {
+      let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
+      let node: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+      let check: boolean = false;
+      for (let obstacle of node) {
+        if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.8)) {
+          check = true;
+          this.speedMax.x = 7; 
+        }
+      }
+      return check;
+    }
+    /*private checkCollision(): boolean {
+      let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
+      let node: fCore.Node[] = game.getChildrenByName("Node")[0].getChildrenByName("food");
+      for (let food of node) {
+        if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.9)) {
+          console.log("attached");
+        }
+      }
+      let cmpTransform: fCore.Vector3 = this.cmpTransform.local.translation;
+      let x: number = cmpTransform.x / scale;
+      let y: number = cmpTransform.y / scale;
+      //console.log(x + ", " + y);^
+      let yMinus: number = Math.floor(y);
+      let yPlus: number = Math.ceil(y);
+      let xMinus: number = Math.floor(x);
+      let xPlus: number = Math.ceil(x);
+      let isCollided: boolean = false;
+      if (matrix[xMinus][yPlus] == 1) {
+        isCollided = true;
+      }
+      if (matrix[xMinus][yMinus] == 1) {
+        isCollided = true;
+      }
+      if (matrix[xPlus][yPlus] == 1) {
+        isCollided = true;
+      }
+      if (matrix[xPlus][yMinus] == 1) {
+        isCollided = true;
+      }
+      return isCollided;
+    }
+    */
     private eatFood(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
       let node: fCore.Node[] = this.game.getChildrenByName("Food")[0].getChildren(); for (let food of node) {

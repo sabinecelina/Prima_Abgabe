@@ -22,7 +22,7 @@ namespace Bomberpac {
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
     import fAid = FudgeAid;
-    export import ƒAid = FudgeAid; 
+    export import ƒAid = FudgeAid;
     load("data.json");
     window.addEventListener("load", init);
     export let viewport: ƒ.Viewport;
@@ -30,6 +30,7 @@ namespace Bomberpac {
     export let musicMuted: boolean = true;
     export let soundMuted: boolean = true;
     let pacman: Pacman;
+    let pacmanTwo: Pacman;
     let floor: Floor;
     let game: fCore.Node = new fCore.Node("game");
     export let data: Data;
@@ -63,6 +64,7 @@ namespace Bomberpac {
         let img: HTMLImageElement = document.querySelector("img");
         let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", img);
         Pacman.generateSprites(spritesheet);
+
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
             case "EASY":
@@ -80,6 +82,9 @@ namespace Bomberpac {
         }
         initializeGame(toggleData);
         pacman = new Pacman("PacmanOne", 2, 1, gameField, game);
+        pacmanTwo = new Pacman("PacmanTwo", 28, 1, gameField, game);
+        pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
+        game.appendChild(pacmanTwo);
         game.appendChild(pacman);
         ("pacman added");
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
@@ -99,9 +104,34 @@ namespace Bomberpac {
     }
     function update(_event: ƒ.Eventƒ): void {
         viewport.draw();
-      }
+        processInput();
+    }
     function initializeGame(data: ToggleData) {
         floor = new Floor("Floor", gameField, game, data);
         game.appendChild(floor);
+    }
+    function processInput(): void {
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+            pacman.act(ACTION.WALK, DIRECTION.LEFT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+            pacman.act(ACTION.WALK, DIRECTION.RIGHT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
+            pacman.act(ACTION.WALK, DIRECTION.UP);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+            pacman.act(ACTION.WALK, DIRECTION.DOWN);
+        else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
+            pacman.act(ACTION.EXPLODE);
+        else
+            pacman.act(ACTION.IDLE);
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.LEFT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.RIGHT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.UP);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.DOWN);
+        else
+            pacmanTwo.act(ACTION.IDLE);
     }
 }

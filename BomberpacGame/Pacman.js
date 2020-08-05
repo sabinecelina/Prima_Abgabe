@@ -12,8 +12,8 @@ var Bomberpac;
                 let timeFrame = ƒ.Loop.timeFrameGame / 1000;
                 let distance = ƒ.Vector3.SCALE(this.speed, timeFrame);
                 this.cmpTransform.local.translate(distance);
-                this.processInput();
                 this.eatFood();
+                this.collide();
             };
             this.nav = document.getElementById("scorePlayerOne");
             this.game = game;
@@ -29,20 +29,6 @@ var Bomberpac;
             sprite.generateByGrid(ƒ.Rectangle.GET(0, 0, 33, 30), 3, ƒ.Vector2.ZERO(), 40, ƒ.ORIGIN2D.CENTER);
             Pacman.animations[Bomberpac.ACTION.IDLE] = sprite;
             sprite.frames[2].timeScale = 10;
-        }
-        processInput() {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
-                this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
-                this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-                this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
-            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
-                this.act(Bomberpac.ACTION.EXPLODE);
-            else
-                this.act(Bomberpac.ACTION.IDLE);
         }
         show(_action) {
             // show only the animation defined for the action
@@ -67,10 +53,10 @@ var Bomberpac;
                         this.speed.x = this.speedMax.x;
                         cmpTr = ƒ.Vector3.Z(90 * direction);
                     }
-                    /*if (this.collide()) {
-                      this.speed.x = -1;
-                      cmpTr = oldDirection;
-                    }*/
+                    if (this.collide()) {
+                        this.speed.x = -1;
+                        cmpTr = oldDirection;
+                    }
                     this.cmpTransform.local.rotation = cmpTr;
                     break;
             }
@@ -79,6 +65,50 @@ var Bomberpac;
             this.action = _action;
             this.show(_action);
         }
+        collide() {
+            let pacmanTranslation = this.mtxLocal.translation;
+            let node = this.game.getChildrenByName("Obstacles")[0].getChildren();
+            let check = false;
+            for (let obstacle of node) {
+                if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.8)) {
+                    check = true;
+                    this.speedMax.x = 7;
+                }
+            }
+            return check;
+        }
+        /*private checkCollision(): boolean {
+          let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
+          let node: fCore.Node[] = game.getChildrenByName("Node")[0].getChildrenByName("food");
+          for (let food of node) {
+            if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.9)) {
+              console.log("attached");
+            }
+          }
+          let cmpTransform: fCore.Vector3 = this.cmpTransform.local.translation;
+          let x: number = cmpTransform.x / scale;
+          let y: number = cmpTransform.y / scale;
+          //console.log(x + ", " + y);^
+          let yMinus: number = Math.floor(y);
+          let yPlus: number = Math.ceil(y);
+          let xMinus: number = Math.floor(x);
+          let xPlus: number = Math.ceil(x);
+          let isCollided: boolean = false;
+          if (matrix[xMinus][yPlus] == 1) {
+            isCollided = true;
+          }
+          if (matrix[xMinus][yMinus] == 1) {
+            isCollided = true;
+          }
+          if (matrix[xPlus][yPlus] == 1) {
+            isCollided = true;
+          }
+          if (matrix[xPlus][yMinus] == 1) {
+            isCollided = true;
+          }
+          return isCollided;
+        }
+        */
         eatFood() {
             let pacmanTranslation = this.mtxLocal.translation;
             let node = this.game.getChildrenByName("Food")[0].getChildren();

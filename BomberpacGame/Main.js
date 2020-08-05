@@ -9,6 +9,7 @@ var Bomberpac;
     Bomberpac.musicMuted = true;
     Bomberpac.soundMuted = true;
     let pacman;
+    let pacmanTwo;
     let floor;
     let game = new Bomberpac.fCore.Node("game");
     let toggleData;
@@ -57,6 +58,9 @@ var Bomberpac;
         }
         initializeGame(toggleData);
         pacman = new Bomberpac.Pacman("PacmanOne", 2, 1, Bomberpac.gameField, game);
+        pacmanTwo = new Bomberpac.Pacman("PacmanTwo", 28, 1, Bomberpac.gameField, game);
+        pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
+        game.appendChild(pacmanTwo);
         game.appendChild(pacman);
         ("pacman added");
         const canvas = document.querySelector("canvas");
@@ -76,10 +80,35 @@ var Bomberpac;
     }
     function update(_event) {
         Bomberpac.viewport.draw();
+        processInput();
     }
     function initializeGame(data) {
         floor = new Bomberpac.Floor("Floor", Bomberpac.gameField, game, data);
         game.appendChild(floor);
+    }
+    function processInput() {
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+            pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+            pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
+            pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+            pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
+        else if (ƒ.Keyboard.isPressedCombo([Bomberpac.fCore.KEYBOARD_CODE.SPACE]))
+            pacman.act(Bomberpac.ACTION.EXPLODE);
+        else
+            pacman.act(Bomberpac.ACTION.IDLE);
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
+            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
+            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
+            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
+            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
+        else
+            pacmanTwo.act(Bomberpac.ACTION.IDLE);
     }
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Main.js.map
