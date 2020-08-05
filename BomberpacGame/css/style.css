@@ -1,0 +1,85 @@
+* {
+    font-family: 'Arial', sans-serif;
+}
+
+p {
+    color: white;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+em {
+    color: white;
+}
+
+body {
+    background-color: midnightblue;
+    color: white;
+    /* font-family: 'Comfortaa', cursive; */
+}
+
+h1 {
+    font-size: 4em;
+    color: yellow;
+    /* text-align: center; */
+}
+
+#scorePlayerOne {
+    padding-left: 7.5rem;
+    display: inline;
+}
+
+#scorePlayerTwo {
+    display: inline;
+    padding-left: 43rem;
+}
+
+#menue {
+    margin: auto;
+    text-align: center;
+}
+
+button {
+    display: block;
+    text-align: center;
+    width: 20%;
+    height: 10%;
+    margin: 1em;
+    padding: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: yellow;
+    border: none;
+    color: black;
+    font-size: 1em;
+    transition-duration: 0.2s;
+}
+
+button:hover {
+    background-color: black;
+    color: yellow;
+}
+
+img {
+    display: none;
+}
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#stats {
+    margin: auto;
+    /* width: 50%; */
+    background-color: rgba(0, 0, 255, 0.224);
+}
+
+#endScreen {
+    margin: auto;
+    text-align: center;
+    padding-top: 10%;
+}
