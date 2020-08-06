@@ -3,11 +3,16 @@ var Bomberpac;
 (function (Bomberpac) {
     var fCore = FudgeCore;
     class Pacman extends Bomberpac.Sprite {
+        /*private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
+        private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
+        private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));*/
         constructor(_name = "Pacman", translateX, translateY, gameField, game, data) {
             super(_name, translateX, translateY, gameField);
             this.speed = fCore.Vector3.ZERO();
             this.score = 0;
-            this.keyBoardCheckTwo = false;
+            this.img = document.querySelector("img");
+            this.spritesheet = Bomberpac.ƒAid.createSpriteSheet("Pacman", this.img);
+            this.colorBlack = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("BLACK")));
             this.update = (_event) => {
                 let timeFrame = ƒ.Loop.timeFrameGame / 1000;
                 let distance = ƒ.Vector3.SCALE(this.speed, timeFrame);
@@ -16,8 +21,6 @@ var Bomberpac;
                 this.collide();
                 this.eatItem();
             };
-            this.nav = document.getElementById("scorePlayerOne");
-            this.navPlayerTwo = document.getElementById("scorePlayerTwo");
             this.game = game;
             this.data = data;
             this.gameField = gameField;
@@ -47,7 +50,6 @@ var Bomberpac;
             switch (_action) {
                 case Bomberpac.ACTION.IDLE:
                     this.speed.x = 0;
-                    this.speed.y = 0;
                     break;
                 case Bomberpac.ACTION.WALK:
                     if (_direction == 0 || _direction == 1) {
@@ -132,6 +134,10 @@ var Bomberpac;
                 }
             }
         }
+        levelUp() {
+            if (this.score < 10)
+                Pacman.speedMax.x++;
+        }
         eatItem() {
             let pacmanTranslation = this.mtxLocal.translation;
             let node = this.game.getChildrenByName("Items")[0].getChildren();
@@ -168,62 +174,79 @@ var Bomberpac;
                         case 5:
                         case 6:
                         case 7:
-                            let timer4 = new fCore.Timer(ƒ.Time.game, 10000, 1000, this.eatFirstItem);
-                            console.log("blablabla");
-                            this.keyBoardCheckTwo = true;
-                            Pacman.keyBoardCheck = true;
-                            console.log(Pacman.keyBoardCheck);
-                            break;
                         /*
-                      case 3:
-                        console.log("three");
+                        let timerFour: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
+                        let floor: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+                        for (let obstacles of floor) {
+                          if (timerFour) {
+                            console.log("bye");
+                            let material: fCore.ComponentMaterial = obstacles.getComponent(fCore.ComponentMaterial);
+                            obstacles.removeComponent(material);
+                            let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(this.colorBlack);
+                            obstacles.addComponent(cmpMaterial);
+                          } else if (!timerFour) {
+                            console.log("hello");
+                            let material: fCore.ComponentMaterial = obstacles.getComponent(fCore.ComponentMaterial);
+                            obstacles.removeComponent(material);
+                            let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(Pacman.color);
+                            obstacles.addComponent(cmpMaterial);
+                          }
+                        };
                         break;
-                      case 4:
-                        console.log("four");
-                        break;
-                      case 5:
-                        console.log("five");
-                        break;
-                      case 6:
-                        console.log("six");
-                        break;
-                      case 7:
-                        console.log("seven");
-                        break;
-                      case 8:
-                        let canvas: HTMLCanvasElement = document.querySelector("canvas");
-                        let img: HTMLImageElement = document.querySelector("img");
-                        let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
-                        Pacman.generateSprites(spritesheet);
-                        for (let i: number = 0; i < 5; i++) {
-                          let randomTranslateX: number = Level.randomInteger(2, 27);
-                          let randomTranslateY: number = Level.randomInteger(2, 19);
-                          let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
-                          game.appendChild(hare);
-                        }
-                        let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
-                        matrix[_currentTranslation.x][_currentTranslation.y] = 0;
-                        let randomTranslateX: number = Level.randomInteger(1, 28);
-                        let randomTranslateY: number = Level.randomInteger(1, 19);
-                        matrix[randomTranslateX][randomTranslateY] = 1;
-                        item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-                        this.period++;
-                        console.log(game);
-                        break;
-                        break;*/
+                      /*
+                    case 8:
+                      let canvas: HTMLCanvasElement = document.querySelector("canvas");
+                      let img: HTMLImageElement = document.querySelector("img");
+                      let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
+                      Pacman.generateSprites(spritesheet);
+                      for (let i: number = 0; i < 5; i++) {
+                        let randomTranslateX: number = Level.randomInteger(2, 27);
+                        let randomTranslateY: number = Level.randomInteger(2, 19);
+                        let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
+                        game.appendChild(hare);
+                      }
+                      let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
+                      matrix[_currentTranslation.x][_currentTranslation.y] = 0;
+                      let randomTranslateX: number = Level.randomInteger(1, 28);
+                      let randomTranslateY: number = Level.randomInteger(1, 19);
+                      matrix[randomTranslateX][randomTranslateY] = 1;
+                      item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+                      this.period++;
+                      console.log(game);
+                      break;
+                      break;*/
                     }
+                }
+            }
+        }
+        createBomb() {
+            let bomb;
+            Bomberpac.Bomb.generateSprites(this.spritesheet);
+            for (let i = 0; i < 1; i++) {
+                let randomTranslateX = Bomberpac.getRandomTranslateX();
+                let randomTranslateY = Bomberpac.getRandomTranslateY();
+                if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+                    bomb = new Bomberpac.Bomb("bomb", 1, 1, this.gameField);
+                    this.game.appendChild(bomb);
                 }
             }
         }
         eatFirstItem() {
             console.log("something happened");
             Pacman.speedMax.x = 3;
-            Pacman.keyBoardCheck = false;
-            //console.log(this.speed.x);
+            /*let floor: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+            for (let obstacles of floor) {
+              console.log("hello");
+              let material: fCore.ComponentMaterial = obstacles.getComponent(fCore.ComponentMaterial);
+              obstacles.removeComponent(material);
+              let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(Pacman.color);
+              obstacles.addComponent(cmpMaterial);
+            }*/
         }
     }
     Pacman.speedMax = new ƒ.Vector3(3, 3, 3); // units per second
-    Pacman.keyBoardCheck = false;
+    //private arrayMaterial: fCore.Material[] = new fCore.Material[];
+    Pacman.color = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
     Bomberpac.Pacman = Pacman;
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Pacman.js.map

@@ -19,7 +19,7 @@ namespace Bomberpac {
         amountOfFood: string,
         amountOfItems: string
     }
-    let pacmans: Pacman[];
+    let pacmans: fCore.Node[];
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
     import fAid = FudgeAid;
@@ -32,9 +32,10 @@ namespace Bomberpac {
     export let soundMuted: boolean = true;
     export let nav: HTMLElement;
     export let navPlayerTwo: HTMLElement;
-    let pacman: Pacman;
-    let pacmanTwo: Pacman;
+    let pacman: PacmanPlayerOne;
+    let pacmanTwo: PacmanPlayerTwo;
     let floor: Floor;
+    export let keyBoard: boolean = false;
     let game: fCore.Node = new fCore.Node("game");
     export let data: Data;
     let toggleData: ToggleData;
@@ -69,7 +70,7 @@ namespace Bomberpac {
         let img: HTMLImageElement = document.querySelector("img");
         let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", img);
         Pacman.generateSprites(spritesheet);
-
+        PacmanPlayerTwo.generateSprites(spritesheet);
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
             case "EASY":
@@ -86,8 +87,8 @@ namespace Bomberpac {
                 break;
         }
         initializeGame(toggleData);
-        pacman = new Pacman("PacmanOne", 2, 1, gameField, game, toggleData);
-        pacmanTwo = new Pacman("PacmanTwo", 28, 1, gameField, game, toggleData);
+        pacman = new PacmanPlayerOne("PacmanOne", 2, 1, gameField, game, toggleData);
+        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 28, 1, gameField, game, toggleData);
         pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
         game.appendChild(pacmanTwo);
         game.appendChild(pacman);
@@ -116,65 +117,19 @@ namespace Bomberpac {
         game.appendChild(floor);
     }
     function reloadMap() {
-        /*let node: fCore.Node[] = game.getChildren();
+        let node: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
+        let node2: fCore.Node = game.getChildrenByName("Obstacles")[0];
+        let translation: fCore.Vector3;
+        console.log(node);
+        //let node: fCore.Node[] = game.getChildren();
         for (let obstacles of node) {
-            game.removeChild(obstacles);
-            initializeGame(toggleData);
-        }*/
+            translation = obstacles.mtxLocal.translation;
+            gameField[translation.x][translation.y] == 0;
+            node2.removeChild(obstacles);
+        }
+        initializeGame(toggleData);
     }
     function processInput(): void {
-        if (!pacman.keyBoardCheck) {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-                pacman.act(ACTION.WALK, DIRECTION.LEFT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-                pacman.act(ACTION.WALK, DIRECTION.RIGHT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-                pacman.act(ACTION.WALK, DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                pacman.act(ACTION.WALK, DIRECTION.DOWN);
-            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
-                pacman.act(ACTION.EXPLODE);
-            else
-                pacman.act(ACTION.IDLE);
-        } else if (pacman.keyBoardCheck) {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-                pacman.act(ACTION.WALK, DIRECTION.RIGHT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-                pacman.act(ACTION.WALK, DIRECTION.LEFT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-                pacman.act(ACTION.WALK, DIRECTION.DOWN);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                pacman.act(ACTION.WALK, DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
-                pacman.act(ACTION.EXPLODE);
-            else
-                pacman.act(ACTION.IDLE);
-        }
-    } if (!pacmanTwo.keyBoardCheck) {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.RIGHT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.LEFT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.DOWN);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.UP);
-        else
-            pacmanTwo.act(ACTION.IDLE);
-    } else {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.LEFT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.RIGHT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.UP);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
-            pacmanTwo.act(ACTION.WALK, DIRECTION.DOWN);
-        else
-            pacmanTwo.act(ACTION.IDLE);
+
     }
 }

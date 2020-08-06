@@ -3,8 +3,6 @@ namespace Bomberpac {
   import fAid = FudgeAid;
 
   export class Pacman extends Sprite {
-    private nav: HTMLElement;
-    private navPlayerTwo: HTMLElement;
     private speed: fCore.Vector3 = fCore.Vector3.ZERO();
     private static speedMax: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
     public action: ACTION;
@@ -12,14 +10,19 @@ namespace Bomberpac {
     private game: fCore.Node;
     private nextLevel: number;
     private data: ToggleData;
-    public static keyBoardCheck: boolean = false;
-    private keyBoardCheckTwo: boolean = false;
     private amountOfBombs: number;
     private gameField: number[][];
+    private img: HTMLImageElement = document.querySelector("img");
+    private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", this.img);
+    //private arrayMaterial: fCore.Material[] = new fCore.Material[];
+    private static color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
+    private colorBlack: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("BLACK")));
+    /*private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
+    private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
+    private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));*/
+
     constructor(_name: string = "Pacman", translateX: number, translateY: number, gameField: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gameField);
-      this.nav = document.getElementById("scorePlayerOne");
-      this.navPlayerTwo = document.getElementById("scorePlayerTwo");
       this.game = game;
       this.data = data;
       this.gameField = gameField;
@@ -60,7 +63,6 @@ namespace Bomberpac {
       switch (_action) {
         case ACTION.IDLE:
           this.speed.x = 0;
-          this.speed.y = 0;
           break;
         case ACTION.WALK:
           if (_direction == 0 || _direction == 1) {
@@ -143,6 +145,10 @@ namespace Bomberpac {
         }
       }
     }
+    private levelUp(): void {
+      if (this.score < 10)
+        Pacman.speedMax.x++;
+    }
     private eatItem(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
       let node: fCore.Node[] = this.game.getChildrenByName("Items")[0].getChildren();
@@ -179,28 +185,26 @@ namespace Bomberpac {
             case 5:
             case 6:
             case 7:
-              let timer4 = new fCore.Timer(ƒ.Time.game, 10000, 1000, this.eatFirstItem);
-              console.log("blablabla");
-              this.keyBoardCheckTwo = true;
-              Pacman.keyBoardCheck = true;
-              console.log(Pacman.keyBoardCheck);
+              /*
+              let timerFour: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
+              let floor: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+              for (let obstacles of floor) {
+                if (timerFour) {
+                  console.log("bye");
+                  let material: fCore.ComponentMaterial = obstacles.getComponent(fCore.ComponentMaterial);
+                  obstacles.removeComponent(material);
+                  let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(this.colorBlack);
+                  obstacles.addComponent(cmpMaterial);
+                } else if (!timerFour) {
+                  console.log("hello");
+                  let material: fCore.ComponentMaterial = obstacles.getComponent(fCore.ComponentMaterial);
+                  obstacles.removeComponent(material);
+                  let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(Pacman.color);
+                  obstacles.addComponent(cmpMaterial);
+                }
+              };
               break;
             /*
-          case 3:
-            console.log("three");
-            break;
-          case 4:
-            console.log("four");
-            break;
-          case 5:
-            console.log("five");
-            break;
-          case 6:
-            console.log("six");
-            break;
-          case 7:
-            console.log("seven");
-            break;
           case 8:
             let canvas: HTMLCanvasElement = document.querySelector("canvas");
             let img: HTMLImageElement = document.querySelector("img");
@@ -226,11 +230,30 @@ namespace Bomberpac {
         }
       }
     }
+    private createBomb(): void {
+      let bomb: Bomb;
+      Bomb.generateSprites(this.spritesheet);
+      for (let i: number = 0; i < 1; i++) {
+        let randomTranslateX: number = getRandomTranslateX();
+        let randomTranslateY: number = getRandomTranslateY();
+        if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+          bomb = new Bomb("bomb", 1, 1, this.gameField);
+          this.game.appendChild(bomb);
+        }
+      }
+    }
     private eatFirstItem(): void {
       console.log("something happened");
       Pacman.speedMax.x = 3;
-      Pacman.keyBoardCheck = false;
-      //console.log(this.speed.x);
+      /*let floor: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+      for (let obstacles of floor) {
+        console.log("hello");
+        let material: fCore.ComponentMaterial = obstacles.getComponent(fCore.ComponentMaterial);
+        obstacles.removeComponent(material);
+        let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(Pacman.color);
+        obstacles.addComponent(cmpMaterial);
+      }*/
     }
+    //console.log(this.speed.x);
   }
 }
