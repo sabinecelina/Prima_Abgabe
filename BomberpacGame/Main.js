@@ -96,23 +96,6 @@ var Bomberpac;
         game.appendChild(floor);
     }
     function reloadMap() {
-        /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
-        let obstacles: fCore.Node = game.getChildrenByName("Obstacles")[0];
-        console.log(obstacles);
-        let translation: fCore.Vector3;
-        let items: fCore.Node[] = game.getChildrenByName("Items")[0].getChildren();
-        //let node: fCore.Node[] = game.getChildren();
-        /*for (let item of items) {
-            translation = item.mtxLocal.translation;
-            gameField[translation.x][translation.y] == 0;
-            game.removeChild(item);
-        }
-        for (let node of obstacle) {
-            translation = node.mtxLocal.translation;
-            gameField[translation.x][translation.y] == 0;
-            obstacles.removeChild(obstacles);
-        }
-        initializeGame(toggleData); */
     }
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Main.js.map

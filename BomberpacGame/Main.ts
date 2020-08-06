@@ -19,6 +19,10 @@ namespace Bomberpac {
         amountOfFood: string,
         amountOfItems: string
     }
+<<<<<<< HEAD
+=======
+    let pacmans: fCore.Node[];
+>>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
     import fAid = FudgeAid;
@@ -32,7 +36,10 @@ namespace Bomberpac {
     export let nav: HTMLElement;
     export let navPlayerTwo: HTMLElement;
     let pacman: PacmanPlayerOne;
+<<<<<<< HEAD
     let enemy: Enemy;
+=======
+>>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
     let pacmanTwo: PacmanPlayerTwo;
     let floor: Floor;
     export let keyBoard: boolean = false;
@@ -70,7 +77,10 @@ namespace Bomberpac {
         let img: HTMLImageElement = document.querySelector("img");
         let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", img);
         PacmanPlayerTwo.generateSprites(spritesheet);
+<<<<<<< HEAD
         Enemy.generateSprites(spritesheet);
+=======
+>>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
             case "EASY":
@@ -89,10 +99,13 @@ namespace Bomberpac {
         initializeGame(toggleData);
         pacman = new PacmanPlayerOne("PacmanOne", 2, 1, gameField, game, toggleData);
         pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 28, 1, gameField, game, toggleData);
+<<<<<<< HEAD
         for (let i: number = 0; i < 5; i++) {
             enemy = new Enemy("Enemy", gameField, game);
             game.appendChild(enemy);
         }
+=======
+>>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
         pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
         game.appendChild(pacmanTwo);
         game.appendChild(pacman);
@@ -120,6 +133,7 @@ namespace Bomberpac {
         game.appendChild(floor);
     }
     function reloadMap() {
+<<<<<<< HEAD
         /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
         let obstacles: fCore.Node = game.getChildrenByName("Obstacles")[0];
         console.log(obstacles);
@@ -137,5 +151,21 @@ namespace Bomberpac {
             obstacles.removeChild(obstacles);
         }
         initializeGame(toggleData); */
+=======
+        let node: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
+        let node2: fCore.Node = game.getChildrenByName("Obstacles")[0];
+        let translation: fCore.Vector3;
+        console.log(node);
+        //let node: fCore.Node[] = game.getChildren();
+        for (let obstacles of node) {
+            translation = obstacles.mtxLocal.translation;
+            gameField[translation.x][translation.y] == 0;
+            node2.removeChild(obstacles);
+        }
+        initializeGame(toggleData);
+    }
+    function processInput(): void {
+
+>>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
     }
 }
