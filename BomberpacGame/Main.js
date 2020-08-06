@@ -1,7 +1,6 @@
 "use strict";
 var Bomberpac;
 (function (Bomberpac) {
-    let pacmans;
     var ƒ = FudgeCore;
     Bomberpac.fCore = FudgeCore;
     Bomberpac.ƒAid = FudgeAid;
@@ -10,8 +9,10 @@ var Bomberpac;
     Bomberpac.musicMuted = true;
     Bomberpac.soundMuted = true;
     let pacman;
+    let enemy;
     let pacmanTwo;
     let floor;
+    Bomberpac.keyBoard = false;
     let game = new Bomberpac.fCore.Node("game");
     let toggleData;
     function init(_event) {
@@ -44,7 +45,8 @@ var Bomberpac;
         document.getElementById("gameWrapper").style.display = "initial";
         let img = document.querySelector("img");
         let spritesheet = Bomberpac.ƒAid.createSpriteSheet("Spritesheet", img);
-        Bomberpac.Pacman.generateSprites(spritesheet);
+        Bomberpac.PacmanPlayerTwo.generateSprites(spritesheet);
+        Bomberpac.Enemy.generateSprites(spritesheet);
         let value = document.getElementById('level').value;
         switch (value) {
             case "EASY":
@@ -61,8 +63,12 @@ var Bomberpac;
                 break;
         }
         initializeGame(toggleData);
-        pacman = new Bomberpac.Pacman("PacmanOne", 2, 1, Bomberpac.gameField, game, toggleData);
-        pacmanTwo = new Bomberpac.Pacman("PacmanTwo", 28, 1, Bomberpac.gameField, game, toggleData);
+        pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 2, 1, Bomberpac.gameField, game, toggleData);
+        pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 28, 1, Bomberpac.gameField, game, toggleData);
+        for (let i = 0; i < 5; i++) {
+            enemy = new Bomberpac.Enemy("Enemy", Bomberpac.gameField, game);
+            game.appendChild(enemy);
+        }
         pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
         game.appendChild(pacmanTwo);
         game.appendChild(pacman);
@@ -84,76 +90,29 @@ var Bomberpac;
     }
     function update(_event) {
         Bomberpac.viewport.draw();
-        processInput();
     }
     function initializeGame(data) {
         floor = new Bomberpac.Floor("Floor", Bomberpac.gameField, game, data);
         game.appendChild(floor);
     }
     function reloadMap() {
-        /*let node: fCore.Node[] = game.getChildren();
-        for (let obstacles of node) {
-            game.removeChild(obstacles);
-            initializeGame(toggleData);
-        }*/
-    }
-    function processInput() {
-        if (!pacman.keyBoardCheck) {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
-            else if (ƒ.Keyboard.isPressedCombo([Bomberpac.fCore.KEYBOARD_CODE.SPACE]))
-                pacman.act(Bomberpac.ACTION.EXPLODE);
-            else
-                pacman.act(Bomberpac.ACTION.IDLE);
+        /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
+        let obstacles: fCore.Node = game.getChildrenByName("Obstacles")[0];
+        console.log(obstacles);
+        let translation: fCore.Vector3;
+        let items: fCore.Node[] = game.getChildrenByName("Items")[0].getChildren();
+        //let node: fCore.Node[] = game.getChildren();
+        /*for (let item of items) {
+            translation = item.mtxLocal.translation;
+            gameField[translation.x][translation.y] == 0;
+            game.removeChild(item);
         }
-        else if (pacman.keyBoardCheck) {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-            }
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-                pacman.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([Bomberpac.fCore.KEYBOARD_CODE.SPACE]))
-                pacman.act(Bomberpac.ACTION.EXPLODE);
-            else
-                pacman.act(Bomberpac.ACTION.IDLE);
+        for (let node of obstacle) {
+            translation = node.mtxLocal.translation;
+            gameField[translation.x][translation.y] == 0;
+            obstacles.removeChild(obstacles);
         }
-    }
-    if (!pacmanTwo.keyBoardCheck) {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-        else
-            pacmanTwo.act(Bomberpac.ACTION.IDLE);
-    }
-    else {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
-            pacmanTwo.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
-        else
-            pacmanTwo.act(Bomberpac.ACTION.IDLE);
+        initializeGame(toggleData); */
     }
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Main.js.map

@@ -12,6 +12,7 @@ namespace Bomberpac {
   }
   export class Sprite extends GameobjectSprite {
     public static animations: fAid.SpriteSheetAnimations;
+    public action: ACTION;
     constructor(_name: string = "Collectible", translateX: number, translateY: number, matrix: number[][]) {
       super(_name, matrix);
       this.addComponent(new ƒ.ComponentTransform(ƒ.Matrix4x4.TRANSLATION(new ƒ.Vector3(translateX, translateY, 0))));

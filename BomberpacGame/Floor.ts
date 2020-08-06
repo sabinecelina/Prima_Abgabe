@@ -45,7 +45,7 @@ namespace Bomberpac {
       while (this.obstacles.getChildrenByName("obstacles").length < _amountOfObstacles) {
         let randomTranslateX: number = getRandomTranslateX();
         let randomTranslateY: number = getRandomTranslateX();
-        if ((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1))) {
+        if (((randomTranslateX == 10 && randomTranslateY == 10) || randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1))) {
         } else {
           let obstacles = new Obstacle("obstacles", gameField, randomTranslateX, randomTranslateY, this.scale, Floor.mesh, this.color);
           this.obstacles.appendChild(obstacles);
