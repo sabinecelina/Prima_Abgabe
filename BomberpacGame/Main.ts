@@ -19,6 +19,7 @@ namespace Bomberpac {
         amountOfFood: string,
         amountOfItems: string
     }
+    let pacmans: Pacman[];
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
     import fAid = FudgeAid;
@@ -85,8 +86,8 @@ namespace Bomberpac {
                 break;
         }
         initializeGame(toggleData);
-        pacman = new Pacman("PacmanOne", 2, 1, gameField, game);
-        pacmanTwo = new Pacman("PacmanTwo", 28, 1, gameField, game);
+        pacman = new Pacman("PacmanOne", 2, 1, gameField, game, toggleData);
+        pacmanTwo = new Pacman("PacmanTwo", 28, 1, gameField, game, toggleData);
         pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
         game.appendChild(pacmanTwo);
         game.appendChild(pacman);
@@ -122,20 +123,49 @@ namespace Bomberpac {
         }*/
     }
     function processInput(): void {
-        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
-            pacman.act(ACTION.WALK, DIRECTION.LEFT);
+        if (!pacman.keyBoardCheck) {
+            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+                pacman.act(ACTION.WALK, DIRECTION.LEFT);
+            }
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+                pacman.act(ACTION.WALK, DIRECTION.RIGHT);
+            }
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
+                pacman.act(ACTION.WALK, DIRECTION.UP);
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+                pacman.act(ACTION.WALK, DIRECTION.DOWN);
+            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
+                pacman.act(ACTION.EXPLODE);
+            else
+                pacman.act(ACTION.IDLE);
+        } else if (pacman.keyBoardCheck) {
+            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT])) {
+                pacman.act(ACTION.WALK, DIRECTION.RIGHT);
+            }
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
+                pacman.act(ACTION.WALK, DIRECTION.LEFT);
+            }
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
+                pacman.act(ACTION.WALK, DIRECTION.DOWN);
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+                pacman.act(ACTION.WALK, DIRECTION.UP);
+            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
+                pacman.act(ACTION.EXPLODE);
+            else
+                pacman.act(ACTION.IDLE);
         }
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT])) {
-            pacman.act(ACTION.WALK, DIRECTION.RIGHT);
-        }
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
-            pacman.act(ACTION.WALK, DIRECTION.UP);
-        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
-            pacman.act(ACTION.WALK, DIRECTION.DOWN);
-        else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
-            pacman.act(ACTION.EXPLODE);
+    } if (!pacmanTwo.keyBoardCheck) {
+        if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.RIGHT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.LEFT);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.DOWN);
+        else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
+            pacmanTwo.act(ACTION.WALK, DIRECTION.UP);
         else
-            pacman.act(ACTION.IDLE);
+            pacmanTwo.act(ACTION.IDLE);
+    } else {
         if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
             pacmanTwo.act(ACTION.WALK, DIRECTION.LEFT);
         else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))

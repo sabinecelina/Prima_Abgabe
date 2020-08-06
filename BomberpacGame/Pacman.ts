@@ -6,19 +6,29 @@ namespace Bomberpac {
     private nav: HTMLElement;
     private navPlayerTwo: HTMLElement;
     private speed: fCore.Vector3 = fCore.Vector3.ZERO();
-    private speedMax: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
+    private static speedMax: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
     public action: ACTION;
     private score: number = 0;
     private game: fCore.Node;
     private nextLevel: number;
+    private data: ToggleData;
+    public static keyBoardCheck: boolean = false;
+    private keyBoardCheckTwo: boolean = false;
+    private amountOfBombs: number;
     private gameField: number[][];
-    constructor(_name: string = "Pacman", translateX: number, translateY: number, gameField: number[][], game: fCore.Node) {
+    constructor(_name: string = "Pacman", translateX: number, translateY: number, gameField: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gameField);
       this.nav = document.getElementById("scorePlayerOne");
       this.navPlayerTwo = document.getElementById("scorePlayerTwo");
       this.game = game;
+      this.data = data;
       this.gameField = gameField;
+      this.fetchData();
       ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
+    }
+    private fetchData() {
+      this.amountOfBombs = Number(this.data.amountOfBombs);
+
     }
     public static generateSprites(_spritesheet: ƒ.CoatTextured): void {
       Pacman.animations = {};
@@ -55,12 +65,12 @@ namespace Bomberpac {
         case ACTION.WALK:
           if (_direction == 0 || _direction == 1) {
             let direction: number = (_direction == DIRECTION.RIGHT ? 1 : -1);
-            this.speed.x = this.speedMax.x; // * direction;
+            this.speed.x = Pacman.speedMax.x; // * direction;
             cmpTr = ƒ.Vector3.Y(90 - 90 * direction);
           }
           else if (_direction == 2 || _direction == 3) {
             let direction: number = (_direction == DIRECTION.UP ? 1 : -1);
-            this.speed.x = this.speedMax.x;
+            this.speed.x = Pacman.speedMax.x;
             cmpTr = ƒ.Vector3.Z(90 * direction);
           }
           if (this.collide()) {
@@ -80,9 +90,8 @@ namespace Bomberpac {
       let node: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
       let check: boolean = false;
       for (let obstacle of node) {
-        if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.8)) {
+        if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.9)) {
           check = true;
-          this.speedMax.x = 7;
         }
       }
       return check;
@@ -129,7 +138,7 @@ namespace Bomberpac {
           let randomTranslateY: number = getRandomTranslateY();
           this.gameField[randomTranslateX][randomTranslateY] = 1;
           food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0); this.score++;
-          console.log(this.score);
+          this.score++;
           Sound.play("pacman_eat");
         }
       }
@@ -141,64 +150,87 @@ namespace Bomberpac {
         let rect: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
           console.log("eat");
+          let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
+          this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
+          let randomTranslateX: number = getRandomTranslateX();
+          let randomTranslateY: number = getRandomTranslateY();
+          this.gameField[randomTranslateX][randomTranslateY] = 1;
+          item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+          this.score++;
+          Sound.play("pacman_eatfruit");
           switch (rect) {
             case 1:
+              let oldSpeed: fCore.Vector3 = Pacman.speedMax.copy;
+              console.log(oldSpeed);
+              let timer: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
+              console.log(timer.active);
+              Pacman.speedMax.x = 10;
+              break;
             case 2:
+              let randomTranslateX: number = getRandomTranslateX();
+              let randomTranslateY: number = getRandomTranslateY()
+              if (!(this.gameField[randomTranslateX][randomTranslateY] == 1))
+                this.mtxLocal.translation = new fCore.Vector3(getRandomTranslateX(), getRandomTranslateY(), 0);
+              break;
             case 3:
+              this.amountOfBombs++;
+              console.log(this.amountOfBombs);
             case 4:
             case 5:
             case 6:
             case 7:
-              let thisScore: number = this.score;
-              console.log(thisScore);
-              for (let i: number = 0; i < 10; i++) {
-                console.log(i);
-                fCore.ga
-              }
-            //if (this.score == 10) {
-            //}
-            /*case 2:
-              console.log("two");
+              let timer4 = new fCore.Timer(ƒ.Time.game, 10000, 1000, this.eatFirstItem);
+              console.log("blablabla");
+              this.keyBoardCheckTwo = true;
+              Pacman.keyBoardCheck = true;
+              console.log(Pacman.keyBoardCheck);
               break;
-            case 3:
-              console.log("three");
-              break;
-            case 4:
-              console.log("four");
-              break;
-            case 5:
-              console.log("five");
-              break;
-            case 6:
-              console.log("six");
-              break;
-            case 7:
-              console.log("seven");
-              break;
-            case 8:
-              let canvas: HTMLCanvasElement = document.querySelector("canvas");
-              let img: HTMLImageElement = document.querySelector("img");
-              let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
-              Pacman.generateSprites(spritesheet);
-              for (let i: number = 0; i < 5; i++) {
-                let randomTranslateX: number = Level.randomInteger(2, 27);
-                let randomTranslateY: number = Level.randomInteger(2, 19);
-                let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
-                game.appendChild(hare);
-              }
-              let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
-              matrix[_currentTranslation.x][_currentTranslation.y] = 0;
-              let randomTranslateX: number = Level.randomInteger(1, 28);
-              let randomTranslateY: number = Level.randomInteger(1, 19);
-              matrix[randomTranslateX][randomTranslateY] = 1;
-              item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-              this.period++;
-              console.log(game);
-              break;
-              break;*/
+            /*
+          case 3:
+            console.log("three");
+            break;
+          case 4:
+            console.log("four");
+            break;
+          case 5:
+            console.log("five");
+            break;
+          case 6:
+            console.log("six");
+            break;
+          case 7:
+            console.log("seven");
+            break;
+          case 8:
+            let canvas: HTMLCanvasElement = document.querySelector("canvas");
+            let img: HTMLImageElement = document.querySelector("img");
+            let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
+            Pacman.generateSprites(spritesheet);
+            for (let i: number = 0; i < 5; i++) {
+              let randomTranslateX: number = Level.randomInteger(2, 27);
+              let randomTranslateY: number = Level.randomInteger(2, 19);
+              let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
+              game.appendChild(hare);
+            }
+            let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
+            matrix[_currentTranslation.x][_currentTranslation.y] = 0;
+            let randomTranslateX: number = Level.randomInteger(1, 28);
+            let randomTranslateY: number = Level.randomInteger(1, 19);
+            matrix[randomTranslateX][randomTranslateY] = 1;
+            item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+            this.period++;
+            console.log(game);
+            break;
+            break;*/
           }
         }
       }
+    }
+    private eatFirstItem(): void {
+      console.log("something happened");
+      Pacman.speedMax.x = 3;
+      Pacman.keyBoardCheck = false;
+      //console.log(this.speed.x);
     }
   }
 }

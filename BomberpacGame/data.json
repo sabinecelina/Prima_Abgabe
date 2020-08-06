@@ -4,7 +4,7 @@
             "lives": "3",
             "amountOfObstacles": "200",
             "amountOfFood": "250",
-            "amountOfItems": "50"
+            "amountOfItems": "100"
         },
         {
             "amountOfBombs": "3",
