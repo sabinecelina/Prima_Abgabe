@@ -7,18 +7,54 @@ namespace Bomberpac {
     public static speedMax: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
     public action: ACTION;
     private score: number = 0;
-    private game: fCore.Node;
+    public game: fCore.Node;
     private nextLevel: number;
     private data: ToggleData;
     private amountOfBombs: number;
-    private gameField: number[][];
+    public gameField: number[][];
     private static color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
 
     constructor(_name: string, translateX: number, translateY: number, gameField: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gameField);
       this.game = game;
+      this.gameField = gameField;
       this.data = data;
       this.fetchData();
+    }
+    /*private checkCollision(): boolean {
+      let cmpTransform: fCore.Vector3 = this.cmpTransform.local.translation;
+      let x: number = cmpTransform.x / scale;
+      let y: number = cmpTransform.y / scale;
+      //console.log(x + ", " + y);^
+      let yMinus: number = Math.floor(y);
+      let yPlus: number = Math.ceil(y);
+      let xMinus: number = Math.floor(x);
+      let xPlus: number = Math.ceil(x);
+      let isCollided: boolean = false;
+      if (matrix[xMinus][yPlus] == 1) {
+        isCollided = true;
+      }
+      if (matrix[xMinus][yMinus] == 1) {
+        isCollided = true;
+      }
+      if (matrix[xPlus][yPlus] == 1) {
+        isCollided = true;
+      }
+      if (matrix[xPlus][yMinus] == 1) {
+        isCollided = true;
+      }
+      return isCollided;
+    }*/
+    public collide(): boolean {
+      let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
+      let node: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+      let check: boolean = false;
+      for (let obstacle of node) {
+        if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.9)) {
+          check = true;
+        }
+      }
+      return check;
     }
     private fetchData() {
       this.amountOfBombs = Number(this.data.amountOfBombs);
@@ -36,9 +72,29 @@ namespace Bomberpac {
     }
     public show(_action: ACTION): void {
       // show only the animation defined for the action
-      this.setAnimation(<ƒAid.SpriteSheetAnimation>Pacman.animations[_action]);
+      this.setAnimation(<ƒAid.SpriteSheetAnimation>Man.animations[_action]);
     }
-    public act(_action: ACTION, _direction?: DIRECTION): void {      let cmpTr: fCore.Vector3 = new fCore.Vector3();
+    public eatFood(): void {
+      let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
+      let node: fCore.Node[] = this.game.getChildrenByName("Food")[0].getChildren();
+      console.log(node);
+      for (let food of node) {
+        if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
+          console.log("isInsideOFSphere");
+          let _currentTranslation: fCore.Vector3 = food.mtxLocal.translation;
+          this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
+          console.log(_currentTranslation);
+          let randomTranslateX: number = getRandomTranslateX();
+          let randomTranslateY: number = getRandomTranslateY();
+          this.gameField[randomTranslateX][randomTranslateY] = 1;
+          food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+          Sound.play("pacman_eat");
+        }
+      }
+    }
+    public act(_action: ACTION, _direction?: DIRECTION): void {
+      let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
+      let cmpTr: fCore.Vector3 = new fCore.Vector3();
       switch (_action) {
         case ACTION.IDLE:
           this.speed.x = 0;
@@ -46,18 +102,18 @@ namespace Bomberpac {
         case ACTION.WALK:
           if (_direction == 0 || _direction == 1) {
             let direction: number = (_direction == DIRECTION.RIGHT ? 1 : -1);
-            this.speed.x = PacmanPlayerTwo.speedMax.x; // * direction;
+            this.speed.x = Man.speedMax.x; // * direction;
             cmpTr = ƒ.Vector3.Y(90 - 90 * direction);
           }
           else if (_direction == 2 || _direction == 3) {
             let direction: number = (_direction == DIRECTION.UP ? 1 : -1);
-            this.speed.x = PacmanPlayerTwo.speedMax.x;
+            this.speed.x = Man.speedMax.x;
             cmpTr = ƒ.Vector3.Z(90 * direction);
           }
-          /*if (this.collide()) {
+          if (this.collide()) {
             this.speed.x = -1;
             cmpTr = oldDirection;
-          }*/
+          }
           this.cmpTransform.local.rotation = cmpTr;
           break;
       }

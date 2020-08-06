@@ -45,7 +45,6 @@ var Bomberpac;
         document.getElementById("gameWrapper").style.display = "initial";
         let img = document.querySelector("img");
         let spritesheet = Bomberpac.ƒAid.createSpriteSheet("Spritesheet", img);
-        Bomberpac.Pacman.generateSprites(spritesheet);
         Bomberpac.PacmanPlayerTwo.generateSprites(spritesheet);
         let value = document.getElementById('level').value;
         switch (value) {

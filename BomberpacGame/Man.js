@@ -8,8 +8,44 @@ var Bomberpac;
             this.speed = fCore.Vector3.ZERO();
             this.score = 0;
             this.game = game;
+            this.gameField = gameField;
             this.data = data;
             this.fetchData();
+        }
+        /*private checkCollision(): boolean {
+          let cmpTransform: fCore.Vector3 = this.cmpTransform.local.translation;
+          let x: number = cmpTransform.x / scale;
+          let y: number = cmpTransform.y / scale;
+          //console.log(x + ", " + y);^
+          let yMinus: number = Math.floor(y);
+          let yPlus: number = Math.ceil(y);
+          let xMinus: number = Math.floor(x);
+          let xPlus: number = Math.ceil(x);
+          let isCollided: boolean = false;
+          if (matrix[xMinus][yPlus] == 1) {
+            isCollided = true;
+          }
+          if (matrix[xMinus][yMinus] == 1) {
+            isCollided = true;
+          }
+          if (matrix[xPlus][yPlus] == 1) {
+            isCollided = true;
+          }
+          if (matrix[xPlus][yMinus] == 1) {
+            isCollided = true;
+          }
+          return isCollided;
+        }*/
+        collide() {
+            let pacmanTranslation = this.mtxLocal.translation;
+            let node = this.game.getChildrenByName("Obstacles")[0].getChildren();
+            let check = false;
+            for (let obstacle of node) {
+                if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.9)) {
+                    check = true;
+                }
+            }
+            return check;
         }
         fetchData() {
             this.amountOfBombs = Number(this.data.amountOfBombs);
@@ -26,9 +62,28 @@ var Bomberpac;
         }
         show(_action) {
             // show only the animation defined for the action
-            this.setAnimation(Bomberpac.Pacman.animations[_action]);
+            this.setAnimation(Man.animations[_action]);
+        }
+        eatFood() {
+            let pacmanTranslation = this.mtxLocal.translation;
+            let node = this.game.getChildrenByName("Food")[0].getChildren();
+            console.log(node);
+            for (let food of node) {
+                if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
+                    console.log("isInsideOFSphere");
+                    let _currentTranslation = food.mtxLocal.translation;
+                    this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
+                    console.log(_currentTranslation);
+                    let randomTranslateX = Bomberpac.getRandomTranslateX();
+                    let randomTranslateY = Bomberpac.getRandomTranslateY();
+                    this.gameField[randomTranslateX][randomTranslateY] = 1;
+                    food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+                    Bomberpac.Sound.play("pacman_eat");
+                }
+            }
         }
         act(_action, _direction) {
+            let oldDirection = this.cmpTransform.local.rotation;
             let cmpTr = new fCore.Vector3();
             switch (_action) {
                 case Bomberpac.ACTION.IDLE:
@@ -37,18 +92,18 @@ var Bomberpac;
                 case Bomberpac.ACTION.WALK:
                     if (_direction == 0 || _direction == 1) {
                         let direction = (_direction == Bomberpac.DIRECTION.RIGHT ? 1 : -1);
-                        this.speed.x = Bomberpac.PacmanPlayerTwo.speedMax.x; // * direction;
+                        this.speed.x = Man.speedMax.x; // * direction;
                         cmpTr = ƒ.Vector3.Y(90 - 90 * direction);
                     }
                     else if (_direction == 2 || _direction == 3) {
                         let direction = (_direction == Bomberpac.DIRECTION.UP ? 1 : -1);
-                        this.speed.x = Bomberpac.PacmanPlayerTwo.speedMax.x;
+                        this.speed.x = Man.speedMax.x;
                         cmpTr = ƒ.Vector3.Z(90 * direction);
                     }
-                    /*if (this.collide()) {
-                      this.speed.x = -1;
-                      cmpTr = oldDirection;
-                    }*/
+                    if (this.collide()) {
+                        this.speed.x = -1;
+                        cmpTr = oldDirection;
+                    }
                     this.cmpTransform.local.rotation = cmpTr;
                     break;
             }

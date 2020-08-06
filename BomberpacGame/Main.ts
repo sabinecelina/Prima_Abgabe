@@ -69,7 +69,6 @@ namespace Bomberpac {
         document.getElementById("gameWrapper").style.display = "initial";
         let img: HTMLImageElement = document.querySelector("img");
         let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", img);
-        Pacman.generateSprites(spritesheet);
         PacmanPlayerTwo.generateSprites(spritesheet);
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
