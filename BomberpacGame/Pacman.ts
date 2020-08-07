@@ -3,6 +3,8 @@ namespace Bomberpac {
   import fAid = FudgeAid;
 
   export class PacmanPlayerTwo extends Man {
+    private img: HTMLImageElement = document.querySelector("img");
+    private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", this.img);
     private static speedMaxPlayerTwo: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
     protected translation: fCore.Vector3 = fCore.Vector3.ZERO();
     constructor(_name: string, translateX: number, translateY: number, gamefield: number[][], game: fCore.Node, data: ToggleData) {
@@ -44,11 +46,13 @@ namespace Bomberpac {
         this.act(ACTION.WALK, DIRECTION.UP);
       else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
         this.act(ACTION.WALK, DIRECTION.DOWN);
-      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT]))
+      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT])) {
         this.act(ACTION.EXPLODE);
+      }
       else
         this.act(ACTION.IDLE);
     }
+
     public act(_action: ACTION, _direction?: DIRECTION): void {
       let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
       let cmpRotation: fCore.Vector3 = new fCore.Vector3();
@@ -129,10 +133,54 @@ namespace Bomberpac {
       console.log("something happened");
       PacmanPlayerTwo.speedMaxPlayerTwo.x = 3;
     }
+    public createBomb(): void {
+      console.log(this.name);
+      if (this.amountOfBombs != 0) {
+        let node: fCore.Node[] = game.getChildrenByName("bomb");
+        let bomb: Bomb;
+        if (node.length < 1) {
+          Bomb.generateSprites(this.spritesheet);
+          let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
+          bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
+          this.game.appendChild(bomb);
+          console.log(this.amountOfBombs);
+          console.log(this.mtxLocal.translation);
+          if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, bomb.range)) {
+            pacman.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
+          }
+        }
+        let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
+        for (let enemy of enemies) {
+          if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
+            this.game.removeChild(enemy);
+            //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
+          }
+        }
+        this.amountOfBombs--;
+        pacman.lives--;
+        node = this.game.getChildrenByName("bomb");
+        console.log(node);
+        for (let bomb of node) {
+          this.game.removeChild(bomb);
+        }
+      }
+    }
   }
+
+
+
+
+
+
+
+
+
+
+
   export class PacmanPlayerOne extends Man {
     private static speedMaxPlayerOne: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
-    public static translation: fCore.Vector3 = new fCore.Vector3(2, 1, 0);
+    private img: HTMLImageElement = document.querySelector("img");
+    private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Bomb", this.img);
     constructor(_name: string, translateX: number, translateY: number, gamefield: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gamefield, game, data);
       ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
@@ -189,7 +237,10 @@ namespace Bomberpac {
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 1;
             case 6:
+              this.score++;
             case 7:
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+              PacmanPlayerOne.speedMaxPlayerOne.x = 0;
               break;
           }
         }
@@ -247,6 +298,39 @@ namespace Bomberpac {
         this.act(ACTION.EXPLODE);
       else
         this.act(ACTION.IDLE);
+    }
+    public createBomb(): void {
+      console.log(this.name);
+      if (this.amountOfBombs != 0) {
+        let node: fCore.Node[] = game.getChildrenByName("bomb");
+        let bomb: Bomb;
+        if (node.length < 1) {
+          Bomb.generateSprites(this.spritesheet);
+          let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
+          bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
+          this.game.appendChild(bomb);
+          this.amountOfBombs--;
+          console.log(this.amountOfBombs);
+          console.log(this.mtxLocal.translation);
+          if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, bomb.range)) {
+            pacmanTwo.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
+          }
+        }
+        let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
+        for (let enemy of enemies) {
+          if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
+            this.game.removeChild(enemy);
+            //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
+          }
+        }
+        node = this.game.getChildrenByName("bomb");
+        console.log(node);
+        for (let bomb of node) {
+          this.game.removeChild(bomb);
+        }
+      }
+      this.amountOfBombs--;
+      pacmanTwo.lives--;
     }
   }
 }

@@ -5,8 +5,6 @@ namespace Bomberpac {
   export class Man extends Sprite {
     protected speed: fCore.Vector3 = fCore.Vector3.ZERO();
     public action: ACTION;
-    private img: HTMLImageElement = document.querySelector("img");
-    private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", this.img);
     public score: number = 0;
     public lives: number;
     public game: fCore.Node;
@@ -93,45 +91,6 @@ namespace Bomberpac {
           food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
           this.score++;
           Sound.play("pacman_eat");
-        }
-      }
-    }
-    public createBomb(): void {
-      if (this.amountOfBombs != 0) {
-        let node: fCore.Node[] = game.getChildrenByName("bomb");
-        let bomb: Bomb;
-        if (node.length < 1) {
-          Bomb.generateSprites(this.spritesheet);
-          let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
-          bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
-          this.game.appendChild(bomb);
-          this.amountOfBombs--;
-          console.log(this.amountOfBombs);
-          if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, bomb.range)) {
-            if (this.name == pacman.name) {
-              pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-              pacmanTwo.lives--;
-              console.log(pacmanTwo.lives);
-            } else if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
-              if (pacmanTwo.name = this.name) {
-                pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-                pacman.lives--;
-                console.log(pacman.lives);
-              }
-            }
-          }
-          let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
-          for (let enemy of enemies) {
-            if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
-              this.game.removeChild(enemy);
-              //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
-            }
-          }
-          let node: fCore.Node[] = this.game.getChildrenByName("bomb");
-          console.log(node);
-          for (let bomb of node) {
-            this.game.removeChild(bomb);
-          }
         }
       }
     }

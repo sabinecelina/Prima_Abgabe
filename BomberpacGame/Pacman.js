@@ -5,6 +5,8 @@ var Bomberpac;
     class PacmanPlayerTwo extends Bomberpac.Man {
         constructor(_name, translateX, translateY, gamefield, game, data) {
             super(_name, translateX, translateY, gamefield, game, data);
+            this.img = document.querySelector("img");
+            this.spritesheet = Bomberpac.ƒAid.createSpriteSheet("Pacman", this.img);
             this.translation = fCore.Vector3.ZERO();
             this.update = (_event) => {
                 let timeFrame = ƒ.Loop.timeFrameGame / 1000;
@@ -43,8 +45,9 @@ var Bomberpac;
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
             else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
-            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT]))
+            else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT])) {
                 this.act(Bomberpac.ACTION.EXPLODE);
+            }
             else
                 this.act(Bomberpac.ACTION.IDLE);
         }
@@ -128,12 +131,46 @@ var Bomberpac;
             console.log("something happened");
             PacmanPlayerTwo.speedMaxPlayerTwo.x = 3;
         }
+        createBomb() {
+            console.log(this.name);
+            if (this.amountOfBombs != 0) {
+                let node = Bomberpac.game.getChildrenByName("bomb");
+                let bomb;
+                if (node.length < 1) {
+                    Bomberpac.Bomb.generateSprites(this.spritesheet);
+                    let manTranslation = this.mtxLocal.translation;
+                    bomb = new Bomberpac.Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
+                    this.game.appendChild(bomb);
+                    console.log(this.amountOfBombs);
+                    console.log(this.mtxLocal.translation);
+                    if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, bomb.range)) {
+                        Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
+                    }
+                }
+                let enemies = this.game.getChildrenByName("Enemies")[0].getChildren();
+                for (let enemy of enemies) {
+                    if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
+                        this.game.removeChild(enemy);
+                        //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
+                    }
+                }
+                this.amountOfBombs--;
+                Bomberpac.pacman.lives--;
+                node = this.game.getChildrenByName("bomb");
+                console.log(node);
+                for (let bomb of node) {
+                    this.game.removeChild(bomb);
+                }
+            }
+        }
     }
     PacmanPlayerTwo.speedMaxPlayerTwo = new ƒ.Vector3(3, 3, 3); // units per second
     Bomberpac.PacmanPlayerTwo = PacmanPlayerTwo;
     class PacmanPlayerOne extends Bomberpac.Man {
         constructor(_name, translateX, translateY, gamefield, game, data) {
             super(_name, translateX, translateY, gamefield, game, data);
+            this.img = document.querySelector("img");
+            this.spritesheet = Bomberpac.ƒAid.createSpriteSheet("Bomb", this.img);
             this.update = (_event) => {
                 let timeFrame = ƒ.Loop.timeFrameGame / 1000;
                 let distance = ƒ.Vector3.SCALE(this.speed, timeFrame);
@@ -188,7 +225,10 @@ var Bomberpac;
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerOne.speedMaxPlayerOne.x = 1;
                         case 6:
+                            this.score++;
                         case 7:
+                            ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+                            PacmanPlayerOne.speedMaxPlayerOne.x = 0;
                             break;
                     }
                 }
@@ -246,9 +286,41 @@ var Bomberpac;
             else
                 this.act(Bomberpac.ACTION.IDLE);
         }
+        createBomb() {
+            console.log(this.name);
+            if (this.amountOfBombs != 0) {
+                let node = Bomberpac.game.getChildrenByName("bomb");
+                let bomb;
+                if (node.length < 1) {
+                    Bomberpac.Bomb.generateSprites(this.spritesheet);
+                    let manTranslation = this.mtxLocal.translation;
+                    bomb = new Bomberpac.Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
+                    this.game.appendChild(bomb);
+                    this.amountOfBombs--;
+                    console.log(this.amountOfBombs);
+                    console.log(this.mtxLocal.translation);
+                    if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, bomb.range)) {
+                        Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
+                    }
+                }
+                let enemies = this.game.getChildrenByName("Enemies")[0].getChildren();
+                for (let enemy of enemies) {
+                    if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
+                        this.game.removeChild(enemy);
+                        //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
+                    }
+                }
+                node = this.game.getChildrenByName("bomb");
+                console.log(node);
+                for (let bomb of node) {
+                    this.game.removeChild(bomb);
+                }
+            }
+            this.amountOfBombs--;
+            Bomberpac.pacmanTwo.lives--;
+        }
     }
     PacmanPlayerOne.speedMaxPlayerOne = new ƒ.Vector3(3, 3, 3); // units per second
-    PacmanPlayerOne.translation = new fCore.Vector3(2, 1, 0);
     Bomberpac.PacmanPlayerOne = PacmanPlayerOne;
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Pacman.js.map
