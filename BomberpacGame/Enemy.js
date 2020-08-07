@@ -114,20 +114,12 @@ var Bomberpac;
             }
         }
         killPacman() {
-            let check = false;
             if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, 0.9)) {
-                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
-                Bomberpac.pacman.lives--;
-                console.log(Bomberpac.pacman.lives);
-                check = true;
+                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(28, 1, 0);
             }
             else if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
                 Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
-                Bomberpac.pacmanTwo.lives--;
-                console.log(Bomberpac.pacmanTwo.lives);
-                check = true;
             }
-            return check;
         }
         eatFood() {
             let pacmanTranslation = this.mtxLocal.translation;

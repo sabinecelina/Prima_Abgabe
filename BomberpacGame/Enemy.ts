@@ -113,21 +113,13 @@ namespace Bomberpac {
         }
       }
     }
-    public killPacman(): boolean {
-      let check: boolean = false;
+    public killPacman(): void {
       if (this.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
-        pacman.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
-        pacman.lives--;
-        console.log(pacman.lives);
-        check = true;
+        pacman.mtxLocal.translation = new fCore.Vector3(28, 1, 0);
       }
       else if (this.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
         pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
-        pacmanTwo.lives--;
-        console.log(pacmanTwo.lives);
-        check = true;
       }
-      return check;
     }
     private eatFood(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;

@@ -43,7 +43,6 @@ namespace Bomberpac {
         this.act(ACTION.IDLE);
     }
     public act(_action: ACTION, _direction?: DIRECTION): void {
-      console.log(this.score);
       let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
       let cmpRotation: fCore.Vector3 = new fCore.Vector3();
       switch (_action) {
@@ -71,10 +70,6 @@ namespace Bomberpac {
           break;
         case ACTION.EXPLODE:
           this.createBomb();
-          let node: fCore.Node = this.game.getChildrenByName("bomb")[0];
-          let nodeTwo: fCore.Node = this.game.getChildrenByName("Bomb")[0];
-          console.log(node);
-          this.game.removeChild(nodeTwo);
           break;
       }
       if (_action == this.action)
@@ -149,27 +144,13 @@ namespace Bomberpac {
       this.eatItem();
       if (this.gameOver()) {
         Sound.play("pacman_death");
-        gameOverScreen("playeplayOnerTwo");
+        gameOverScreen("playerTwo");
       }
     }
     private gameOver(): boolean {
       if (this.lives < 1)
         return true;
       return false;
-    }
-    public isKilled(): void {
-      let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
-      let rect: Enemy;
-      let checkHit: boolean;
-      for (let enemy of enemies) {
-        rect = (<Enemy>enemy);
-        checkHit = rect.killPacman();
-        if (checkHit) {
-          this.lives--;
-          console.log(this.lives);
-          console.log("got killed");
-        }
-      }
     }
     public eatItem(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;

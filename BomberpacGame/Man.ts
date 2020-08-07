@@ -107,13 +107,21 @@ namespace Bomberpac {
         if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, bomb.range)) {
           if (this.name == pacman.name) {
             pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-            pacman.lives - 1;
+            pacmanTwo.lives--;
+            console.log(pacmanTwo.lives);
           } else if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
             if (pacmanTwo.name = this.name) {
               pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-              pacman.lives - 1;
+              pacman.lives--;
+              console.log(pacman.lives);
             }
           }
+        }
+        let node: fCore.Node[] = this.game.getChildrenByName("bomb");
+        console.log(node);
+        let nodeTwo: fCore.Node = this.game.getChildrenByName("Bomb")[0];
+        for (let bomb of node) {
+          this.game.removeChild(bomb);
         }
       }
     }

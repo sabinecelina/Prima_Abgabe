@@ -97,14 +97,22 @@ var Bomberpac;
                 if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, bomb.range)) {
                     if (this.name == Bomberpac.pacman.name) {
                         Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-                        Bomberpac.pacman.lives - 1;
+                        Bomberpac.pacmanTwo.lives--;
+                        console.log(Bomberpac.pacmanTwo.lives);
                     }
                     else if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
                         if (Bomberpac.pacmanTwo.name = this.name) {
                             Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-                            Bomberpac.pacman.lives - 1;
+                            Bomberpac.pacman.lives--;
+                            console.log(Bomberpac.pacman.lives);
                         }
                     }
+                }
+                let node = this.game.getChildrenByName("bomb");
+                console.log(node);
+                let nodeTwo = this.game.getChildrenByName("Bomb")[0];
+                for (let bomb of node) {
+                    this.game.removeChild(bomb);
                 }
             }
         }

@@ -42,7 +42,6 @@ var Bomberpac;
                 this.act(Bomberpac.ACTION.IDLE);
         }
         act(_action, _direction) {
-            console.log(this.score);
             let oldDirection = this.cmpTransform.local.rotation;
             let cmpRotation = new fCore.Vector3();
             switch (_action) {
@@ -70,10 +69,6 @@ var Bomberpac;
                     break;
                 case Bomberpac.ACTION.EXPLODE:
                     this.createBomb();
-                    let node = this.game.getChildrenByName("bomb")[0];
-                    let nodeTwo = this.game.getChildrenByName("Bomb")[0];
-                    console.log(node);
-                    this.game.removeChild(nodeTwo);
                     break;
             }
             if (_action == this.action)
@@ -146,7 +141,7 @@ var Bomberpac;
                 this.eatItem();
                 if (this.gameOver()) {
                     Bomberpac.Sound.play("pacman_death");
-                    Bomberpac.gameOverScreen("playeplayOnerTwo");
+                    Bomberpac.gameOverScreen("playerTwo");
                 }
             };
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
@@ -155,20 +150,6 @@ var Bomberpac;
             if (this.lives < 1)
                 return true;
             return false;
-        }
-        isKilled() {
-            let enemies = this.game.getChildrenByName("Enemies")[0].getChildren();
-            let rect;
-            let checkHit;
-            for (let enemy of enemies) {
-                rect = enemy;
-                checkHit = rect.killPacman();
-                if (checkHit) {
-                    this.lives--;
-                    console.log(this.lives);
-                    console.log("got killed");
-                }
-            }
         }
         eatItem() {
             let pacmanTranslation = this.mtxLocal.translation;
