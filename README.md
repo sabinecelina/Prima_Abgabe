@@ -3,6 +3,10 @@ Prototyping interaktiver Apps und Medien
 
 Here is my link to [Bomberpac](https://sabinecelina.github.io/Prima_Abgabe/BomberpacGame/Main.html)
 
+
+Der Spaß ist die Überraschung - das Ziel ist es, denn Schlüssel in der oberen Ecke zu bekommen. Wer den Schlüssel zuerst bekommt, gewinnt das Spiel. 
+Es gibt Items, die dich daran hindern werden zum Schlüssel zu gelangen und Feinde, die dich wieder zurückversetzen. Bist du in der Nähe desanderen Spielers, kannst du ihn entweder mit SPACE oder mit SHIFT_LEFT wieder an den Ursprungsplatz bringen.
+
 ## Checkliste für Leistungsnachweis
 © Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU
 
