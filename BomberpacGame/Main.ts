@@ -23,7 +23,6 @@ namespace Bomberpac {
     }
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
-    import fAid = FudgeAid;
     export import ƒAid = FudgeAid;
     load("data.json");
     window.addEventListener("load", init);

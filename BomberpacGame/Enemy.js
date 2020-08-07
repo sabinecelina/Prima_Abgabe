@@ -9,7 +9,6 @@ var Bomberpac;
             super(_name, 11, 11, gamfield);
             this.speedMaxEnemy = new ƒ.Vector3(2, 2, 2); // units per second
             this.speed = ƒ.Vector3.ZERO();
-            this.number = 0;
             this.update = (_event) => {
                 let timeFrame = ƒ.Loop.timeFrameGame / 1000;
                 let distance = ƒ.Vector3.SCALE(this.speed, timeFrame);
@@ -49,8 +48,7 @@ var Bomberpac;
             this.setAnimation(Enemy.animations[_action]);
         }
         act(_action, _direction) {
-            let oldDirection = this.cmpTransform.local.rotation;
-            let cmpTr = new fCore.Vector3();
+            let cmpRotation = new fCore.Vector3();
             switch (_action) {
                 case Bomberpac.ACTION.IDLE:
                     this.speed.x = 0;
@@ -66,7 +64,7 @@ var Bomberpac;
                             this._enemyDirection = Bomberpac.DIRECTION.LEFT;
                         }
                         this.speed.x = this.speedMaxEnemy.x; // * direction;
-                        cmpTr = ƒ.Vector3.Y(90 - 90 * direction);
+                        cmpRotation = ƒ.Vector3.Y(90 - 90 * direction);
                     }
                     else if (_direction == 2 || _direction == 3) {
                         let direction = (_direction == Bomberpac.DIRECTION.UP ? 1 : -1);
@@ -77,9 +75,9 @@ var Bomberpac;
                             this._enemyDirection = Bomberpac.DIRECTION.DOWN;
                         }
                         this.speed.x = this.speedMaxEnemy.x;
-                        cmpTr = ƒ.Vector3.Z(90 * direction);
+                        cmpRotation = ƒ.Vector3.Z(90 * direction);
                     }
-                    this.cmpTransform.local.rotation = cmpTr;
+                    this.cmpTransform.local.rotation = cmpRotation;
                     break;
             }
             if (_action == this.action)
@@ -89,7 +87,6 @@ var Bomberpac;
         }
         processInput() {
             if (this.collide()) {
-                this.number = 1;
                 let randomNumber = Bomberpac.randomInteger(0, 4);
                 this.speed.x = -this.speedMaxEnemy.x;
                 let randomTranslateX;

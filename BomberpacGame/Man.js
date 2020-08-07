@@ -52,7 +52,6 @@ var Bomberpac;
             this.amountOfBombs = Number(this.data.amountOfBombs);
             this.lives = Number(this.data.lives);
         }
-        //console.log(this.speed.x);
         static generateSprites(_spritesheet) {
             Man.animations = {};
             let sprite = new Bomberpac.ƒAid.SpriteSheetAnimation(Bomberpac.ACTION.WALK, _spritesheet);

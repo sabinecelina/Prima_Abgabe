@@ -3,20 +3,18 @@ namespace Bomberpac {
   export class Floor extends Gameobject {
     private img: HTMLImageElement = document.querySelector("img");
     private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", this.img);
-    private static mesh: fCore.MeshCube = new fCore.MeshCube();
-    private color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("BLUE")));
+    public static mesh: fCore.MeshCube = new fCore.MeshCube();
+    public static color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("BLUE")));
     private obstacles: fCore.Node = new fCore.Node("Obstacles");
     private amountOfObstacles: number;
     private amountOfFood: number;
     private amountOfItems: number;
     private gameField: number[][];
-    private game: fCore.Node;
     private data: ToggleData;
-    private scale: number = 1;
+    public static scale: number = 1;
     constructor(_name: string, gameField: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, gameField);
       this.gameField = gameField;
-      this.game = game;
       this.data = data;
       this.fetchData();
       this.createFloor(this.amountOfObstacles);
@@ -31,23 +29,23 @@ namespace Bomberpac {
     }
     private createFloor(_amountOfObstacles: number): void {
       for (let i: number = 0; i < 31; i++) {
-        let walls = new Obstacle("wall", gameField, i, 0, this.scale, Floor.mesh, this.color);
+        let walls = new Obstacle("wall", gameField, i, 0, Floor.scale, Floor.mesh, Floor.color);
         this.obstacles.appendChild(walls);
-        walls = new Obstacle("wall", gameField, i, 20, this.scale, Floor.mesh, this.color);
+        walls = new Obstacle("wall", gameField, i, 20, Floor.scale, Floor.mesh, Floor.color);
         this.obstacles.appendChild(walls);
       }
       for (let i: number = 0; i < 31; i++) {
-        let walls = new Obstacle("wall", gameField, 0, i, this.scale, Floor.mesh, this.color);
+        let walls = new Obstacle("wall", gameField, 0, i, Floor.scale, Floor.mesh, Floor.color);
         this.obstacles.appendChild(walls);
-        walls = new Obstacle("wall", gameField, 29, i, this.scale, Floor.mesh, this.color);
+        walls = new Obstacle("wall", gameField, 29, i, Floor.scale, Floor.mesh, Floor.color);
         this.obstacles.appendChild(walls);
       }
       while (this.obstacles.getChildrenByName("obstacles").length < _amountOfObstacles) {
         let randomTranslateX: number = getRandomTranslateX();
         let randomTranslateY: number = getRandomTranslateX();
-        if (!((randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
+        if (!((randomTranslateX == 28 && randomTranslateY == 19) || (randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
           || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1)))) {
-          let obstacles = new Obstacle("obstacles", gameField, randomTranslateX, randomTranslateY, this.scale, Floor.mesh, this.color);
+          let obstacles = new Obstacle("obstacles", gameField, randomTranslateX, randomTranslateY, Floor.scale, Floor.mesh, Floor.color);
           this.obstacles.appendChild(obstacles);
         }
         this.appendChild(this.obstacles);
@@ -60,7 +58,7 @@ namespace Bomberpac {
       for (let i: number = 0; i < _amountofFood; i++) {
         let randomTranslateX: number = randomInteger(1, 28);
         let randomTranslateY: number = randomInteger(1, 19);
-        if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+        if (!((randomTranslateX == 28 && randomTranslateY == 19) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
           this.gameField[0][i] = 1;
           food = new Food("food", randomTranslateX, randomTranslateY, this.gameField);
           foodNode.appendChild(food);
@@ -96,7 +94,7 @@ namespace Bomberpac {
         let randomTranslateX: number = getRandomTranslateX();
         let randomTranslateY: number = getRandomTranslateY();
         Pill.generateSprites(spritesheet, sprites[randomNumber]);
-        if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+        if (!((randomTranslateX == 28 && randomTranslateY == 19) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
           pill = new Pill("Item", randomTranslateX, randomTranslateY, this.gameField, id);
           itemNode.appendChild(pill);
         }

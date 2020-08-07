@@ -9,7 +9,6 @@ namespace Bomberpac {
     private _enemyDirection: DIRECTION;
     private gameField: number[][]
     private game: fCore.Node;
-    private number: number = 0;
     constructor(_name: string = "Enemy", gamfield: number[][], game: fCore.Node) {
       super(_name, 11, 11, gamfield);
       this.game = game;
@@ -45,8 +44,7 @@ namespace Bomberpac {
     }
 
     public act(_action: ACTION, _direction?: DIRECTION): void {
-      let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
-      let cmpTr: fCore.Vector3 = new fCore.Vector3();
+      let cmpRotation: fCore.Vector3 = new fCore.Vector3();
       switch (_action) {
         case ACTION.IDLE:
           this.speed.x = 0;
@@ -61,7 +59,7 @@ namespace Bomberpac {
               this._enemyDirection = DIRECTION.LEFT;
             }
             this.speed.x = this.speedMaxEnemy.x; // * direction;
-            cmpTr = ƒ.Vector3.Y(90 - 90 * direction);
+            cmpRotation = ƒ.Vector3.Y(90 - 90 * direction);
           }
           else if (_direction == 2 || _direction == 3) {
             let direction: number = (_direction == DIRECTION.UP ? 1 : -1);
@@ -71,9 +69,9 @@ namespace Bomberpac {
               this._enemyDirection = DIRECTION.DOWN;
             }
             this.speed.x = this.speedMaxEnemy.x;
-            cmpTr = ƒ.Vector3.Z(90 * direction);
+            cmpRotation = ƒ.Vector3.Z(90 * direction);
           }
-          this.cmpTransform.local.rotation = cmpTr;
+          this.cmpTransform.local.rotation = cmpRotation;
           break;
       }
       if (_action == this.action)
@@ -91,7 +89,6 @@ namespace Bomberpac {
     }
     private processInput(): void {
       if (this.collide()) {
-        this.number = 1;
         let randomNumber: number = randomInteger(0, 4);
         this.speed.x = -this.speedMaxEnemy.x;
         let randomTranslateX: number;

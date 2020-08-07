@@ -1,6 +1,5 @@
 namespace Bomberpac {
   import fCore = FudgeCore;
-  import fAid = FudgeAid;
 
   export class Man extends Sprite {
     protected speed: fCore.Vector3 = fCore.Vector3.ZERO();
@@ -59,7 +58,6 @@ namespace Bomberpac {
       this.amountOfBombs = Number(this.data.amountOfBombs);
       this.lives = Number(this.data.lives);
     }
-    //console.log(this.speed.x);
     public static generateSprites(_spritesheet: ƒ.CoatTextured): void {
       Man.animations = {};
       let sprite: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(ACTION.WALK, _spritesheet);

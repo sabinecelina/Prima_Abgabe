@@ -1,6 +1,5 @@
 namespace Bomberpac {
   import fCore = FudgeCore;
-  import fAid = FudgeAid;
 
   export class PacmanPlayerTwo extends Man {
     private won: boolean = false;
@@ -103,15 +102,23 @@ namespace Bomberpac {
               break;
             case 3:
               this.amountOfBombs++;
-              console.log(this.amountOfBombs);
               break;
             case 4:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 0.5;
               break;
             case 5:
-              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-              PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+              console.log("case 5");
+              for (let i: number = 0; i < 10; i++) {
+                let obstacle: fCore.Node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0];
+                let randomTranslateX = getRandomTranslateX();
+                let randomTranslateY = getRandomTranslateX();
+                if (!((randomTranslateX == 28 && randomTranslateY == 19) || (randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
+                  || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1)))) {
+                  let obstacles = new Obstacle("obstacles", gameField, randomTranslateX, randomTranslateY, Floor.scale, Floor.mesh, Floor.color);
+                  obstacle.appendChild(obstacles);
+                }
+              }
               break;
             case 6:
               ƒ.Time.game.setTimer(5000, 1, this.handleEventItem);
@@ -158,13 +165,6 @@ namespace Bomberpac {
 
 
 
-
-
-
-
-
-
-
   export class PacmanPlayerOne extends Man {
     public won: boolean = false;
     private static speedMaxPlayerOne: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
@@ -192,9 +192,8 @@ namespace Bomberpac {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
       let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
       for (let item of node) {
-        let rect: number = (<Pill>item).getID();
+        let id: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
-          console.log(rect);
           let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
           this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
           let randomTranslateX: number = getRandomTranslateX();
@@ -202,10 +201,10 @@ namespace Bomberpac {
           this.gameField[randomTranslateX][randomTranslateY] = 1;
           item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
           Sound.play("pacman_eatfruit");
-          switch (rect) {
+          switch (id) {
             case 1:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-              PacmanPlayerOne.speedMaxPlayerOne.x = 10;
+              PacmanPlayerOne.speedMaxPlayerOne.x = 7;
               break;
             case 2:
               let randomTranslateX: number = getRandomTranslateX();
@@ -221,8 +220,16 @@ namespace Bomberpac {
               PacmanPlayerOne.speedMaxPlayerOne.x = 0.5;
               break;
             case 5:
-              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-              PacmanPlayerOne.speedMaxPlayerOne.x = 1;
+              for (let i: number = 0; i < 10; i++) {
+                let obstacle: fCore.Node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0];
+                randomTranslateX = getRandomTranslateX();
+                randomTranslateY = getRandomTranslateX();
+                if (!((randomTranslateX == 28 && randomTranslateY == 19) || (randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
+                  || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1)))) {
+                  let obstacles = new Obstacle("obstacles", gameField, randomTranslateX, randomTranslateY, Floor.scale, Floor.mesh, Floor.color);
+                  obstacle.appendChild(obstacles);
+                }
+              }
               break;
             case 6:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
@@ -278,7 +285,6 @@ namespace Bomberpac {
         this.act(ACTION.WALK, DIRECTION.LEFT);
       else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
         this.act(ACTION.WALK, DIRECTION.RIGHT);
-
       else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
         this.act(ACTION.WALK, DIRECTION.UP);
       else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
@@ -289,25 +295,21 @@ namespace Bomberpac {
         this.act(ACTION.IDLE);
     }
     public createBomb(): void {
-      let node: fCore.Node[] = game.getChildrenByName("bomb");
       let bomb: Bomb;
-      if (node.length < 1) {
-        Bomb.generateSprites(this.spritesheet);
-        let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
-        bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
-        this.game.appendChild(bomb);
-        if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, bomb.range)) {
-          pacmanTwo.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
-        }
+      Bomb.generateSprites(this.spritesheet);
+      let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
+      bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
+      this.game.appendChild(bomb);
+      if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, bomb.range)) {
+        pacmanTwo.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
       }
       let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
       for (let enemy of enemies) {
         if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
           this.game.removeChild(enemy);
-          //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
         }
       }
-      node = this.game.getChildrenByName("bomb");
+      let node: fCore.Node[] = this.game.getChildrenByName("bomb");
       console.log(node);
       for (let bomb of node) {
         this.game.removeChild(bomb);
