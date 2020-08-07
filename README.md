@@ -1,7 +1,8 @@
 # Prima_Abgabe
 Prototyping interaktiver Apps und Medien
-
-[Quellcode](https://github.com/sabinecelina/Prima_Abgabe/tree/master/BomberpacGame)
+My [Designdocument](https://github.com/sabinecelina/Prima_Abgabe/blob/master/BOMBERPAC_DESIGNDOKUMENT.pdf)
+Here is my link to the [Quellcode](https://github.com/sabinecelina/Prima_Abgabe/tree/master/BomberpacGame)
+Here is my link to [ARCHIV](https://github.com/sabinecelina/Prima_Abgabe/blob/master/Bomberpac.zip)
 Here is my link to [Bomberpac](https://sabinecelina.github.io/Prima_Abgabe/BomberpacGame/Main.html)
 
 
