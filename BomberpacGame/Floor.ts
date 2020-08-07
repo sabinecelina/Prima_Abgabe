@@ -76,7 +76,7 @@ namespace Bomberpac {
       let img: HTMLImageElement = document.querySelector("img");
       let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Item", img);
       for (let i: number = 0; i < _amountOfItems; i++) {
-        let randomNumber: number = randomInteger(0, 7);
+        let randomNumber: number = randomInteger(0, 6);
         switch (randomNumber) {
           case 0: id = 0;
             break;
@@ -101,14 +101,10 @@ namespace Bomberpac {
           itemNode.appendChild(pill);
         }
       }
-      let randomTranslateX: number = getRandomTranslateX();
-      let randomTranslateY: number = getRandomTranslateY();
       Pill.generateSprites(spritesheet, sprites[7]);
-      if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
-        pill = new Pill("Item", randomTranslateX, randomTranslateY, this.gameField, 7);
-        itemNode.appendChild(pill);
-        this.appendChild(itemNode);
-      }
+      pill = new Pill("Item", 28, 19, this.gameField, 7);
+      itemNode.appendChild(pill);
+      this.appendChild(itemNode);
     }
   }
 }

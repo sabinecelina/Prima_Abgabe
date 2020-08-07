@@ -118,10 +118,10 @@ var Bomberpac;
         }
         killPacman() {
             if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, 0.9)) {
-                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
             }
             else if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
-                Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
             }
         }
         eatFood() {

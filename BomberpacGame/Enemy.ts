@@ -118,10 +118,10 @@ namespace Bomberpac {
     }
     public killPacman(): void {
       if (this.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
-        pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+        pacman.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
       }
       else if (this.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
-        pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+        pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
       }
     }
     private eatFood(): void {

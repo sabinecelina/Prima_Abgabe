@@ -88,13 +88,13 @@ var Bomberpac;
         fCore.Loop.stop();
         document.getElementById("winScreen").style.display = "initial";
         document.getElementById("gameWrapper").style.display = "none";
-        if (pacman === "PlayerOne") {
+        if (pacman === 1) {
             document.getElementById("winScreenPlayerOne").style.display = "initial";
             document.getElementById("winScreenPlayerTwo").style.display = "none";
         }
         else {
-            document.getElementById("winScreenPlayerOne").style.display = "initial";
-            document.getElementById("winScreenPlayerTwo").style.display = "none";
+            document.getElementById("winScreenPlayerOne").style.display = "none";
+            document.getElementById("winScreenPlayerTwo").style.display = "initial";
         }
     }
     Bomberpac.gameWinningScreen = gameWinningScreen;
