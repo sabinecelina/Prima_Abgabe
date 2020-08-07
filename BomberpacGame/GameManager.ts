@@ -8,6 +8,7 @@ namespace Bomberpac {
     document.getElementById("creditsPage").style.display = "none";
     document.getElementById("controlPage").style.display = "none";
     document.getElementById("backButton").style.display = "none";
+    document.getElementById("level").style.display = "initial";
   }
   export function showControls(): void {
     document.getElementById("menueButtons").style.display = "none";
@@ -19,6 +20,7 @@ namespace Bomberpac {
     document.getElementById("menueButtons").style.display = "none";
     document.getElementById("creditsPage").style.display = "initial";
     document.getElementById("backButton").style.display = "initial";
+    document.getElementById("level").style.display = "none";
   }
 
   export function toggleMusic(): void {

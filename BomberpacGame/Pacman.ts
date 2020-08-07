@@ -17,6 +17,7 @@ namespace Bomberpac {
       this.processInput();
       this.eatFood();
       this.eatItem();
+      this.isWinning();
       if (this.gameOver()) {
         Sound.play("pacman_death");
         gameOverScreen("playerTwo");
@@ -26,6 +27,12 @@ namespace Bomberpac {
     private gameOver(): boolean {
       if (this.lives < 1)
         return true;
+      return false;
+    }
+    private isWinning(): boolean {
+      if (this.score = 5)
+        return true;
+      console.log(this.score);
       return false;
     }
     public processInput(): void {
@@ -107,17 +114,12 @@ namespace Bomberpac {
             case 4:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
-              case 5:
-                case 6:
-                  case 7:
-                    ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-                    PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
-              /*let randomTranslateX: number = getRandomTranslateX();
-              let randomTranslateY: number = getRandomTranslateY();
-              if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || gameField[randomTranslateX][randomTranslateY] == 1)) {
-                this.pacmanDouble = new PacmanPlayerOne("PacmanOne", randomTranslateX, randomTranslateY, gameField, this.game, this.data)
-                this.game.appendChild(pacmans[i]);
-              }*/
+            case 5:
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+              PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
+            case 6:
+              this.score++;
+            case 7:
               break;
           }
         }
