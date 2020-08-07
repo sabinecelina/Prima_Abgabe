@@ -5,7 +5,6 @@ var Bomberpac;
     function showMenue() {
         document.getElementById("menueButtons").style.display = "initial";
         document.getElementById("gameWrapper").style.display = "none";
-        document.getElementById("endScreen").style.display = "none";
         document.getElementById("winScreen").style.display = "none";
         document.getElementById("creditsPage").style.display = "none";
         document.getElementById("controlPage").style.display = "none";
@@ -68,21 +67,6 @@ var Bomberpac;
         return randomInteger(1, 19);
     }
     Bomberpac.getRandomTranslateY = getRandomTranslateY;
-    function gameOverScreen(pacman) {
-        Bomberpac.Sound.stopMusic();
-        fCore.Loop.stop();
-        document.getElementById("endScreen").style.display = "initial";
-        document.getElementById("gameWrapper").style.display = "none";
-        if (pacman === "PlayerOne") {
-            document.getElementById("deathScreenPlayerOne").style.display = "initial";
-            document.getElementById("deathScreenPlayerTwo").style.display = "none";
-        }
-        else {
-            document.getElementById("deathScreenPlayerOne").style.display = "none";
-            document.getElementById("deathScreenPlayerTwo").style.display = "initial";
-        }
-    }
-    Bomberpac.gameOverScreen = gameOverScreen;
     function gameWinningScreen(pacman) {
         Bomberpac.Sound.stopMusic();
         fCore.Loop.stop();

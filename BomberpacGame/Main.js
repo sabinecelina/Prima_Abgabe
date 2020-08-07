@@ -41,7 +41,6 @@ var Bomberpac;
         fillArray();
         Bomberpac.Sound.init();
         document.getElementById("winScreen").style.display = "none";
-        document.getElementById("endScreen").style.display = "none";
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
         let img = document.querySelector("img");
@@ -65,7 +64,7 @@ var Bomberpac;
         }
         initializeGame(toggleData);
         Bomberpac.pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 1, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
-        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 1, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
+        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 1, 2, Bomberpac.gameField, Bomberpac.game, toggleData);
         let number = Number(toggleData.amountOfEnemies);
         let enemies = new Bomberpac.fCore.Node("Enemies");
         for (let i = 0; i < number; i++) {
