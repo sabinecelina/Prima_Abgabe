@@ -40,6 +40,7 @@ var Bomberpac;
     function hndLoad(_event) {
         fillArray();
         Bomberpac.Sound.init();
+        document.getElementById("winScreen").style.display = "none";
         document.getElementById("endScreen").style.display = "none";
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
@@ -101,23 +102,18 @@ var Bomberpac;
     function reloadMap() {
         let floorChild = Bomberpac.game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0];
         let floor = Bomberpac.game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0].getChildren();
-        console.log("removing floor");
         for (let item of floor) {
-            console.log(Bomberpac.gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y]);
             Bomberpac.gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y] = 0;
-            console.log(Bomberpac.gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y]);
             floorChild.removeChild(item);
         }
         let foodChild = Bomberpac.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0];
         let food = Bomberpac.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
-        console.log("removing floor");
         for (let item of food) {
             Bomberpac.gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y] = 0;
             foodChild.removeChild(item);
         }
         let itemChild = Bomberpac.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0];
         let item = Bomberpac.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
-        console.log("removing floor");
         for (let items of item) {
             Bomberpac.gameField[items.mtxLocal.translation.x][items.mtxLocal.translation.y] = 0;
             itemChild.removeChild(items);

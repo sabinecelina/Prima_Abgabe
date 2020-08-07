@@ -19,22 +19,19 @@ namespace Bomberpac {
       this.processInput();
       this.eatFood();
       this.eatItem();
-      this.isWinning();
       if (this.gameOver()) {
         Sound.play("pacman_death");
-        gameOverScreen("playerTwo");
+        gameWinningScreen("playerTwo");
+      }
+      if (this.won) {
+        Sound.play("pacman_win");
+        gameWinningScreen("playerTwo");
       }
       this.collide();
     }
     private gameOver(): boolean {
-      if (this.lives < 1)
+      if (this.lives < -10)
         return true;
-      return false;
-    }
-    private isWinning(): boolean {
-      if (this.score = 5)
-        return true;
-      console.log(this.score);
       return false;
     }
     public processInput(): void {
@@ -115,15 +112,18 @@ namespace Bomberpac {
               break;
             case 3:
               this.amountOfBombs++;
+              console.log(this.amountOfBombs);
             case 4:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-              PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+              PacmanPlayerTwo.speedMaxPlayerTwo.x = 0.5;
             case 5:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-              PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
+              PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
             case 6:
-              this.score++;
+              this.won = true;
             case 7:
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+              PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
               break;
           }
         }
@@ -134,8 +134,8 @@ namespace Bomberpac {
       PacmanPlayerTwo.speedMaxPlayerTwo.x = 3;
     }
     public createBomb(): void {
-      console.log(this.name);
-      if (this.amountOfBombs != 0) {
+      (this.name);
+      if (this.amountOfBombs > 0) {
         let node: fCore.Node[] = game.getChildrenByName("bomb");
         let bomb: Bomb;
         if (node.length < 1) {
@@ -143,8 +143,6 @@ namespace Bomberpac {
           let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
           bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
           this.game.appendChild(bomb);
-          console.log(this.amountOfBombs);
-          console.log(this.mtxLocal.translation);
           if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, bomb.range)) {
             pacman.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
           }
@@ -159,7 +157,6 @@ namespace Bomberpac {
         this.amountOfBombs--;
         pacman.lives--;
         node = this.game.getChildrenByName("bomb");
-        console.log(node);
         for (let bomb of node) {
           this.game.removeChild(bomb);
         }
@@ -178,6 +175,7 @@ namespace Bomberpac {
 
 
   export class PacmanPlayerOne extends Man {
+    private score: number = 0;
     private static speedMaxPlayerOne: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
     private img: HTMLImageElement = document.querySelector("img");
     private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Bomb", this.img);
@@ -196,9 +194,13 @@ namespace Bomberpac {
         Sound.play("pacman_death");
         gameOverScreen("playerTwo");
       }
+      if (this.won) {
+        Sound.play("pacman_win");
+        gameWinningScreen("playerTwo");
+      }
     }
     private gameOver(): boolean {
-      if (this.lives < 1)
+      if (this.lives < -10)
         return true;
       return false;
     }
@@ -237,7 +239,7 @@ namespace Bomberpac {
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 1;
             case 6:
-              this.score++;
+              this.won = true;
             case 7:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 0;
@@ -300,8 +302,7 @@ namespace Bomberpac {
         this.act(ACTION.IDLE);
     }
     public createBomb(): void {
-      console.log(this.name);
-      if (this.amountOfBombs != 0) {
+      if (this.amountOfBombs < 1) {
         let node: fCore.Node[] = game.getChildrenByName("bomb");
         let bomb: Bomb;
         if (node.length < 1) {
@@ -310,8 +311,6 @@ namespace Bomberpac {
           bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
           this.game.appendChild(bomb);
           this.amountOfBombs--;
-          console.log(this.amountOfBombs);
-          console.log(this.mtxLocal.translation);
           if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, bomb.range)) {
             pacmanTwo.mtxLocal.translation = new fCore.Vector3(12, 12, 0);
           }

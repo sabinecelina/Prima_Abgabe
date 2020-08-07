@@ -102,8 +102,10 @@ var Bomberpac;
                 let randomTranslateX = Bomberpac.getRandomTranslateX();
                 let randomTranslateY = Bomberpac.getRandomTranslateY();
                 Bomberpac.Pill.generateSprites(spritesheet, sprites[randomNumber]);
-                pill = new Bomberpac.Pill("Item", randomTranslateX, randomTranslateY, this.gameField, id);
-                itemNode.appendChild(pill);
+                if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+                    pill = new Bomberpac.Pill("Item", randomTranslateX, randomTranslateY, this.gameField, id);
+                    itemNode.appendChild(pill);
+                }
             }
             this.appendChild(itemNode);
         }

@@ -4,15 +4,13 @@ namespace Bomberpac {
 
   export class Man extends Sprite {
     protected speed: fCore.Vector3 = fCore.Vector3.ZERO();
+    public won: boolean = false;
     public action: ACTION;
-    public score: number = 0;
     public lives: number;
     public game: fCore.Node;
-    private nextLevel: number;
     public data: ToggleData;
     public amountOfBombs: number;
     public gameField: number[][];
-    private static color: ƒ.Material = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
 
     constructor(_name: string, translateX: number, translateY: number, gameField: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gameField);
@@ -89,7 +87,6 @@ namespace Bomberpac {
           let randomTranslateY: number = getRandomTranslateY();
           this.gameField[randomTranslateX][randomTranslateY] = 1;
           food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-          this.score++;
           Sound.play("pacman_eat");
         }
       }

@@ -31,38 +31,40 @@
 
 <body>
     <div id="menue">
-        <h1>Bomberpac</h2>
-            <div id="menueButtons">
-                <button id="startButton">Start</button>
-                <button id="controlButton">Steuerung</button>
-                <button id="musicButton">Musik: aus</button>
-                <button id="soundButton">Sound: aus</button>
-                <button id="creditsButton">Credits</button>
-            </div>
-            <select id="level">
+        <h1>Bomberpac</h1>
+        <div id="menueButtons">
+            <button id="startButton">Start</button>
+            <button id="controlButton">Steuerung</button>
+            <button id="musicButton">Musik: aus</button>
+            <button id="soundButton">Sound: aus</button>
+            <button id="creditsButton">Credits</button>
+        </div>
+        <select id="level">
                 <option id= easy>EASY</option>
                 <option id= middle>MIDDLE</option>
                 <option id= hard>HARD</option>
             </select>
-            <div id="controlPage">
-                <p>Player One: Bewege dich mit den <em>"WASD" Tasten</em> hin und her. Mit der Shift Taste legst du eine Bombe. Achtung, die Bombe explodiert sofort und kann nur deinen Mitspieler töten</p>
-                <p>Player Two: Bewege dich mit den <em>Pfeiltasten</em> hin und her. Mit der Lerrtaste Taste legst du eine Bombe. Achtung, die Bombe explodiert sofort und kann nur deinen Mitspieler töten</p>
-            </div>
-            <div id="creditsPage">
-                <h2>Credits</h2>
-                <p>Idee und Umsetzung: Sabine Schleise</p>
-                <p>Erstellt mit FUDGE - Furtwangen University Didactic Game Editor</p>
-                <p>HFU MIB5 - Modul PRIMA WS2020</p>
-            </div>
-            <button id="backButton">Zurück</div>
+        <div id="controlPage">
+            <p>Player One: Bewege dich mit den <em>"WASD" Tasten</em> hin und her. Mit der Shift Taste legst du eine Bombe.</p>
+            <p>Player Two: Bewege dich mit den <em>Pfeiltasten</em> hin und her. Mit der Lerrtaste Taste legst du eine Bombe.</p>
+            <p>Achtung, die Bombe explodiert sofort und versetzt deinen Mitspieler.</p>
+            <p>Gewonnen hast du, wenn du die richtige Pille findest. Also beeil dich.</p>
+        </div>
+        <div id="creditsPage">
+            <h2>Credits</h2>
+            <p>Idee und Umsetzung: Sabine Schleise</p>
+            <p>Erstellt mit FUDGE - Furtwangen University Didactic Game Editor</p>
+            <p>HFU MIB5 - Modul PRIMA WS2020</p>
+        </div>
+        <button id="backButton">Zurück</div>
     </div>
 
     </div>
     <div id="gameWrapper">
-        <h2>
+        <h1>
             Atomic BomberPac
             </h1>
-            <canvas width="1000" height="700" style="background-color: aliceblue;"></canvas>
+            <canvas width="1000" height="700" style="background-color: aliceblue; text-align: center;"></canvas>
     </div>
     <div id="endScreen">
         <div id="deathScreenPlayerOne">
@@ -74,11 +76,20 @@
             <p>Player TWO hat gewonnen</p>
         </div>
     </div>
+    <div id="winScreen">
+        <div id="winScreenPlayerOne">
+            <h1>Player ONE hat gewonnen</h1>
+        </div>
+        <div id="winScreenPlayerTwo">
+            <h1>Player TWO hat gewonnen</h1>
+        </div>
+    </div>
     <img src="img/Spritesheet.png" id="spritesheet" />
     <audio id="gameMusic" src="Sounds/pacman_music.mp3" type="audio/mpeg"></audio>
     <audio id="pacman_eat" src="Sounds/pacman_eat.wav" type="audio/wav"></audio>
     <audio id="pacman_eatfruit" src="Sounds/pacman_eatfruit.wav" type="audio/wav"></audio>
     <audio id="pacman_death" src="Sounds/pacman_death.wav" type="audio/wav"></audio>
+    <audio id="pacman_win" src="Sounds/pacman_win.wav" type="audio/wav"></audio>
 </body>
 
 </html>

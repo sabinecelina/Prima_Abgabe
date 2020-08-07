@@ -6,6 +6,7 @@ var Bomberpac;
         document.getElementById("menueButtons").style.display = "initial";
         document.getElementById("gameWrapper").style.display = "none";
         document.getElementById("endScreen").style.display = "none";
+        document.getElementById("winScreen").style.display = "none";
         document.getElementById("creditsPage").style.display = "none";
         document.getElementById("controlPage").style.display = "none";
         document.getElementById("backButton").style.display = "none";
@@ -14,6 +15,7 @@ var Bomberpac;
     Bomberpac.showMenue = showMenue;
     function showControls() {
         document.getElementById("menueButtons").style.display = "none";
+        document.getElementById("winScreen").style.display = "none";
         document.getElementById("controlPage").style.display = "initial";
         document.getElementById("backButton").style.display = "initial";
         document.getElementById("level").style.display = "none";
@@ -21,6 +23,7 @@ var Bomberpac;
     Bomberpac.showControls = showControls;
     function showCredits() {
         document.getElementById("menueButtons").style.display = "none";
+        document.getElementById("winScreen").style.display = "none";
         document.getElementById("creditsPage").style.display = "initial";
         document.getElementById("backButton").style.display = "initial";
         document.getElementById("level").style.display = "none";
@@ -80,5 +83,20 @@ var Bomberpac;
         }
     }
     Bomberpac.gameOverScreen = gameOverScreen;
+    function gameWinningScreen(pacman) {
+        Bomberpac.Sound.stopMusic();
+        fCore.Loop.stop();
+        document.getElementById("winScreen").style.display = "initial";
+        document.getElementById("gameWrapper").style.display = "none";
+        if (pacman === "PlayerOne") {
+            document.getElementById("winScreenPlayerOne").style.display = "initial";
+            document.getElementById("winScreenPlayerTwo").style.display = "none";
+        }
+        else {
+            document.getElementById("winScreenPlayerOne").style.display = "none";
+            document.getElementById("winScreenPlayerTwo").style.display = "initial";
+        }
+    }
+    Bomberpac.gameWinningScreen = gameWinningScreen;
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=GameManager.js.map

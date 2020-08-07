@@ -5,6 +5,7 @@ namespace Bomberpac {
     document.getElementById("menueButtons").style.display = "initial";
     document.getElementById("gameWrapper").style.display = "none";
     document.getElementById("endScreen").style.display = "none";
+    document.getElementById("winScreen").style.display = "none";
     document.getElementById("creditsPage").style.display = "none";
     document.getElementById("controlPage").style.display = "none";
     document.getElementById("backButton").style.display = "none";
@@ -12,12 +13,14 @@ namespace Bomberpac {
   }
   export function showControls(): void {
     document.getElementById("menueButtons").style.display = "none";
+    document.getElementById("winScreen").style.display = "none";
     document.getElementById("controlPage").style.display = "initial";
     document.getElementById("backButton").style.display = "initial";
     document.getElementById("level").style.display = "none";
   }
   export function showCredits(): void {
     document.getElementById("menueButtons").style.display = "none";
+    document.getElementById("winScreen").style.display = "none";
     document.getElementById("creditsPage").style.display = "initial";
     document.getElementById("backButton").style.display = "initial";
     document.getElementById("level").style.display = "none";
@@ -66,6 +69,20 @@ namespace Bomberpac {
     } else {
       document.getElementById("deathScreenPlayerOne").style.display = "none";
       document.getElementById("deathScreenPlayerTwo").style.display = "initial";
+
+    }
+  }
+  export function gameWinningScreen(pacman: string): void {
+    Sound.stopMusic();
+    fCore.Loop.stop();
+    document.getElementById("winScreen").style.display = "initial";
+    document.getElementById("gameWrapper").style.display = "none";
+    if (pacman === "PlayerOne") {
+      document.getElementById("winScreenPlayerOne").style.display = "initial";
+      document.getElementById("winScreenPlayerTwo").style.display = "none";
+    } else {
+      document.getElementById("winScreenPlayerOne").style.display = "none";
+      document.getElementById("winScreenPlayerTwo").style.display = "initial";
 
     }
   }

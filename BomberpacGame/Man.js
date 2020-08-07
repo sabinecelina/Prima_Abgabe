@@ -6,7 +6,7 @@ var Bomberpac;
         constructor(_name, translateX, translateY, gameField, game, data) {
             super(_name, translateX, translateY, gameField);
             this.speed = fCore.Vector3.ZERO();
-            this.score = 0;
+            this.won = false;
             this.game = game;
             this.gameField = gameField;
             this.data = data;
@@ -79,13 +79,11 @@ var Bomberpac;
                     let randomTranslateY = Bomberpac.getRandomTranslateY();
                     this.gameField[randomTranslateX][randomTranslateY] = 1;
                     food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-                    this.score++;
                     Bomberpac.Sound.play("pacman_eat");
                 }
             }
         }
     }
-    Man.color = new ƒ.Material("SolidWhite", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("DEEPPINK")));
     Bomberpac.Man = Man;
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Man.js.map
