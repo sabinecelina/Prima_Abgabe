@@ -65,7 +65,7 @@ var Bomberpac;
         }
         initializeGame(toggleData);
         Bomberpac.pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 1, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
-        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 2, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
+        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 28, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
         let number = Number(toggleData.amountOfEnemies);
         let enemies = new Bomberpac.fCore.Node("Enemies");
         for (let i = 0; i < number; i++) {

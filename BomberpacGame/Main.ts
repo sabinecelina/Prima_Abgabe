@@ -93,7 +93,7 @@ namespace Bomberpac {
         }
         initializeGame(toggleData);
         pacman = new PacmanPlayerOne("PacmanOne", 1, 1, gameField, game, toggleData);
-        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 2, 1, gameField, game, toggleData);
+        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 28, 1, gameField, game, toggleData);
         let number: number = Number(toggleData.amountOfEnemies);
         let enemies: fCore.Node = new fCore.Node("Enemies");
         for (let i: number = 0; i < number; i++) {
