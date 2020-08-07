@@ -11,7 +11,7 @@ var Bomberpac;
     let enemy;
     let floor;
     Bomberpac.keyBoard = false;
-    let game = new Bomberpac.fCore.Node("game");
+    Bomberpac.game = new Bomberpac.fCore.Node("game");
     let toggleData;
     function init(_event) {
         Bomberpac.showMenue();
@@ -59,18 +59,18 @@ var Bomberpac;
                 break;
         }
         initializeGame(toggleData);
-        Bomberpac.pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 1, 1, Bomberpac.gameField, game, toggleData);
-        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 2, 1, Bomberpac.gameField, game, toggleData);
+        Bomberpac.pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 1, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
+        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 2, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
         let number = Number(toggleData.amountOfEnemies);
         let enemies = new Bomberpac.fCore.Node("Enemies");
         for (let i = 0; i < number; i++) {
-            enemy = new Bomberpac.Enemy("Enemy", Bomberpac.gameField, game);
+            enemy = new Bomberpac.Enemy("Enemy", Bomberpac.gameField, Bomberpac.game);
             enemies.appendChild(enemy);
         }
-        game.appendChild(enemies);
+        Bomberpac.game.appendChild(enemies);
         Bomberpac.pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
-        game.appendChild(Bomberpac.pacmanTwo);
-        game.appendChild(Bomberpac.pacman);
+        Bomberpac.game.appendChild(Bomberpac.pacmanTwo);
+        Bomberpac.game.appendChild(Bomberpac.pacman);
         ("pacman added");
         const canvas = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
@@ -81,7 +81,7 @@ var Bomberpac;
         cmpCamera.pivot.translateY(10);
         cmpCamera.pivot.rotateY(180);
         Bomberpac.viewport = new ƒ.Viewport();
-        Bomberpac.viewport.initialize("Viewport", game, cmpCamera, canvas);
+        Bomberpac.viewport.initialize("Viewport", Bomberpac.game, cmpCamera, canvas);
         ƒ.Debug.log(Bomberpac.viewport);
         Bomberpac.viewport.draw();
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
@@ -91,8 +91,8 @@ var Bomberpac;
         Bomberpac.viewport.draw();
     }
     function initializeGame(data) {
-        floor = new Bomberpac.Floor("Floor", Bomberpac.gameField, game, data);
-        game.appendChild(floor);
+        floor = new Bomberpac.Floor("Floor", Bomberpac.gameField, Bomberpac.game, data);
+        Bomberpac.game.appendChild(floor);
     }
     function reloadMap() {
         /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();

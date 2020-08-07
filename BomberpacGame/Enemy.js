@@ -115,18 +115,11 @@ var Bomberpac;
         }
         killPacman() {
             let check = false;
-            let pacmanOne = this.game.getChildrenByName("PacmanOne")[0];
-            let pacman = pacmanOne;
-            let mtxTranslationOne = pacmanOne.mtxLocal.translation;
-            let pacmanTwo = this.game.getChildrenByName("PacmanTwo")[0];
-            let mtxTRanslationTwo = this.game.getChildrenByName("PacmanOne")[0].mtxLocal.translation;
-            if (this.mtxLocal.translation.isInsideSphere(mtxTranslationOne, 0.9)) {
-                pacman.lives--;
+            if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, 0.9)) {
                 check = true;
             }
-            else if (this.mtxLocal.translation.isInsideSphere(mtxTRanslationTwo, 0.9)) {
-                pacmanTwo.lives--;
-                check = false;
+            else if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
+                check = true;
             }
             return check;
         }

@@ -38,7 +38,7 @@ namespace Bomberpac {
     export let pacmanTwo: PacmanPlayerTwo;
     let floor: Floor;
     export let keyBoard: boolean = false;
-    let game: fCore.Node = new fCore.Node("game");
+    export let game: fCore.Node = new fCore.Node("game");
     export let data: Data;
     let toggleData: ToggleData;
     function init(_event: Event): void {

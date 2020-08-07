@@ -115,18 +115,11 @@ namespace Bomberpac {
     }
     public killPacman(): boolean {
       let check: boolean = false;
-      let pacmanOne: fCore.Node = this.game.getChildrenByName("PacmanOne")[0];
-      let pacman: PacmanPlayerOne = (<PacmanPlayerOne>pacmanOne);
-      let mtxTranslationOne = pacmanOne.mtxLocal.translation;
-      let pacmanTwo: fCore.Node = this.game.getChildrenByName("PacmanTwo")[0];
-      let mtxTRanslationTwo: fCore.Vector3 = this.game.getChildrenByName("PacmanOne")[0].mtxLocal.translation;
-      if (this.mtxLocal.translation.isInsideSphere(mtxTranslationOne, 0.9)) {
-        pacman.lives--;
+      if (this.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
         check = true;
       }
-      else if (this.mtxLocal.translation.isInsideSphere(mtxTRanslationTwo, 0.9)) {
-        (<PacmanPlayerOne>pacmanTwo).lives--;
-        check = false;
+      else if (this.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
+        check = true;
       }
       return check;
     }

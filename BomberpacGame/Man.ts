@@ -96,18 +96,21 @@ namespace Bomberpac {
       }
     }
     public createBomb(): void {
-      let bomb: Bomb;
-      Bomb.generateSprites(this.spritesheet);
-      for (let i: number = 0; i < this.amountOfBombs; i++) {
+      let node: fCore.Node[] = game.getChildrenByName("bomb");
+      if (node.length < 2) {
+        let bomb: Bomb;
+        Bomb.generateSprites(this.spritesheet);
         let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
         bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
         this.game.appendChild(bomb);
-        if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
+        if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, range)) {
           if (this.name == pacman.name) {
-            pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+            pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+            pacman.lives - 1;
           } else if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
             if (pacmanTwo.name = this.name) {
-              pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+              pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+              pacman.lives - 1;
             }
           }
         }

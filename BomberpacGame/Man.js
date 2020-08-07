@@ -86,19 +86,22 @@ var Bomberpac;
             }
         }
         createBomb() {
-            let bomb;
-            Bomberpac.Bomb.generateSprites(this.spritesheet);
-            for (let i = 0; i < this.amountOfBombs; i++) {
+            let node = Bomberpac.game.getChildrenByName("bomb");
+            if (node.length < 2) {
+                let bomb;
+                Bomberpac.Bomb.generateSprites(this.spritesheet);
                 let manTranslation = this.mtxLocal.translation;
                 bomb = new Bomberpac.Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
                 this.game.appendChild(bomb);
-                if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, 0.9)) {
+                if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, range)) {
                     if (this.name == Bomberpac.pacman.name) {
-                        Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                        Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                        Bomberpac.pacman.lives - 1;
                     }
                     else if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
                         if (Bomberpac.pacmanTwo.name = this.name) {
-                            Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                            Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                            Bomberpac.pacman.lives - 1;
                         }
                     }
                 }

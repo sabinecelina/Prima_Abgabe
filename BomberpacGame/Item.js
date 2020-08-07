@@ -45,6 +45,7 @@ var Bomberpac;
     class Bomb extends Bomberpac.Sprite {
         constructor(_name = "Bomb", translateX, translateY, matrix) {
             super(_name, translateX, translateY, matrix);
+            this.range = 0.9;
             this.show(Bomberpac.ACTION.IDLE);
         }
         show(_action) {
