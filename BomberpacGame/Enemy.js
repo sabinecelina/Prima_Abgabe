@@ -6,7 +6,7 @@ var Bomberpac;
     var ƒAid = FudgeAid;
     class Enemy extends Bomberpac.Sprite {
         constructor(_name = "Enemy", gamfield, game) {
-            super(_name, 10, 10, gamfield);
+            super(_name, 1, 2, gamfield);
             this.speedMaxEnemy = new ƒ.Vector3(4, 4, 4); // units per second
             this.speed = ƒ.Vector3.ZERO();
             this.number = 0;
@@ -16,10 +16,11 @@ var Bomberpac;
                 this.cmpTransform.local.translate(distance);
                 this.processInput();
                 this.eatFood();
+                this.killPacman();
             };
             this.game = game;
             this.gameField = gamfield;
-            this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
+            this.act(Bomberpac.ACTION.IDLE);
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         collide() {
@@ -88,13 +89,18 @@ var Bomberpac;
         }
         processInput() {
             if (this.collide()) {
-                console.log(this.number);
                 this.number = 1;
                 let randomNumber = Bomberpac.randomInteger(0, 4);
                 this.speed.x = -this.speedMaxEnemy.x;
-                let oldTranslation = this.mtxLocal.translation.copy;
-                this.mtxLocal.translation = new fCore.Vector3(Bomberpac.getRandomTranslateX(), Bomberpac.getRandomTranslateY());
-                console.log("it worked");
+                let randomTranslateX;
+                let randomTranslateY;
+                if (this.mtxLocal.translation.x < 5) {
+                    randomTranslateX = Bomberpac.randomInteger(1, this.mtxLocal.translation.x - 5);
+                    randomTranslateY = Bomberpac.randomInteger(1, this.mtxLocal.translation.y - 5);
+                }
+                randomTranslateX = Bomberpac.randomInteger(this.mtxLocal.translation.x - 2, this.mtxLocal.translation.x + 2);
+                randomTranslateY = Bomberpac.randomInteger(this.mtxLocal.translation.y - 2, this.mtxLocal.translation.y + 2);
+                this.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY);
                 if (this._enemyDirection == randomNumber) {
                 }
                 else if (this._enemyDirection == Bomberpac.DIRECTION.LEFT || this._enemyDirection == Bomberpac.DIRECTION.RIGHT) {
@@ -106,6 +112,23 @@ var Bomberpac;
                     this.act(Bomberpac.ACTION.WALK, randomNumber);
                 }
             }
+        }
+        killPacman() {
+            let check = false;
+            let pacmanOne = this.game.getChildrenByName("PacmanOne")[0];
+            let pacman = pacmanOne;
+            let mtxTranslationOne = pacmanOne.mtxLocal.translation;
+            let pacmanTwo = this.game.getChildrenByName("PacmanTwo")[0];
+            let mtxTRanslationTwo = this.game.getChildrenByName("PacmanOne")[0].mtxLocal.translation;
+            if (this.mtxLocal.translation.isInsideSphere(mtxTranslationOne, 0.9)) {
+                pacman.lives--;
+                check = true;
+            }
+            else if (this.mtxLocal.translation.isInsideSphere(mtxTRanslationTwo, 0.9)) {
+                pacmanTwo.lives--;
+                check = false;
+            }
+            return check;
         }
         eatFood() {
             let pacmanTranslation = this.mtxLocal.translation;

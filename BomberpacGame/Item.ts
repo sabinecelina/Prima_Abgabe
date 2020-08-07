@@ -41,9 +41,8 @@ namespace Bomberpac {
     }
   }
   export class Bomb extends Sprite {
-    constructor(_name: string = "Food", translateX: number, translateY: number, matrix: number[][]) {
+    constructor(_name: string = "Bomb", translateX: number, translateY: number, matrix: number[][]) {
       super(_name, translateX, translateY, matrix);
-      matrix[translateX][translateY] = 2;
       this.show(ACTION.IDLE);
     }
     public show(_action: ACTION): void {
@@ -53,10 +52,10 @@ namespace Bomberpac {
     public static generateSprites(_spritesheet: ƒ.CoatTextured): void {
       Bomb.animations = {};
       let sprite = new ƒAid.SpriteSheetAnimation(ACTION.IDLE, _spritesheet);
-      sprite.generateByGrid(ƒ.Rectangle.GET(0, 221, 40, 40), 3, ƒ.Vector2.ZERO(), 30, ƒ.ORIGIN2D.CENTER);
+      sprite.generateByGrid(ƒ.Rectangle.GET(0, 217, 38, 40), 3, ƒ.Vector2.ZERO(), 37, ƒ.ORIGIN2D.CENTER);
       Bomb.animations[ACTION.IDLE] = sprite;
       for (let i: number = 0; i < 3; i++) {
-        sprite.frames[i].timeScale = 5;
+        sprite.frames[i].timeScale = 10;
       }
     }
   }

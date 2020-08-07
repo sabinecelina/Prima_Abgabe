@@ -7,7 +7,8 @@ namespace Bomberpac {
             lives: string,
             amountOfObstacles: string,
             amountOfFood: string,
-            amountOfItems: string
+            amountOfItems: string,
+            amountOfEnemies: string
         }[];
     }
     export interface ToggleData {
@@ -17,12 +18,9 @@ namespace Bomberpac {
         lives: string,
         amountOfObstacles: string,
         amountOfFood: string,
+        amountOfEnemies: string,
         amountOfItems: string
     }
-<<<<<<< HEAD
-=======
-    let pacmans: fCore.Node[];
->>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
     import ƒ = FudgeCore;
     export import fCore = FudgeCore;
     import fAid = FudgeAid;
@@ -35,12 +33,9 @@ namespace Bomberpac {
     export let soundMuted: boolean = true;
     export let nav: HTMLElement;
     export let navPlayerTwo: HTMLElement;
-    let pacman: PacmanPlayerOne;
-<<<<<<< HEAD
+    export let pacman: PacmanPlayerOne;
     let enemy: Enemy;
-=======
->>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
-    let pacmanTwo: PacmanPlayerTwo;
+    export let pacmanTwo: PacmanPlayerTwo;
     let floor: Floor;
     export let keyBoard: boolean = false;
     let game: fCore.Node = new fCore.Node("game");
@@ -69,18 +64,14 @@ namespace Bomberpac {
     }
     function hndLoad(_event: Event): void {
         fillArray();
-        let gameTime: fCore.Time = new fCore.Time();
-        console.log(gameTime);
+
         document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
         let img: HTMLImageElement = document.querySelector("img");
         let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Spritesheet", img);
         PacmanPlayerTwo.generateSprites(spritesheet);
-<<<<<<< HEAD
         Enemy.generateSprites(spritesheet);
-=======
->>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
         let value = (<HTMLSelectElement>document.getElementById('level')).value;
         switch (value) {
             case "EASY":
@@ -97,15 +88,15 @@ namespace Bomberpac {
                 break;
         }
         initializeGame(toggleData);
-        pacman = new PacmanPlayerOne("PacmanOne", 2, 1, gameField, game, toggleData);
-        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 28, 1, gameField, game, toggleData);
-<<<<<<< HEAD
-        for (let i: number = 0; i < 5; i++) {
+        pacman = new PacmanPlayerOne("PacmanOne", 1, 1, gameField, game, toggleData);
+        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 2, 1, gameField, game, toggleData);
+        let number: number = Number(toggleData.amountOfEnemies);
+        let enemies: fCore.Node = new fCore.Node("Enemies");
+        for (let i: number = 0; i < number; i++) {
             enemy = new Enemy("Enemy", gameField, game);
-            game.appendChild(enemy);
+            enemies.appendChild(enemy);
         }
-=======
->>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
+        game.appendChild(enemies);
         pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
         game.appendChild(pacmanTwo);
         game.appendChild(pacman);
@@ -133,7 +124,6 @@ namespace Bomberpac {
         game.appendChild(floor);
     }
     function reloadMap() {
-<<<<<<< HEAD
         /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
         let obstacles: fCore.Node = game.getChildrenByName("Obstacles")[0];
         console.log(obstacles);
@@ -151,21 +141,5 @@ namespace Bomberpac {
             obstacles.removeChild(obstacles);
         }
         initializeGame(toggleData); */
-=======
-        let node: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
-        let node2: fCore.Node = game.getChildrenByName("Obstacles")[0];
-        let translation: fCore.Vector3;
-        console.log(node);
-        //let node: fCore.Node[] = game.getChildren();
-        for (let obstacles of node) {
-            translation = obstacles.mtxLocal.translation;
-            gameField[translation.x][translation.y] == 0;
-            node2.removeChild(obstacles);
-        }
-        initializeGame(toggleData);
-    }
-    function processInput(): void {
-
->>>>>>> 8d1a6aa86718abcf8ffc698348af16d00b745097
     }
 }

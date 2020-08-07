@@ -8,6 +8,7 @@ namespace Bomberpac {
     private img: HTMLImageElement = document.querySelector("img");
     private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", this.img);
     public score: number = 0;
+    public lives: number;
     public game: fCore.Node;
     private nextLevel: number;
     public data: ToggleData;
@@ -60,6 +61,7 @@ namespace Bomberpac {
     }
     private fetchData() {
       this.amountOfBombs = Number(this.data.amountOfBombs);
+      this.lives = Number(this.data.lives);
     }
     //console.log(this.speed.x);
     public static generateSprites(_spritesheet: ƒ.CoatTextured): void {
@@ -82,14 +84,13 @@ namespace Bomberpac {
       let node: fCore.Node[] = this.game.getChildrenByName("Food")[0].getChildren();
       for (let food of node) {
         if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
-          console.log("isInsideOFSphere");
           let _currentTranslation: fCore.Vector3 = food.mtxLocal.translation;
           this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
-          console.log(_currentTranslation);
           let randomTranslateX: number = getRandomTranslateX();
           let randomTranslateY: number = getRandomTranslateY();
           this.gameField[randomTranslateX][randomTranslateY] = 1;
           food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+          this.score++;
           Sound.play("pacman_eat");
         }
       }
@@ -97,10 +98,19 @@ namespace Bomberpac {
     public createBomb(): void {
       let bomb: Bomb;
       Bomb.generateSprites(this.spritesheet);
-      for (let i: number = 0; i < 1; i++) {
+      for (let i: number = 0; i < this.amountOfBombs; i++) {
         let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
         bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
         this.game.appendChild(bomb);
+        if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
+          if (this.name == pacman.name) {
+            pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+          } else if (bomb.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
+            if (pacmanTwo.name = this.name) {
+              pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+            }
+          }
+        }
       }
     }
   }

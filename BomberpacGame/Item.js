@@ -43,9 +43,8 @@ var Bomberpac;
     }
     Bomberpac.Pill = Pill;
     class Bomb extends Bomberpac.Sprite {
-        constructor(_name = "Food", translateX, translateY, matrix) {
+        constructor(_name = "Bomb", translateX, translateY, matrix) {
             super(_name, translateX, translateY, matrix);
-            matrix[translateX][translateY] = 2;
             this.show(Bomberpac.ACTION.IDLE);
         }
         show(_action) {
@@ -55,10 +54,10 @@ var Bomberpac;
         static generateSprites(_spritesheet) {
             Bomb.animations = {};
             let sprite = new ƒAid.SpriteSheetAnimation(Bomberpac.ACTION.IDLE, _spritesheet);
-            sprite.generateByGrid(ƒ.Rectangle.GET(0, 221, 40, 40), 3, ƒ.Vector2.ZERO(), 30, ƒ.ORIGIN2D.CENTER);
+            sprite.generateByGrid(ƒ.Rectangle.GET(0, 217, 38, 40), 3, ƒ.Vector2.ZERO(), 37, ƒ.ORIGIN2D.CENTER);
             Bomb.animations[Bomberpac.ACTION.IDLE] = sprite;
             for (let i = 0; i < 3; i++) {
-                sprite.frames[i].timeScale = 5;
+                sprite.frames[i].timeScale = 10;
             }
         }
     }

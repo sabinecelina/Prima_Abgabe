@@ -8,9 +8,7 @@ var Bomberpac;
     window.addEventListener("load", init);
     Bomberpac.musicMuted = true;
     Bomberpac.soundMuted = true;
-    let pacman;
     let enemy;
-    let pacmanTwo;
     let floor;
     Bomberpac.keyBoard = false;
     let game = new Bomberpac.fCore.Node("game");
@@ -38,8 +36,6 @@ var Bomberpac;
     }
     function hndLoad(_event) {
         fillArray();
-        let gameTime = new Bomberpac.fCore.Time();
-        console.log(gameTime);
         document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
@@ -63,15 +59,18 @@ var Bomberpac;
                 break;
         }
         initializeGame(toggleData);
-        pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 2, 1, Bomberpac.gameField, game, toggleData);
-        pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 28, 1, Bomberpac.gameField, game, toggleData);
-        for (let i = 0; i < 5; i++) {
+        Bomberpac.pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 1, 1, Bomberpac.gameField, game, toggleData);
+        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 2, 1, Bomberpac.gameField, game, toggleData);
+        let number = Number(toggleData.amountOfEnemies);
+        let enemies = new Bomberpac.fCore.Node("Enemies");
+        for (let i = 0; i < number; i++) {
             enemy = new Bomberpac.Enemy("Enemy", Bomberpac.gameField, game);
-            game.appendChild(enemy);
+            enemies.appendChild(enemy);
         }
-        pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
-        game.appendChild(pacmanTwo);
-        game.appendChild(pacman);
+        game.appendChild(enemies);
+        Bomberpac.pacmanTwo.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * -1);
+        game.appendChild(Bomberpac.pacmanTwo);
+        game.appendChild(Bomberpac.pacman);
         ("pacman added");
         const canvas = document.querySelector("canvas");
         ƒ.Debug.log(canvas);
@@ -96,6 +95,23 @@ var Bomberpac;
         game.appendChild(floor);
     }
     function reloadMap() {
+        /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
+        let obstacles: fCore.Node = game.getChildrenByName("Obstacles")[0];
+        console.log(obstacles);
+        let translation: fCore.Vector3;
+        let items: fCore.Node[] = game.getChildrenByName("Items")[0].getChildren();
+        //let node: fCore.Node[] = game.getChildren();
+        /*for (let item of items) {
+            translation = item.mtxLocal.translation;
+            gameField[translation.x][translation.y] == 0;
+            game.removeChild(item);
+        }
+        for (let node of obstacle) {
+            translation = node.mtxLocal.translation;
+            gameField[translation.x][translation.y] == 0;
+            obstacles.removeChild(obstacles);
+        }
+        initializeGame(toggleData); */
     }
 })(Bomberpac || (Bomberpac = {}));
 //# sourceMappingURL=Main.js.map

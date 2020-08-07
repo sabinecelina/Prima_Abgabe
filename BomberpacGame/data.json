@@ -4,21 +4,24 @@
             "lives": "3",
             "amountOfObstacles": "200",
             "amountOfFood": "250",
-            "amountOfItems": "100"
+            "amountOfItems": "100",
+            "amountOfEnemies": "3"
         },
         {
             "amountOfBombs": "3",
             "lives": "2",
             "amountOfObstacles": "250",
             "amountOfFood": "150",
-            "amountOfItems": "30"
+            "amountOfItems": "30",
+            "amountOfEnemies": "7"
         },
         {
             "amountOfBombs": "1",
             "lives": "1",
             "amountOfObstacles": "350",
             "amountOfFood": "50",
-            "amountOfItems": "20"
+            "amountOfItems": "20",
+            "amountOfEnemies": "10"
         }
     ]
 }

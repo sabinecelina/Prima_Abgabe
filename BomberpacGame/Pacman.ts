@@ -4,7 +4,7 @@ namespace Bomberpac {
 
   export class PacmanPlayerTwo extends Man {
     private static speedMaxPlayerTwo: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
-    private pacmanDouble: PacmanPlayerTwo;
+    protected translation: fCore.Vector3 = fCore.Vector3.ZERO();
     constructor(_name: string, translateX: number, translateY: number, gamefield: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gamefield, game, data);
       this.game = game;
@@ -17,7 +17,38 @@ namespace Bomberpac {
       this.processInput();
       this.eatFood();
       this.eatItem();
+      this.isKilled();
+      if (this.checkScore()) {
+        this.levelUp();
+      }
     }
+    public levelUp(): void {
+      PacmanPlayerTwo.speedMaxPlayerTwo.x += 0.5;
+    }
+    public checkScore(): boolean {
+      if (this.score % 5 == 0 || this.score != 0)
+        return true;
+      return false;
+    }
+    public isKilled(): void {
+      let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
+      let rect: Enemy;
+      let checkHit: boolean;
+      for (let enemy of enemies) {
+        rect = (<Enemy>enemy);
+        checkHit = rect.killPacman();
+        if (checkHit) {
+          this.lives--;
+          console.log("got killed");
+          //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
+        }
+      }
+    }
+    /*private setTranslationReset(): void {
+      console.log("something happened");
+      this.translation.x = 5;
+      this.translation.y = 5;
+    }*/
     public processInput(): void {
       if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
         this.act(ACTION.WALK, DIRECTION.LEFT);
@@ -27,17 +58,14 @@ namespace Bomberpac {
         this.act(ACTION.WALK, DIRECTION.UP);
       else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
         this.act(ACTION.WALK, DIRECTION.DOWN);
-      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
+      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT]))
         this.act(ACTION.EXPLODE);
-      /*else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
-        console.log("LEFT");
-      this.act(ACTION.EXPLODE);*/
       else
         this.act(ACTION.IDLE);
     }
     public act(_action: ACTION, _direction?: DIRECTION): void {
       let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
-      let cmpTr: fCore.Vector3 = new fCore.Vector3();
+      let cmpRotation: fCore.Vector3 = new fCore.Vector3();
       switch (_action) {
         case ACTION.IDLE:
           this.speed.x = 0;
@@ -46,21 +74,27 @@ namespace Bomberpac {
           if (_direction == 0 || _direction == 1) {
             let direction: number = (_direction == DIRECTION.RIGHT ? 1 : -1);
             this.speed.x = PacmanPlayerTwo.speedMaxPlayerTwo.x; // * direction;
-            cmpTr = ƒ.Vector3.Y(90 - 90 * direction);
+            this.translation = this.mtxLocal.translation;
+            cmpRotation = ƒ.Vector3.Y(90 - 90 * direction);
           }
           else if (_direction == 2 || _direction == 3) {
             let direction: number = (_direction == DIRECTION.UP ? 1 : -1);
             this.speed.x = PacmanPlayerTwo.speedMaxPlayerTwo.x;
-            cmpTr = ƒ.Vector3.Z(90 * direction);
+            this.translation = this.mtxLocal.translation;
+            cmpRotation = ƒ.Vector3.Z(90 * direction);
           }
           if (this.collide()) {
             this.speed.x = -1;
-            cmpTr = oldDirection;
+            cmpRotation = oldDirection;
           }
-          this.cmpTransform.local.rotation = cmpTr;
+          this.cmpTransform.local.rotation = cmpRotation;
           break;
         case ACTION.EXPLODE:
           this.createBomb();
+          let node: fCore.Node = this.game.getChildrenByName("bomb")[0];
+          let nodeTwo: fCore.Node = this.game.getChildrenByName("Bomb")[0];
+          console.log(node);
+          this.game.removeChild(nodeTwo);
           break;
       }
       if (_action == this.action)
@@ -74,7 +108,6 @@ namespace Bomberpac {
       for (let item of node) {
         let rect: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
-          console.log("eat");
           let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
           this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
           let randomTranslateX: number = getRandomTranslateX();
@@ -85,8 +118,7 @@ namespace Bomberpac {
           Sound.play("pacman_eatfruit");
           switch (rect) {
             case 1:
-              let timer: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
-              console.log(timer.active);
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 10;
               break;
             case 2:
@@ -97,14 +129,12 @@ namespace Bomberpac {
               break;
             case 3:
               this.amountOfBombs++;
-              console.log(this.amountOfBombs);
             case 4:
-              let timerTwo: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
             case 5:
             case 6:
             case 7:
-              console.log("yeah, i got it");
               for (let i: number = 1; i < 5; i++) {
                 /*let randomTranslateX: number = getRandomTranslateX();
                 let randomTranslateY: number = getRandomTranslateY();
@@ -155,13 +185,13 @@ namespace Bomberpac {
         }
       }
     }
-    private eatFirstItem(): void {
+    private handleEventItem(): void {
       console.log("something happened");
-      PacmanPlayerTwo.speedMaxPlayerTwo.x = 3;
     }
   }
   export class PacmanPlayerOne extends Man {
     private static speedMaxPlayerOne: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
+    public static translation: fCore.Vector3 = new fCore.Vector3(2, 1, 0);
     constructor(_name: string, translateX: number, translateY: number, gamefield: number[][], game: fCore.Node, data: ToggleData) {
       super(_name, translateX, translateY, gamefield, game, data);
       ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
@@ -180,7 +210,6 @@ namespace Bomberpac {
       for (let item of node) {
         let rect: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
-          console.log("eat");
           let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
           this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
           let randomTranslateX: number = getRandomTranslateX();
@@ -191,8 +220,7 @@ namespace Bomberpac {
           Sound.play("pacman_eatfruit");
           switch (rect) {
             case 1:
-              let timer: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
-              console.log(timer.active);
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 10;
               break;
             case 2:
@@ -205,8 +233,8 @@ namespace Bomberpac {
               this.amountOfBombs++;
               console.log(this.amountOfBombs);
             case 4:
-              let timerTwo: fCore.Timer = new fCore.Timer(ƒ.Time.game, 10000, 1, this.eatFirstItem);
-              PacmanPlayerOne.speedMaxPlayerOne.x = 1;
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+              PacmanPlayerOne.speedMaxPlayerOne.x = 0.5;
             case 5:
             case 6:
             case 7:
@@ -270,7 +298,7 @@ namespace Bomberpac {
       this.action = _action;
       this.show(_action);
     }
-    private eatFirstItem(): void {
+    private handleEventItem(): void {
       console.log("something happened");
       PacmanPlayerOne.speedMaxPlayerOne.x = 3;
     }
@@ -286,8 +314,7 @@ namespace Bomberpac {
         this.act(ACTION.WALK, DIRECTION.UP);
       else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
         this.act(ACTION.WALK, DIRECTION.DOWN);
-
-      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT]))
+      else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
         this.act(ACTION.EXPLODE);
       else
         this.act(ACTION.IDLE);
