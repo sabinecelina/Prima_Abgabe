@@ -4,16 +4,16 @@ namespace Bomberpac {
   import ƒAid = FudgeAid;
 
   export class Enemy extends Sprite {
-    private speedMaxEnemy: ƒ.Vector3 = new ƒ.Vector3(4, 4, 4); // units per second
+    private speedMaxEnemy: ƒ.Vector3 = new ƒ.Vector3(2, 2, 2); // units per second
     public speed: ƒ.Vector3 = ƒ.Vector3.ZERO();
     private _enemyDirection: DIRECTION;
     private gameField: number[][]
     private game: fCore.Node;
     private number: number = 0;
     constructor(_name: string = "Enemy", gamfield: number[][], game: fCore.Node) {
-      super(_name, 4, 2, gamfield);
+      super(_name, 11, 11, gamfield);
       this.game = game;
-      this.gameField = gamfield; this.act(ACTION.IDLE);
+      this.gameField = gamfield; this.act(ACTION.WALK, DIRECTION.RIGHT);
       ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
     }
     private collide(): boolean {
@@ -100,25 +100,28 @@ namespace Bomberpac {
           randomTranslateX = randomInteger(1, this.mtxLocal.translation.x - 5);
           randomTranslateY = randomInteger(1, this.mtxLocal.translation.y - 5);
         }
-        randomTranslateX = randomInteger(this.mtxLocal.translation.x - 2, this.mtxLocal.translation.x + 2);
-        randomTranslateY = randomInteger(this.mtxLocal.translation.y - 2, this.mtxLocal.translation.y + 2);
-        this.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY);
-        if (this._enemyDirection == randomNumber) {
-        } else if (this._enemyDirection == DIRECTION.LEFT || this._enemyDirection == DIRECTION.RIGHT) {
-          randomNumber = randomInteger(2, 4);
-          this.act(ACTION.WALK, randomNumber);
-        } else if (this._enemyDirection == DIRECTION.UP || this._enemyDirection == DIRECTION.DOWN) {
-          randomNumber = randomInteger(0, 2);
-          this.act(ACTION.WALK, randomNumber);
+        randomTranslateX = getRandomTranslateX();
+        randomTranslateY = getRandomTranslateY();
+        if (!((randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
+          || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1)))) {
+          this.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+          if (this._enemyDirection == randomNumber) {
+          } else if (this._enemyDirection == DIRECTION.LEFT || this._enemyDirection == DIRECTION.RIGHT) {
+            randomNumber = randomInteger(2, 4);
+            this.act(ACTION.WALK, randomNumber);
+          } else if (this._enemyDirection == DIRECTION.UP || this._enemyDirection == DIRECTION.DOWN) {
+            randomNumber = randomInteger(0, 2);
+            this.act(ACTION.WALK, randomNumber);
+          }
         }
       }
     }
     public killPacman(): void {
       if (this.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
-        pacman.mtxLocal.translation = new fCore.Vector3(28, 1, 0);
+        pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
       }
       else if (this.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
-        pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
+        pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
       }
     }
     private eatFood(): void {

@@ -87,32 +87,42 @@ var Bomberpac;
             }
         }
         createBomb() {
-            let node = Bomberpac.game.getChildrenByName("bomb");
-            if (node.length < 2) {
+            if (this.amountOfBombs != 0) {
+                let node = Bomberpac.game.getChildrenByName("bomb");
                 let bomb;
-                Bomberpac.Bomb.generateSprites(this.spritesheet);
-                let manTranslation = this.mtxLocal.translation;
-                bomb = new Bomberpac.Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
-                this.game.appendChild(bomb);
-                if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, bomb.range)) {
-                    if (this.name == Bomberpac.pacman.name) {
-                        Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-                        Bomberpac.pacmanTwo.lives--;
-                        console.log(Bomberpac.pacmanTwo.lives);
-                    }
-                    else if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
-                        if (Bomberpac.pacmanTwo.name = this.name) {
-                            Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
-                            Bomberpac.pacman.lives--;
-                            console.log(Bomberpac.pacman.lives);
+                if (node.length < 1) {
+                    Bomberpac.Bomb.generateSprites(this.spritesheet);
+                    let manTranslation = this.mtxLocal.translation;
+                    bomb = new Bomberpac.Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
+                    this.game.appendChild(bomb);
+                    this.amountOfBombs--;
+                    console.log(this.amountOfBombs);
+                    if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, bomb.range)) {
+                        if (this.name == Bomberpac.pacman.name) {
+                            Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                            Bomberpac.pacmanTwo.lives--;
+                            console.log(Bomberpac.pacmanTwo.lives);
+                        }
+                        else if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
+                            if (Bomberpac.pacmanTwo.name = this.name) {
+                                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
+                                Bomberpac.pacman.lives--;
+                                console.log(Bomberpac.pacman.lives);
+                            }
                         }
                     }
-                }
-                let node = this.game.getChildrenByName("bomb");
-                console.log(node);
-                let nodeTwo = this.game.getChildrenByName("Bomb")[0];
-                for (let bomb of node) {
-                    this.game.removeChild(bomb);
+                    let enemies = this.game.getChildrenByName("Enemies")[0].getChildren();
+                    for (let enemy of enemies) {
+                        if (enemy.mtxLocal.translation.isInsideSphere(bomb.mtxLocal.translation, bomb.range)) {
+                            this.game.removeChild(enemy);
+                            //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
+                        }
+                    }
+                    let node = this.game.getChildrenByName("bomb");
+                    console.log(node);
+                    for (let bomb of node) {
+                        this.game.removeChild(bomb);
+                    }
                 }
             }
         }

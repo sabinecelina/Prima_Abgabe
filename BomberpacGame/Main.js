@@ -16,8 +16,11 @@ var Bomberpac;
     function init(_event) {
         Bomberpac.showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
+        document.getElementById("controlButton").addEventListener("click", Bomberpac.showControls);
         document.getElementById("musicButton").addEventListener("click", Bomberpac.toggleMusic);
         document.getElementById("soundButton").addEventListener("click", Bomberpac.toggleSounds);
+        document.getElementById("creditsButton").addEventListener("click", Bomberpac.showCredits);
+        document.getElementById("backButton").addEventListener("click", Bomberpac.showMenue);
     }
     async function load(_filename) {
         let response = await fetch("data.json");
@@ -38,7 +41,6 @@ var Bomberpac;
         fillArray();
         Bomberpac.Sound.init();
         document.getElementById("endScreen").style.display = "none";
-        document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
         let img = document.querySelector("img");
@@ -62,7 +64,7 @@ var Bomberpac;
         }
         initializeGame(toggleData);
         Bomberpac.pacman = new Bomberpac.PacmanPlayerOne("PacmanOne", 1, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
-        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 2, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
+        Bomberpac.pacmanTwo = new Bomberpac.PacmanPlayerTwo("PacmanTwo", 28, 1, Bomberpac.gameField, Bomberpac.game, toggleData);
         let number = Number(toggleData.amountOfEnemies);
         let enemies = new Bomberpac.fCore.Node("Enemies");
         for (let i = 0; i < number; i++) {

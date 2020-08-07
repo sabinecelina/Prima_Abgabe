@@ -44,8 +44,11 @@ namespace Bomberpac {
     function init(_event: Event): void {
         showMenue();
         document.getElementById("startButton").addEventListener("click", hndLoad);
+        document.getElementById("controlButton").addEventListener("click", showControls);
         document.getElementById("musicButton").addEventListener("click", toggleMusic);
         document.getElementById("soundButton").addEventListener("click", toggleSounds);
+        document.getElementById("creditsButton").addEventListener("click", showCredits);
+        document.getElementById("backButton").addEventListener("click", showMenue);
     }
     async function load(_filename: string): Promise<void> {
         let response: Response = await fetch("data.json");
@@ -66,7 +69,6 @@ namespace Bomberpac {
         fillArray();
         Sound.init();
         document.getElementById("endScreen").style.display = "none";
-        document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
         let img: HTMLImageElement = document.querySelector("img");
@@ -90,7 +92,7 @@ namespace Bomberpac {
         }
         initializeGame(toggleData);
         pacman = new PacmanPlayerOne("PacmanOne", 1, 1, gameField, game, toggleData);
-        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 2, 1, gameField, game, toggleData);
+        pacmanTwo = new PacmanPlayerTwo("PacmanTwo", 28, 1, gameField, game, toggleData);
         let number: number = Number(toggleData.amountOfEnemies);
         let enemies: fCore.Node = new fCore.Node("Enemies");
         for (let i: number = 0; i < number; i++) {

@@ -6,8 +6,24 @@ var Bomberpac;
         document.getElementById("menueButtons").style.display = "initial";
         document.getElementById("gameWrapper").style.display = "none";
         document.getElementById("endScreen").style.display = "none";
+        document.getElementById("creditsPage").style.display = "none";
+        document.getElementById("controlPage").style.display = "none";
+        document.getElementById("backButton").style.display = "none";
     }
     Bomberpac.showMenue = showMenue;
+    function showControls() {
+        document.getElementById("menueButtons").style.display = "none";
+        document.getElementById("controlPage").style.display = "initial";
+        document.getElementById("backButton").style.display = "initial";
+        document.getElementById("level").style.display = "none";
+    }
+    Bomberpac.showControls = showControls;
+    function showCredits() {
+        document.getElementById("menueButtons").style.display = "none";
+        document.getElementById("creditsPage").style.display = "initial";
+        document.getElementById("backButton").style.display = "initial";
+    }
+    Bomberpac.showCredits = showCredits;
     function toggleMusic() {
         Bomberpac.Sound.init();
         if (!Bomberpac.musicMuted) {

@@ -107,11 +107,11 @@ namespace Bomberpac {
             case 4:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
-            case 5:
-            case 6:
-            case 7:
-              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
-              PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+              case 5:
+                case 6:
+                  case 7:
+                    ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+                    PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
               /*let randomTranslateX: number = getRandomTranslateX();
               let randomTranslateY: number = getRandomTranslateY();
               if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || gameField[randomTranslateX][randomTranslateY] == 1)) {

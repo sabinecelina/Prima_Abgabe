@@ -29,33 +29,29 @@ namespace Bomberpac {
       this.amountOfFood = Number(this.data.amountOfFood);
       this.amountOfItems = Number(this.data.amountOfItems);
     }
-    private createFloor(_amountOfObstacles: number) {
+    private createFloor(_amountOfObstacles: number): void {
       for (let i: number = 0; i < 31; i++) {
         let walls = new Obstacle("wall", gameField, i, 0, this.scale, Floor.mesh, this.color);
-        this.gameField[i][0] = 1;
         this.obstacles.appendChild(walls);
         walls = new Obstacle("wall", gameField, i, 20, this.scale, Floor.mesh, this.color);
-        this.gameField[i][20] = 1;
         this.obstacles.appendChild(walls);
       }
       for (let i: number = 0; i < 31; i++) {
         let walls = new Obstacle("wall", gameField, 0, i, this.scale, Floor.mesh, this.color);
-        this.gameField[0][i] = 1;
         this.obstacles.appendChild(walls);
         walls = new Obstacle("wall", gameField, 29, i, this.scale, Floor.mesh, this.color);
-        this.gameField[29][i] = 1;
         this.obstacles.appendChild(walls);
       }
       while (this.obstacles.getChildrenByName("obstacles").length < _amountOfObstacles) {
         let randomTranslateX: number = getRandomTranslateX();
         let randomTranslateY: number = getRandomTranslateX();
-        if (((randomTranslateX == 10 && randomTranslateY == 10) || randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1))) {
-        } else {
+        if (!((randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
+          || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1)))) {
           let obstacles = new Obstacle("obstacles", gameField, randomTranslateX, randomTranslateY, this.scale, Floor.mesh, this.color);
           this.obstacles.appendChild(obstacles);
         }
+        this.appendChild(this.obstacles);
       }
-      this.appendChild(this.obstacles);
     }
     private createFood(_amountofFood: number) {
       let foodNode: fCore.Node = new fCore.Node("Food");
@@ -64,11 +60,12 @@ namespace Bomberpac {
       for (let i: number = 0; i < _amountofFood; i++) {
         let randomTranslateX: number = randomInteger(1, 28);
         let randomTranslateY: number = randomInteger(1, 19);
-        if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+        if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+          this.gameField[0][i] = 1;
           food = new Food("food", randomTranslateX, randomTranslateY, this.gameField);
           foodNode.appendChild(food);
-          this.appendChild(foodNode);
         }
+        this.appendChild(foodNode);
       }
     }
     private createItems(_amountOfItems: number): void {

@@ -5,8 +5,22 @@ namespace Bomberpac {
     document.getElementById("menueButtons").style.display = "initial";
     document.getElementById("gameWrapper").style.display = "none";
     document.getElementById("endScreen").style.display = "none";
-
+    document.getElementById("creditsPage").style.display = "none";
+    document.getElementById("controlPage").style.display = "none";
+    document.getElementById("backButton").style.display = "none";
   }
+  export function showControls(): void {
+    document.getElementById("menueButtons").style.display = "none";
+    document.getElementById("controlPage").style.display = "initial";
+    document.getElementById("backButton").style.display = "initial";
+    document.getElementById("level").style.display = "none";
+  }
+  export function showCredits(): void {
+    document.getElementById("menueButtons").style.display = "none";
+    document.getElementById("creditsPage").style.display = "initial";
+    document.getElementById("backButton").style.display = "initial";
+  }
+
   export function toggleMusic(): void {
     Sound.init();
     if (!musicMuted) {

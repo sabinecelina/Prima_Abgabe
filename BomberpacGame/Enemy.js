@@ -6,8 +6,8 @@ var Bomberpac;
     var ƒAid = FudgeAid;
     class Enemy extends Bomberpac.Sprite {
         constructor(_name = "Enemy", gamfield, game) {
-            super(_name, 4, 2, gamfield);
-            this.speedMaxEnemy = new ƒ.Vector3(4, 4, 4); // units per second
+            super(_name, 11, 11, gamfield);
+            this.speedMaxEnemy = new ƒ.Vector3(2, 2, 2); // units per second
             this.speed = ƒ.Vector3.ZERO();
             this.number = 0;
             this.update = (_event) => {
@@ -20,7 +20,7 @@ var Bomberpac;
             };
             this.game = game;
             this.gameField = gamfield;
-            this.act(Bomberpac.ACTION.IDLE);
+            this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
         collide() {
@@ -98,27 +98,30 @@ var Bomberpac;
                     randomTranslateX = Bomberpac.randomInteger(1, this.mtxLocal.translation.x - 5);
                     randomTranslateY = Bomberpac.randomInteger(1, this.mtxLocal.translation.y - 5);
                 }
-                randomTranslateX = Bomberpac.randomInteger(this.mtxLocal.translation.x - 2, this.mtxLocal.translation.x + 2);
-                randomTranslateY = Bomberpac.randomInteger(this.mtxLocal.translation.y - 2, this.mtxLocal.translation.y + 2);
-                this.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY);
-                if (this._enemyDirection == randomNumber) {
-                }
-                else if (this._enemyDirection == Bomberpac.DIRECTION.LEFT || this._enemyDirection == Bomberpac.DIRECTION.RIGHT) {
-                    randomNumber = Bomberpac.randomInteger(2, 4);
-                    this.act(Bomberpac.ACTION.WALK, randomNumber);
-                }
-                else if (this._enemyDirection == Bomberpac.DIRECTION.UP || this._enemyDirection == Bomberpac.DIRECTION.DOWN) {
-                    randomNumber = Bomberpac.randomInteger(0, 2);
-                    this.act(Bomberpac.ACTION.WALK, randomNumber);
+                randomTranslateX = Bomberpac.getRandomTranslateX();
+                randomTranslateY = Bomberpac.getRandomTranslateY();
+                if (!((randomTranslateX == 10 && randomTranslateY == 10) || (randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 28 && randomTranslateY == 1)
+                    || (randomTranslateX == 2 && randomTranslateY == 1 || (randomTranslateX == 3 && randomTranslateY == 1)))) {
+                    this.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
+                    if (this._enemyDirection == randomNumber) {
+                    }
+                    else if (this._enemyDirection == Bomberpac.DIRECTION.LEFT || this._enemyDirection == Bomberpac.DIRECTION.RIGHT) {
+                        randomNumber = Bomberpac.randomInteger(2, 4);
+                        this.act(Bomberpac.ACTION.WALK, randomNumber);
+                    }
+                    else if (this._enemyDirection == Bomberpac.DIRECTION.UP || this._enemyDirection == Bomberpac.DIRECTION.DOWN) {
+                        randomNumber = Bomberpac.randomInteger(0, 2);
+                        this.act(Bomberpac.ACTION.WALK, randomNumber);
+                    }
                 }
             }
         }
         killPacman() {
             if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, 0.9)) {
-                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(28, 1, 0);
+                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
             }
             else if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
-                Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
+                Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
             }
         }
         eatFood() {
