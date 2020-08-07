@@ -92,10 +92,7 @@ namespace Bomberpac {
             break;
           case 6: id = 6;
             break;
-          case 7: id = 7;
-            break;
         }
-        (i);
         let randomTranslateX: number = getRandomTranslateX();
         let randomTranslateY: number = getRandomTranslateY();
         Pill.generateSprites(spritesheet, sprites[randomNumber]);
@@ -104,7 +101,14 @@ namespace Bomberpac {
           itemNode.appendChild(pill);
         }
       }
-      this.appendChild(itemNode);
+      let randomTranslateX: number = getRandomTranslateX();
+      let randomTranslateY: number = getRandomTranslateY();
+      Pill.generateSprites(spritesheet, sprites[7]);
+      if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 15 && randomTranslateY == 15) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
+        pill = new Pill("Item", randomTranslateX, randomTranslateY, this.gameField, 7);
+        itemNode.appendChild(pill);
+        this.appendChild(itemNode);
+      }
     }
   }
 }
