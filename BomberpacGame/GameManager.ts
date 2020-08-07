@@ -4,6 +4,8 @@ namespace Bomberpac {
   export function showMenue(): void {
     document.getElementById("menueButtons").style.display = "initial";
     document.getElementById("gameWrapper").style.display = "none";
+    document.getElementById("endScreen").style.display = "none";
+
   }
   export function toggleMusic(): void {
     Sound.init();
@@ -26,6 +28,29 @@ namespace Bomberpac {
     } else if (soundMuted) {
       soundMuted = false;
       document.getElementById("soundButton").innerHTML = "Sound: an";
+    }
+  }
+  export function randomInteger(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  export function getRandomTranslateX(): number {
+    return randomInteger(1, 28);
+  }
+  export function getRandomTranslateY(): number {
+    return randomInteger(1, 19);
+  }
+  export function gameOverScreen(pacman: string): void {
+    Sound.stopMusic();
+    fCore.Loop.stop();
+    document.getElementById("endScreen").style.display = "initial";
+    document.getElementById("gameWrapper").style.display = "none";
+    if (pacman === "PlayerOne") {
+      document.getElementById("deathScreenPlayerOne").style.display = "initial";
+      document.getElementById("deathScreenPlayerTwo").style.display = "none";
+    } else {
+      document.getElementById("deathScreenPlayerOne").style.display = "none";
+      document.getElementById("deathScreenPlayerTwo").style.display = "initial";
+
     }
   }
 }

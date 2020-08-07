@@ -15,6 +15,7 @@ var Bomberpac;
             this.fetchData();
         }
         /*
+        //tried collision checker with matrix so I dont need to check every single floor
         private checkCollision(): boolean {
           let cmpTransform: fCore.Vector3 = this.cmpTransform.local.translation;
           let x: number = cmpTransform.x / scale;
@@ -41,7 +42,7 @@ var Bomberpac;
         }*/
         collide() {
             let pacmanTranslation = this.mtxLocal.translation;
-            let node = this.game.getChildrenByName("Obstacles")[0].getChildren();
+            let node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0].getChildren();
             let check = false;
             for (let obstacle of node) {
                 if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.9)) {
@@ -71,7 +72,7 @@ var Bomberpac;
         }
         eatFood() {
             let pacmanTranslation = this.mtxLocal.translation;
-            let node = this.game.getChildrenByName("Food")[0].getChildren();
+            let node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
             for (let food of node) {
                 if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
                     let _currentTranslation = food.mtxLocal.translation;
@@ -93,7 +94,7 @@ var Bomberpac;
                 let manTranslation = this.mtxLocal.translation;
                 bomb = new Bomberpac.Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
                 this.game.appendChild(bomb);
-                if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, range)) {
+                if (bomb.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, bomb.range)) {
                     if (this.name == Bomberpac.pacman.name) {
                         Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
                         Bomberpac.pacman.lives - 1;

@@ -13,49 +13,28 @@ var Bomberpac;
                 this.processInput();
                 this.eatFood();
                 this.eatItem();
-                this.isKilled();
-                if (this.checkScore()) {
-                    this.levelUp();
+                if (this.gameOver()) {
+                    Bomberpac.Sound.play("pacman_death");
+                    Bomberpac.gameOverScreen("playerTwo");
                 }
+                this.collide();
             };
             this.game = game;
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
-        levelUp() {
-            PacmanPlayerTwo.speedMaxPlayerTwo.x += 0.5;
-        }
-        checkScore() {
-            if (this.score % 5 == 0 || this.score != 0)
+        gameOver() {
+            if (this.lives < 1)
                 return true;
             return false;
         }
-        isKilled() {
-            let enemies = this.game.getChildrenByName("Enemies")[0].getChildren();
-            let rect;
-            let checkHit;
-            for (let enemy of enemies) {
-                rect = enemy;
-                checkHit = rect.killPacman();
-                if (checkHit) {
-                    this.lives--;
-                    console.log("got killed");
-                    //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
-                }
-            }
-        }
-        /*private setTranslationReset(): void {
-          console.log("something happened");
-          this.translation.x = 5;
-          this.translation.y = 5;
-        }*/
         processInput() {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
             else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT]))
                 this.act(Bomberpac.ACTION.EXPLODE);
@@ -63,6 +42,7 @@ var Bomberpac;
                 this.act(Bomberpac.ACTION.IDLE);
         }
         act(_action, _direction) {
+            console.log(this.score);
             let oldDirection = this.cmpTransform.local.rotation;
             let cmpRotation = new fCore.Vector3();
             switch (_action) {
@@ -103,7 +83,7 @@ var Bomberpac;
         }
         eatItem() {
             let pacmanTranslation = this.mtxLocal.translation;
-            let node = this.game.getChildrenByName("Items")[0].getChildren();
+            let node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
             for (let item of node) {
                 let rect = item.getID();
                 if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
@@ -134,58 +114,22 @@ var Bomberpac;
                         case 5:
                         case 6:
                         case 7:
-                            for (let i = 1; i < 5; i++) {
-                                /*let randomTranslateX: number = getRandomTranslateX();
-                                let randomTranslateY: number = getRandomTranslateY();
-                                if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || gameField[randomTranslateX][randomTranslateY] == 1)) {
-                                  this.pacmanDouble = new PacmanPlayerOne("PacmanOne", randomTranslateX, randomTranslateY, gameField, this.game, this.data)
-                                  this.game.appendChild(pacmans[i]);
-                                }*/
-                            }
+                            ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+                            PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+                            /*let randomTranslateX: number = getRandomTranslateX();
+                            let randomTranslateY: number = getRandomTranslateY();
+                            if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || gameField[randomTranslateX][randomTranslateY] == 1)) {
+                              this.pacmanDouble = new PacmanPlayerOne("PacmanOne", randomTranslateX, randomTranslateY, gameField, this.game, this.data)
+                              this.game.appendChild(pacmans[i]);
+                            }*/
                             break;
-                        /*
-                      case 3:
-                        console.log("three");
-                        break;
-                      case 4:
-                        console.log("four");
-                        break;
-                      case 5:
-                        console.log("five");
-                        break;
-                      case 6:
-                        console.log("six");
-                        break;
-                      case 7:
-                        console.log("seven");
-                        break;
-                      case 8:
-                        let canvas: HTMLCanvasElement = document.querySelector("canvas");
-                        let img: HTMLImageElement = document.querySelector("img");
-                        let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
-                        Pacman.generateSprites(spritesheet);
-                        for (let i: number = 0; i < 5; i++) {
-                          let randomTranslateX: number = Level.randomInteger(2, 27);
-                          let randomTranslateY: number = Level.randomInteger(2, 19);
-                          let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
-                          game.appendChild(hare);
-                        }
-                        let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
-                        matrix[_currentTranslation.x][_currentTranslation.y] = 0;
-                        let randomTranslateX: number = Level.randomInteger(1, 28);
-                        let randomTranslateY: number = Level.randomInteger(1, 19);
-                        matrix[randomTranslateX][randomTranslateY] = 1;
-                        item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-                        this.period++;
-                        console.log(game);
-                        break;
-                        break;*/
                     }
                 }
             }
         }
         handleEventItem() {
             console.log("something happened");
+            PacmanPlayerTwo.speedMaxPlayerTwo.x = 3;
         }
     }
     PacmanPlayerTwo.speedMaxPlayerTwo = new ƒ.Vector3(3, 3, 3); // units per second
@@ -200,12 +144,35 @@ var Bomberpac;
                 this.processInput();
                 this.eatFood();
                 this.eatItem();
+                if (this.gameOver()) {
+                    Bomberpac.Sound.play("pacman_death");
+                    Bomberpac.gameOverScreen("playeplayOnerTwo");
+                }
             };
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
         }
+        gameOver() {
+            if (this.lives < 1)
+                return true;
+            return false;
+        }
+        isKilled() {
+            let enemies = this.game.getChildrenByName("Enemies")[0].getChildren();
+            let rect;
+            let checkHit;
+            for (let enemy of enemies) {
+                rect = enemy;
+                checkHit = rect.killPacman();
+                if (checkHit) {
+                    this.lives--;
+                    console.log(this.lives);
+                    console.log("got killed");
+                }
+            }
+        }
         eatItem() {
             let pacmanTranslation = this.mtxLocal.translation;
-            let node = this.game.getChildrenByName("Items")[0].getChildren();
+            let node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
             for (let item of node) {
                 let rect = item.getID();
                 if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
@@ -235,31 +202,11 @@ var Bomberpac;
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerOne.speedMaxPlayerOne.x = 0.5;
                         case 5:
+                            ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+                            PacmanPlayerOne.speedMaxPlayerOne.x = 1;
                         case 6:
                         case 7:
                             break;
-                        /*
-                      case 8:
-                        let canvas: HTMLCanvasElement = document.querySelector("canvas");
-                        let img: HTMLImageElement = document.querySelector("img");
-                        let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
-                        Pacman.generateSprites(spritesheet);
-                        for (let i: number = 0; i < 5; i++) {
-                          let randomTranslateX: number = Level.randomInteger(2, 27);
-                          let randomTranslateY: number = Level.randomInteger(2, 19);
-                          let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
-                          game.appendChild(hare);
-                        }
-                        let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
-                        matrix[_currentTranslation.x][_currentTranslation.y] = 0;
-                        let randomTranslateX: number = Level.randomInteger(1, 28);
-                        let randomTranslateY: number = Level.randomInteger(1, 19);
-                        matrix[randomTranslateX][randomTranslateY] = 1;
-                        item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-                        this.period++;
-                        console.log(game);
-                        break;
-                        break;*/
                     }
                 }
             }
@@ -303,13 +250,13 @@ var Bomberpac;
         }
         //@Override
         processInput() {
-            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
+            if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.LEFT);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.RIGHT);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.UP);
-            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
+            else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
                 this.act(Bomberpac.ACTION.WALK, Bomberpac.DIRECTION.DOWN);
             else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
                 this.act(Bomberpac.ACTION.EXPLODE);

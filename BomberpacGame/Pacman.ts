@@ -17,46 +17,25 @@ namespace Bomberpac {
       this.processInput();
       this.eatFood();
       this.eatItem();
-      this.isKilled();
-      if (this.checkScore()) {
-        this.levelUp();
+      if (this.gameOver()) {
+        Sound.play("pacman_death");
+        gameOverScreen("playerTwo");
       }
+      this.collide();
     }
-    public levelUp(): void {
-      PacmanPlayerTwo.speedMaxPlayerTwo.x += 0.5;
-    }
-    public checkScore(): boolean {
-      if (this.score % 5 == 0 || this.score != 0)
+    private gameOver(): boolean {
+      if (this.lives < 1)
         return true;
       return false;
     }
-    public isKilled(): void {
-      let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
-      let rect: Enemy;
-      let checkHit: boolean;
-      for (let enemy of enemies) {
-        rect = (<Enemy>enemy);
-        checkHit = rect.killPacman();
-        if (checkHit) {
-          this.lives--;
-          console.log("got killed");
-          //ƒ.Time.game.setTimer(5000, 1, this.setTranslationReset);
-        }
-      }
-    }
-    /*private setTranslationReset(): void {
-      console.log("something happened");
-      this.translation.x = 5;
-      this.translation.y = 5;
-    }*/
     public processInput(): void {
-      if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
+      if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
         this.act(ACTION.WALK, DIRECTION.LEFT);
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
+      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
         this.act(ACTION.WALK, DIRECTION.RIGHT)
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
+      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
         this.act(ACTION.WALK, DIRECTION.UP);
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
+      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
         this.act(ACTION.WALK, DIRECTION.DOWN);
       else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SHIFT_LEFT]))
         this.act(ACTION.EXPLODE);
@@ -64,6 +43,7 @@ namespace Bomberpac {
         this.act(ACTION.IDLE);
     }
     public act(_action: ACTION, _direction?: DIRECTION): void {
+      console.log(this.score);
       let oldDirection: fCore.Vector3 = this.cmpTransform.local.rotation;
       let cmpRotation: fCore.Vector3 = new fCore.Vector3();
       switch (_action) {
@@ -104,7 +84,7 @@ namespace Bomberpac {
     }
     public eatItem(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
-      let node: fCore.Node[] = this.game.getChildrenByName("Items")[0].getChildren();
+      let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
       for (let item of node) {
         let rect: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
@@ -135,58 +115,22 @@ namespace Bomberpac {
             case 5:
             case 6:
             case 7:
-              for (let i: number = 1; i < 5; i++) {
-                /*let randomTranslateX: number = getRandomTranslateX();
-                let randomTranslateY: number = getRandomTranslateY();
-                if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || gameField[randomTranslateX][randomTranslateY] == 1)) {
-                  this.pacmanDouble = new PacmanPlayerOne("PacmanOne", randomTranslateX, randomTranslateY, gameField, this.game, this.data)
-                  this.game.appendChild(pacmans[i]);
-                }*/
-              }
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+              PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+              /*let randomTranslateX: number = getRandomTranslateX();
+              let randomTranslateY: number = getRandomTranslateY();
+              if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || gameField[randomTranslateX][randomTranslateY] == 1)) {
+                this.pacmanDouble = new PacmanPlayerOne("PacmanOne", randomTranslateX, randomTranslateY, gameField, this.game, this.data)
+                this.game.appendChild(pacmans[i]);
+              }*/
               break;
-            /*
-          case 3:
-            console.log("three");
-            break;
-          case 4:
-            console.log("four");
-            break;
-          case 5:
-            console.log("five");
-            break;
-          case 6:
-            console.log("six");
-            break;
-          case 7:
-            console.log("seven");
-            break;
-          case 8:
-            let canvas: HTMLCanvasElement = document.querySelector("canvas");
-            let img: HTMLImageElement = document.querySelector("img");
-            let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
-            Pacman.generateSprites(spritesheet);
-            for (let i: number = 0; i < 5; i++) {
-              let randomTranslateX: number = Level.randomInteger(2, 27);
-              let randomTranslateY: number = Level.randomInteger(2, 19);
-              let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
-              game.appendChild(hare);
-            }
-            let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
-            matrix[_currentTranslation.x][_currentTranslation.y] = 0;
-            let randomTranslateX: number = Level.randomInteger(1, 28);
-            let randomTranslateY: number = Level.randomInteger(1, 19);
-            matrix[randomTranslateX][randomTranslateY] = 1;
-            item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-            this.period++;
-            console.log(game);
-            break;
-            break;*/
           }
         }
       }
     }
     private handleEventItem(): void {
       console.log("something happened");
+      PacmanPlayerTwo.speedMaxPlayerTwo.x = 3;
     }
   }
   export class PacmanPlayerOne extends Man {
@@ -203,10 +147,33 @@ namespace Bomberpac {
       this.processInput();
       this.eatFood();
       this.eatItem();
+      if (this.gameOver()) {
+        Sound.play("pacman_death");
+        gameOverScreen("playeplayOnerTwo");
+      }
+    }
+    private gameOver(): boolean {
+      if (this.lives < 1)
+        return true;
+      return false;
+    }
+    public isKilled(): void {
+      let enemies: fCore.Node[] = this.game.getChildrenByName("Enemies")[0].getChildren();
+      let rect: Enemy;
+      let checkHit: boolean;
+      for (let enemy of enemies) {
+        rect = (<Enemy>enemy);
+        checkHit = rect.killPacman();
+        if (checkHit) {
+          this.lives--;
+          console.log(this.lives);
+          console.log("got killed");
+        }
+      }
     }
     public eatItem(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
-      let node: fCore.Node[] = this.game.getChildrenByName("Items")[0].getChildren();
+      let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
       for (let item of node) {
         let rect: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
@@ -236,31 +203,11 @@ namespace Bomberpac {
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 0.5;
             case 5:
+              ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
+              PacmanPlayerOne.speedMaxPlayerOne.x = 1;
             case 6:
             case 7:
               break;
-            /*
-          case 8:
-            let canvas: HTMLCanvasElement = document.querySelector("canvas");
-            let img: HTMLImageElement = document.querySelector("img");
-            let spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", img);
-            Pacman.generateSprites(spritesheet);
-            for (let i: number = 0; i < 5; i++) {
-              let randomTranslateX: number = Level.randomInteger(2, 27);
-              let randomTranslateY: number = Level.randomInteger(2, 19);
-              let hare: Pacman = new Pacman("Pacman", randomTranslateX, randomTranslateY);
-              game.appendChild(hare);
-            }
-            let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
-            matrix[_currentTranslation.x][_currentTranslation.y] = 0;
-            let randomTranslateX: number = Level.randomInteger(1, 28);
-            let randomTranslateY: number = Level.randomInteger(1, 19);
-            matrix[randomTranslateX][randomTranslateY] = 1;
-            item.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
-            this.period++;
-            console.log(game);
-            break;
-            break;*/
           }
         }
       }
@@ -304,15 +251,14 @@ namespace Bomberpac {
     }
     //@Override
     public processInput(): void {
-      if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
+      if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_LEFT]))
         this.act(ACTION.WALK, DIRECTION.LEFT);
-
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.D]))
+      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_RIGHT]))
         this.act(ACTION.WALK, DIRECTION.RIGHT);
 
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.W]))
+      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_UP]))
         this.act(ACTION.WALK, DIRECTION.UP);
-      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.S]))
+      else if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.ARROW_DOWN]))
         this.act(ACTION.WALK, DIRECTION.DOWN);
       else if (ƒ.Keyboard.isPressedCombo([fCore.KEYBOARD_CODE.SPACE]))
         this.act(ACTION.EXPLODE);

@@ -11,14 +11,14 @@ namespace Bomberpac {
     private game: fCore.Node;
     private number: number = 0;
     constructor(_name: string = "Enemy", gamfield: number[][], game: fCore.Node) {
-      super(_name, 1, 2, gamfield);
+      super(_name, 4, 2, gamfield);
       this.game = game;
       this.gameField = gamfield; this.act(ACTION.IDLE);
       ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
     }
     private collide(): boolean {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
-      let node: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+      let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0].getChildren();
       let check: boolean = false;
       for (let obstacle of node) {
         if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.95)) {
@@ -116,17 +116,23 @@ namespace Bomberpac {
     public killPacman(): boolean {
       let check: boolean = false;
       if (this.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, 0.9)) {
+        pacman.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
+        pacman.lives--;
+        console.log(pacman.lives);
         check = true;
       }
       else if (this.mtxLocal.translation.isInsideSphere(pacmanTwo.mtxLocal.translation, 0.9)) {
+        pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
+        pacmanTwo.lives--;
+        console.log(pacmanTwo.lives);
         check = true;
       }
       return check;
     }
     private eatFood(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
-      let node: fCore.Node[] = this.game.getChildrenByName("Food")[0].getChildrenByName("food");
-      let nodeTwo: fCore.Node = this.game.getChildrenByName("Food")[0];
+      let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
+      let nodeTwo: fCore.Node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0];
       for (let food of node) {
         if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
           let _currentTranslation: fCore.Vector3 = food.mtxLocal.translation;

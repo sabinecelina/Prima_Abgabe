@@ -13,7 +13,6 @@
     <script src="Gameobject.js"></script>
     <script src="Obstacle.js"></script>
     <script src="Floor.js"></script>
-    <script src="Util.js"></script>
     <script src="Collectible.js"></script>
     <script src="Item.js"></script>
     <script src="Sound.js"></script>
@@ -51,10 +50,22 @@
             <button id="reloadMap">Map erneuern</button>
             <canvas width="1000" height="700" style="background-color: aliceblue;"></canvas>
     </div>
+    <div id="endScreen">
+        <div id="deathScreenPlayerOne">
+            <h1>GAME OVER: Player One</h1>
+            <p>Player TWO hat gewonnen</p>
+        </div>
+        <div id="deathScreenPlayerTwo">
+            <h1>GAME OVER: Player One</h1>
+            <p>Player TWO hat gewonnen</p>
+        </div>
+        <button id="playAgain">Hauptmenü</button>
+    </div>
     <img src="img/Spritesheet.png" id="spritesheet" />
     <audio id="gameMusic" src="Sounds/pacman_music.mp3" type="audio/mpeg"></audio>
     <audio id="pacman_eat" src="Sounds/pacman_eat.wav" type="audio/wav"></audio>
     <audio id="pacman_eatfruit" src="Sounds/pacman_eatfruit.wav" type="audio/wav"></audio>
+    <audio id="pacman_death" src="Sounds/pacman_death.wav" type="audio/wav"></audio>
 </body>
 
 </html>

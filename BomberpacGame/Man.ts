@@ -24,6 +24,7 @@ namespace Bomberpac {
       this.fetchData();
     }
     /*
+    //tried collision checker with matrix so I dont need to check every single floor
     private checkCollision(): boolean {
       let cmpTransform: fCore.Vector3 = this.cmpTransform.local.translation;
       let x: number = cmpTransform.x / scale;
@@ -50,7 +51,7 @@ namespace Bomberpac {
     }*/
     public collide(): boolean {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
-      let node: fCore.Node[] = this.game.getChildrenByName("Obstacles")[0].getChildren();
+      let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0].getChildren();
       let check: boolean = false;
       for (let obstacle of node) {
         if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.9)) {
@@ -81,7 +82,7 @@ namespace Bomberpac {
     }
     public eatFood(): void {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
-      let node: fCore.Node[] = this.game.getChildrenByName("Food")[0].getChildren();
+      let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
       for (let food of node) {
         if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
           let _currentTranslation: fCore.Vector3 = food.mtxLocal.translation;
@@ -103,7 +104,7 @@ namespace Bomberpac {
         let manTranslation: fCore.Vector3 = this.mtxLocal.translation;
         bomb = new Bomb("bomb", manTranslation.x, manTranslation.y, this.gameField);
         this.game.appendChild(bomb);
-        if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, range)) {
+        if (bomb.mtxLocal.translation.isInsideSphere(pacman.mtxLocal.translation, bomb.range)) {
           if (this.name == pacman.name) {
             pacmanTwo.mtxLocal.translation = new fCore.Vector3(11, 11, 0);
             pacman.lives - 1;

@@ -64,7 +64,8 @@ namespace Bomberpac {
     }
     function hndLoad(_event: Event): void {
         fillArray();
-
+        Sound.init();
+        document.getElementById("endScreen").style.display = "none";
         document.getElementById("reloadMap").addEventListener("click", reloadMap);
         document.getElementById("menue").style.display = "none";
         document.getElementById("gameWrapper").style.display = "initial";
@@ -124,22 +125,29 @@ namespace Bomberpac {
         game.appendChild(floor);
     }
     function reloadMap() {
-        /*let obstacle: fCore.Node[] = game.getChildrenByName("Obstacles")[0].getChildren();
-        let obstacles: fCore.Node = game.getChildrenByName("Obstacles")[0];
-        console.log(obstacles);
-        let translation: fCore.Vector3;
-        let items: fCore.Node[] = game.getChildrenByName("Items")[0].getChildren();
-        //let node: fCore.Node[] = game.getChildren();
-        /*for (let item of items) {
-            translation = item.mtxLocal.translation;
-            gameField[translation.x][translation.y] == 0;
-            game.removeChild(item);
+        let floorChild: fCore.Node = game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0];
+        let floor: fCore.Node[] = game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0].getChildren();
+        console.log("removing floor")
+        for (let item of floor) {
+            console.log(gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y]);
+            gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y] = 0;
+            console.log(gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y]);
+            floorChild.removeChild(item);
         }
-        for (let node of obstacle) {
-            translation = node.mtxLocal.translation;
-            gameField[translation.x][translation.y] == 0;
-            obstacles.removeChild(obstacles);
+        let foodChild: fCore.Node = game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0];
+        let food: fCore.Node[] = game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
+        console.log("removing floor")
+        for (let item of food) {
+            gameField[item.mtxLocal.translation.x][item.mtxLocal.translation.y] = 0;
+            foodChild.removeChild(item);
         }
-        initializeGame(toggleData); */
+        let itemChild: fCore.Node = game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0];
+        let item: fCore.Node[] = game.getChildrenByName("Floor")[0].getChildrenByName("Items")[0].getChildren();
+        console.log("removing floor")
+        for (let items of item) {
+            gameField[items.mtxLocal.translation.x][items.mtxLocal.translation.y] = 0;
+            itemChild.removeChild(items);
+        }
+        initializeGame(toggleData);
     }
 }

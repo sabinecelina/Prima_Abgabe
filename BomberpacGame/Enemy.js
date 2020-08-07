@@ -6,7 +6,7 @@ var Bomberpac;
     var ƒAid = FudgeAid;
     class Enemy extends Bomberpac.Sprite {
         constructor(_name = "Enemy", gamfield, game) {
-            super(_name, 1, 2, gamfield);
+            super(_name, 4, 2, gamfield);
             this.speedMaxEnemy = new ƒ.Vector3(4, 4, 4); // units per second
             this.speed = ƒ.Vector3.ZERO();
             this.number = 0;
@@ -25,7 +25,7 @@ var Bomberpac;
         }
         collide() {
             let pacmanTranslation = this.mtxLocal.translation;
-            let node = this.game.getChildrenByName("Obstacles")[0].getChildren();
+            let node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Obstacles")[0].getChildren();
             let check = false;
             for (let obstacle of node) {
                 if (pacmanTranslation.isInsideSphere(obstacle.mtxLocal.translation, 0.95)) {
@@ -116,17 +116,23 @@ var Bomberpac;
         killPacman() {
             let check = false;
             if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacman.mtxLocal.translation, 0.9)) {
+                Bomberpac.pacman.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
+                Bomberpac.pacman.lives--;
+                console.log(Bomberpac.pacman.lives);
                 check = true;
             }
             else if (this.mtxLocal.translation.isInsideSphere(Bomberpac.pacmanTwo.mtxLocal.translation, 0.9)) {
+                Bomberpac.pacmanTwo.mtxLocal.translation = new fCore.Vector3(1, 1, 0);
+                Bomberpac.pacmanTwo.lives--;
+                console.log(Bomberpac.pacmanTwo.lives);
                 check = true;
             }
             return check;
         }
         eatFood() {
             let pacmanTranslation = this.mtxLocal.translation;
-            let node = this.game.getChildrenByName("Food")[0].getChildrenByName("food");
-            let nodeTwo = this.game.getChildrenByName("Food")[0];
+            let node = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
+            let nodeTwo = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0];
             for (let food of node) {
                 if (pacmanTranslation.isInsideSphere(food.mtxLocal.translation, 0.2)) {
                     let _currentTranslation = food.mtxLocal.translation;

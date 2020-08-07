@@ -26,16 +26,20 @@ var Bomberpac;
         }
         createFloor(_amountOfObstacles) {
             for (let i = 0; i < 31; i++) {
-                let obstacle = new Bomberpac.Obstacle("wall", Bomberpac.gameField, i, 0, this.scale, Floor.mesh, this.color);
-                this.obstacles.appendChild(obstacle);
-                obstacle = new Bomberpac.Obstacle("wall", Bomberpac.gameField, i, 20, this.scale, Floor.mesh, this.color);
-                this.obstacles.appendChild(obstacle);
+                let walls = new Bomberpac.Obstacle("wall", Bomberpac.gameField, i, 0, this.scale, Floor.mesh, this.color);
+                this.gameField[i][0] = 1;
+                this.obstacles.appendChild(walls);
+                walls = new Bomberpac.Obstacle("wall", Bomberpac.gameField, i, 20, this.scale, Floor.mesh, this.color);
+                this.gameField[i][20] = 1;
+                this.obstacles.appendChild(walls);
             }
             for (let i = 0; i < 31; i++) {
-                let obstacle = new Bomberpac.Obstacle("wall", Bomberpac.gameField, 0, i, this.scale, Floor.mesh, this.color);
-                this.obstacles.appendChild(obstacle);
-                obstacle = new Bomberpac.Obstacle("wall", Bomberpac.gameField, 29, i, this.scale, Floor.mesh, this.color);
-                this.obstacles.appendChild(obstacle);
+                let walls = new Bomberpac.Obstacle("wall", Bomberpac.gameField, 0, i, this.scale, Floor.mesh, this.color);
+                this.gameField[0][i] = 1;
+                this.obstacles.appendChild(walls);
+                walls = new Bomberpac.Obstacle("wall", Bomberpac.gameField, 29, i, this.scale, Floor.mesh, this.color);
+                this.gameField[29][i] = 1;
+                this.obstacles.appendChild(walls);
             }
             while (this.obstacles.getChildrenByName("obstacles").length < _amountOfObstacles) {
                 let randomTranslateX = Bomberpac.getRandomTranslateX();
@@ -47,7 +51,7 @@ var Bomberpac;
                     this.obstacles.appendChild(obstacles);
                 }
             }
-            this.game.appendChild(this.obstacles);
+            this.appendChild(this.obstacles);
         }
         createFood(_amountofFood) {
             let foodNode = new Bomberpac.fCore.Node("Food");
@@ -59,7 +63,7 @@ var Bomberpac;
                 if (!((randomTranslateX == 1 && randomTranslateY == 1) || (randomTranslateX == 27 && randomTranslateY == 1) || (randomTranslateX == 2 && randomTranslateY == 1) || (randomTranslateX == 3 && randomTranslateY == 1) || this.gameField[randomTranslateX][randomTranslateY] == 1)) {
                     food = new Bomberpac.Food("food", randomTranslateX, randomTranslateY, this.gameField);
                     foodNode.appendChild(food);
-                    this.game.appendChild(foodNode);
+                    this.appendChild(foodNode);
                 }
             }
         }
@@ -105,7 +109,7 @@ var Bomberpac;
                 pill = new Bomberpac.Pill("Item", randomTranslateX, randomTranslateY, this.gameField, id);
                 itemNode.appendChild(pill);
             }
-            this.game.appendChild(itemNode);
+            this.appendChild(itemNode);
         }
     }
     Floor.mesh = new Bomberpac.fCore.MeshCube();
