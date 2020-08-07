@@ -80,8 +80,10 @@ var Bomberpac;
                     this.gameField[randomTranslateX][randomTranslateY] = 1;
                     food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
                     Bomberpac.Sound.play("pacman_eat");
+                    return true;
                 }
             }
+            return false;
         }
     }
     Bomberpac.Man = Man;
