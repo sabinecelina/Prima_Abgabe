@@ -41,7 +41,7 @@ namespace Bomberpac {
     }
   }
   export class Bomb extends Sprite {
-    public range: number = 1.4;
+    public range: number = 2.8;
     constructor(_name: string = "Bomb", translateX: number, translateY: number, matrix: number[][]) {
       super(_name, translateX, translateY, matrix);
       this.show(ACTION.IDLE);

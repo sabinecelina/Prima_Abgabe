@@ -81,8 +81,8 @@ namespace Bomberpac {
       document.getElementById("winScreenPlayerOne").style.display = "initial";
       document.getElementById("winScreenPlayerTwo").style.display = "none";
     } else {
-      document.getElementById("winScreenPlayerOne").style.display = "none";
-      document.getElementById("winScreenPlayerTwo").style.display = "initial";
+      document.getElementById("winScreenPlayerOne").style.display = "initial";
+      document.getElementById("winScreenPlayerTwo").style.display = "none";
 
     }
   }

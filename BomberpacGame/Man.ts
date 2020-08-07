@@ -76,7 +76,7 @@ namespace Bomberpac {
       // show only the animation defined for the action
       this.setAnimation(<ƒAid.SpriteSheetAnimation>Man.animations[_action]);
     }
-    public eatFood(): void {
+    public eatFood(): boolean {
       let pacmanTranslation: fCore.Vector3 = this.mtxLocal.translation;
       let node: fCore.Node[] = this.game.getChildrenByName("Floor")[0].getChildrenByName("Food")[0].getChildren();
       for (let food of node) {
@@ -88,8 +88,10 @@ namespace Bomberpac {
           this.gameField[randomTranslateX][randomTranslateY] = 1;
           food.mtxLocal.translation = new fCore.Vector3(randomTranslateX, randomTranslateY, 0);
           Sound.play("pacman_eat");
+          return true;
         }
       }
+      return false;
     }
   }
 }
