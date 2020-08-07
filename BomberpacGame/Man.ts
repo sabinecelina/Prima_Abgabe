@@ -4,7 +4,6 @@ namespace Bomberpac {
 
   export class Man extends Sprite {
     protected speed: fCore.Vector3 = fCore.Vector3.ZERO();
-    public won: boolean = false;
     public action: ACTION;
     public lives: number;
     public game: fCore.Node;

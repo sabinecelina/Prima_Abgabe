@@ -3,6 +3,7 @@ namespace Bomberpac {
   import fAid = FudgeAid;
 
   export class PacmanPlayerTwo extends Man {
+    private won: boolean = false;
     private img: HTMLImageElement = document.querySelector("img");
     private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Pacman", this.img);
     private static speedMaxPlayerTwo: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
@@ -19,20 +20,11 @@ namespace Bomberpac {
       this.processInput();
       this.eatFood();
       this.eatItem();
-      if (this.gameOver()) {
-        Sound.play("pacman_death");
-        gameWinningScreen("playerTwo");
-      }
       if (this.won) {
         Sound.play("pacman_win");
-        gameWinningScreen("playerTwo");
+        gameWinningScreen(2);
       }
       this.collide();
-    }
-    private gameOver(): boolean {
-      if (this.lives < -10)
-        return true;
-      return false;
     }
     public processInput(): void {
       if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
@@ -112,15 +104,19 @@ namespace Bomberpac {
             case 3:
               this.amountOfBombs++;
               console.log(this.amountOfBombs);
+              break;
             case 4:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 0.5;
+              break;
             case 5:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+              break;
             case 6:
               ƒ.Time.game.setTimer(5000, 1, this.handleEventItem);
               PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
+              break;
             case 7:
               this.won = true;
               break;
@@ -170,6 +166,7 @@ namespace Bomberpac {
 
 
   export class PacmanPlayerOne extends Man {
+    public won: boolean = false;
     private static speedMaxPlayerOne: ƒ.Vector3 = new ƒ.Vector3(3, 3, 3); // units per second
     private img: HTMLImageElement = document.querySelector("img");
     private spritesheet: ƒ.CoatTextured = ƒAid.createSpriteSheet("Bomb", this.img);
@@ -188,7 +185,7 @@ namespace Bomberpac {
       this.eatItem();
       if (this.won) {
         Sound.play("pacman_win");
-        gameWinningScreen("playerOne");
+        gameWinningScreen(1);
       }
     }
     public eatItem(): void {
@@ -197,6 +194,7 @@ namespace Bomberpac {
       for (let item of node) {
         let rect: number = (<Pill>item).getID();
         if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
+          console.log(rect);
           let _currentTranslation: fCore.Vector3 = item.mtxLocal.translation;
           this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
           let randomTranslateX: number = getRandomTranslateX();
@@ -217,16 +215,19 @@ namespace Bomberpac {
               break;
             case 3:
               this.amountOfBombs++;
-              console.log(this.amountOfBombs);
+              break;
             case 4:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 0.5;
+              break;
             case 5:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 1;
+              break;
             case 6:
               ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
               PacmanPlayerOne.speedMaxPlayerOne.x = 0;
+              break;
             case 7:
               this.won = true;
               break;

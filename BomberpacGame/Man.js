@@ -6,7 +6,6 @@ var Bomberpac;
         constructor(_name, translateX, translateY, gameField, game, data) {
             super(_name, translateX, translateY, gameField);
             this.speed = fCore.Vector3.ZERO();
-            this.won = false;
             this.game = game;
             this.gameField = gameField;
             this.data = data;

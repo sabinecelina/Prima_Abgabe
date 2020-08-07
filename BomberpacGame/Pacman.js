@@ -5,6 +5,7 @@ var Bomberpac;
     class PacmanPlayerTwo extends Bomberpac.Man {
         constructor(_name, translateX, translateY, gamefield, game, data) {
             super(_name, translateX, translateY, gamefield, game, data);
+            this.won = false;
             this.img = document.querySelector("img");
             this.spritesheet = Bomberpac.ƒAid.createSpriteSheet("Pacman", this.img);
             this.translation = fCore.Vector3.ZERO();
@@ -15,23 +16,14 @@ var Bomberpac;
                 this.processInput();
                 this.eatFood();
                 this.eatItem();
-                if (this.gameOver()) {
-                    Bomberpac.Sound.play("pacman_death");
-                    Bomberpac.gameWinningScreen("playerTwo");
-                }
                 if (this.won) {
                     Bomberpac.Sound.play("pacman_win");
-                    Bomberpac.gameWinningScreen("playerTwo");
+                    Bomberpac.gameWinningScreen(2);
                 }
                 this.collide();
             };
             this.game = game;
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
-        }
-        gameOver() {
-            if (this.lives < -10)
-                return true;
-            return false;
         }
         processInput() {
             if (ƒ.Keyboard.isPressedCombo([ƒ.KEYBOARD_CODE.A]))
@@ -110,15 +102,19 @@ var Bomberpac;
                         case 3:
                             this.amountOfBombs++;
                             console.log(this.amountOfBombs);
+                            break;
                         case 4:
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerTwo.speedMaxPlayerTwo.x = 0.5;
+                            break;
                         case 5:
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerTwo.speedMaxPlayerTwo.x = 1;
+                            break;
                         case 6:
                             ƒ.Time.game.setTimer(5000, 1, this.handleEventItem);
                             PacmanPlayerTwo.speedMaxPlayerTwo.x = 0;
+                            break;
                         case 7:
                             this.won = true;
                             break;
@@ -161,6 +157,7 @@ var Bomberpac;
     class PacmanPlayerOne extends Bomberpac.Man {
         constructor(_name, translateX, translateY, gamefield, game, data) {
             super(_name, translateX, translateY, gamefield, game, data);
+            this.won = false;
             this.img = document.querySelector("img");
             this.spritesheet = Bomberpac.ƒAid.createSpriteSheet("Bomb", this.img);
             this.update = (_event) => {
@@ -174,7 +171,7 @@ var Bomberpac;
                 this.eatItem();
                 if (this.won) {
                     Bomberpac.Sound.play("pacman_win");
-                    Bomberpac.gameWinningScreen("playerOne");
+                    Bomberpac.gameWinningScreen(1);
                 }
             };
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
@@ -185,6 +182,7 @@ var Bomberpac;
             for (let item of node) {
                 let rect = item.getID();
                 if (pacmanTranslation.isInsideSphere(item.mtxLocal.translation, 0.2)) {
+                    console.log(rect);
                     let _currentTranslation = item.mtxLocal.translation;
                     this.gameField[_currentTranslation.x][_currentTranslation.y] = 0;
                     let randomTranslateX = Bomberpac.getRandomTranslateX();
@@ -205,16 +203,19 @@ var Bomberpac;
                             break;
                         case 3:
                             this.amountOfBombs++;
-                            console.log(this.amountOfBombs);
+                            break;
                         case 4:
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerOne.speedMaxPlayerOne.x = 0.5;
+                            break;
                         case 5:
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerOne.speedMaxPlayerOne.x = 1;
+                            break;
                         case 6:
                             ƒ.Time.game.setTimer(10000, 1, this.handleEventItem);
                             PacmanPlayerOne.speedMaxPlayerOne.x = 0;
+                            break;
                         case 7:
                             this.won = true;
                             break;
